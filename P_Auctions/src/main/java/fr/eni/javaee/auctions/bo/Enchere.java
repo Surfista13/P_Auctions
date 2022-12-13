@@ -11,9 +11,8 @@ public class Enchere {
 	private Utilisateur utilisateur;
 	
 	public Enchere() {
-	
 	}
-
+	
 	public LocalDate getDateEnchere() {
 		return dateEnchere;
 	}
@@ -30,13 +29,32 @@ public class Enchere {
 		this.montant_enchere = montant_enchere;
 	}
 
+	public ArticleVendu getArticleVendus() {
+		return articleVendus;
+	}
+
+	public void setArticleVendus(ArticleVendu articleVendus) {
+		this.articleVendus = articleVendus;
+	}
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Enchere [dateEnchere=").append(dateEnchere).append(", montant_enchere=").append(montant_enchere)
-				.append("]");
+				.append(", articleVendus=").append(articleVendus).append(", utilisateur=").append(utilisateur)
+				.append(", idArticle=").append("]");
 		return builder.toString();
 	}
+
+	
 	
 	
 	

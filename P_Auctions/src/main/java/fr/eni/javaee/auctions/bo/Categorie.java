@@ -8,6 +8,14 @@ public class Categorie {
 	public Categorie() {
 	
 	}
+	public Categorie(int noCategorie) {
+		this.noCategorie = noCategorie;
+	}
+	public Categorie(int noCategorie, String libelle) {
+		this.libelle = libelle;
+		this.noCategorie = noCategorie;
+	}
+
 
 	public int getNoCategorie() {
 		return noCategorie;
