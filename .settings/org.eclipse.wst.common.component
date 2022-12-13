@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="P_Auctions">
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/P_Auctions/src/main/java"/>
+        <property name="context-root" value="P_Auctions"/>
+        <property name="java-output-path" value="/P_Auctions/bin"/>
+    </wb-module>
+</project-modules>
