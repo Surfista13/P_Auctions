@@ -12,20 +12,17 @@ public class ArticleVendu {
 	private int miseAPrix;
 	private int prixVente;
 	private String etatVente;
+	private Categorie categorie = new Categorie();
+	private Utilisateur utilisateur = new Utilisateur();
+	private Retrait retrait =  new Retrait();
 	
-	private Categorie categorie;
-	private Utilisateur utilisateur;
-	private Retrait retrait;
 	
-	public ArticleVendu() {
-	
-	}
-	
+	public ArticleVendu() {}
 	
 
 	public ArticleVendu(int noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
 			LocalDate dateFinEncheres, int miseAPrix, int prixVente, String etatVente) {
-		super();
+		this();
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -102,15 +99,55 @@ public class ArticleVendu {
 		this.etatVente = etatVente;
 	}
 
+	
+	
+	public Categorie getCategorie() {
+		return categorie;
+	}
+
+
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
+	}
+
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
+
+
+	public Retrait getRetrait() {
+		return retrait;
+	}
+
+
+	public void setRetrait(Retrait retrait) {
+		this.retrait = retrait;
+	}
+
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("ArticleVendu [noArticle=").append(noArticle).append(", nomArticle=").append(nomArticle)
 				.append(", description=").append(description).append(", dateDebutEncheres=").append(dateDebutEncheres)
 				.append(", dateFinEncheres=").append(dateFinEncheres).append(", miseAPrix=").append(miseAPrix)
-				.append(", prixVente=").append(prixVente).append(", etatVente=").append(etatVente).append("]");
+				.append(", prixVente=").append(prixVente).append(", etatVente=").append(etatVente).append("\n")
+				.append(", categorie=").append(categorie).append("\n").append(", utilisateur=").append(utilisateur)
+				.append(", retrait=").append(retrait).append("]");
 		return builder.toString();
 	}
+
+
+
+
+
+	
 	
 	
 	

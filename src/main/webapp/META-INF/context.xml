@@ -6,9 +6,10 @@
 		driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 		type="javax.sql.DataSource"
 		
-		url="jdbc:sqlserver://10.22.200.23;databasename=ENCHERES_BDD;IntegratedSecurity=false;encrypt=false;trustServerCertificate=false"
-		username="user"
-		password="Ax23BG502$"
+		url="jdbc:sqlserver://localhost;databasename=ENCHERES_BDD;IntegratedSecurity=false;encrypt=false;trustServerCertificate=false"
+		username="bruno"
+		password="Pa$$w0rd"
+		
 		
 		maxTotal="100"
 		maxIdle="30"

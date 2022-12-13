@@ -19,7 +19,7 @@ import fr.eni.javaee.auctions.bo.Categorie;
 import fr.eni.javaee.auctions.bo.Enchere;
 import fr.eni.javaee.auctions.dal.ConnectionProvider;
 import fr.eni.javaee.auctions.dal.DAOCategorie;
-import fr.eni.javaee.auctions.dal.DAOEnchere;
+import fr.eni.javaee.auctions.dal.DAOArticleVendu;
 import fr.eni.javaee.auctions.dal.DAOFactory;
 
 /**
@@ -41,6 +41,8 @@ public class ServletTestDAL extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+
 		//Test1: select all categories
 		PrintWriter out = response.getWriter();
         DAOCategorie categorieDAO = DAOFactory.getCategorieDAOImplSQLServer();
@@ -58,34 +60,45 @@ public class ServletTestDAL extends HttpServlet {
         int nbDeletedRow = categorieDAO2.deleteCategorie(c1);
         out2.print(nbDeletedRow);       
         out2.print("\n");
-        
 
-        //Test3: select enchere par nom article
-        ArticleVendu a1 = new ArticleVendu(1,"Ballon","Ballon",LocalDate.of(2022, 5, 20),LocalDate.of(2022, 12, 20),100,200,"en cours");
-        PrintWriter out3 = response.getWriter();
-        DAOEnchere enchereDAO3 = DAOFactory.getEnchereDAOImplSQLServer();
-        List<Enchere> encheres = new ArrayList<>();
-        encheres = enchereDAO3.selectByNameArticle(a1);
-        out3.print(a1.getNomArticle());
-        out3.print(encheres.toString());
-        for (Enchere enchere : encheres){
-        	out3.print("Test select par nom  article: " + enchere + "\n");
+		//Test3: select all articles vendus
+		PrintWriter out3 = response.getWriter();
+        DAOArticleVendu articleDAO3 = DAOFactory.getArticleVenduDAOImplSQLServer();
+        List<ArticleVendu> articles = new ArrayList<>();
+        articles = articleDAO3.selectAll();
+        for (ArticleVendu article : articles){
+        	out3.print("Test select all articles: " + article +"\n");
         } 
         out3.print("\n");
-  
-  
-  
-        //Test4: select enchere par categorie
+		
+        //Test4: select enchere par nom article
+        String name ="Brouette";
         PrintWriter out4 = response.getWriter();
-        DAOEnchere enchereDAO4 = DAOFactory.getEnchereDAOImplSQLServer();
-        List<Enchere> encheres2 = new ArrayList<>();
-        encheres2 = enchereDAO4.selectByCategorieEncheres(c1);
-        for (Enchere enchere2 : encheres2){
-            out4.print("Test selec par catégorie: " + enchere2 + "\n");
+        DAOArticleVendu articleDAO4 = DAOFactory.getArticleVenduDAOImplSQLServer();
+        List<ArticleVendu> articles2 = new ArrayList<>();
+        articles2 = articleDAO4.selectByNameArticle(name);
+        for (ArticleVendu article2 : articles2){
+        	out4.print("Test select by name: " + article2 +"\n");
         } 
         out4.print("\n");
-        out4.print("test");
 
-        out2.close();	      
+
+        //Test5: select enchere par categorie
+        Categorie c2 = new Categorie(3,"Auto");
+        PrintWriter out5 = response.getWriter();
+        DAOArticleVendu articleDAO5 = DAOFactory.getArticleVenduDAOImplSQLServer();
+        List<ArticleVendu> articles3 = new ArrayList<>();
+        articles3 = articleDAO5.selectByCategorie(c2);
+        for (ArticleVendu article3 : articles3){
+            out5.print("Test selec par catégorie: " + article3 + "\n");
+        } 
+        out5.print("\n");
+ 
+        out.close();
+        out2.close();
+        out3.close();
+        out4.close();
+        out5.close();
+          
 	}
 }

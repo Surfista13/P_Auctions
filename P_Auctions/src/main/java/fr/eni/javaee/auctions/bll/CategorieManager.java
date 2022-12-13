@@ -5,7 +5,7 @@ import java.util.List;
 import fr.eni.javaee.auctions.bo.Categorie;
 import fr.eni.javaee.auctions.bo.Enchere;
 import fr.eni.javaee.auctions.dal.DAOCategorie;
-import fr.eni.javaee.auctions.dal.DAOEnchere;
+import fr.eni.javaee.auctions.dal.DAOArticleVendu;
 import fr.eni.javaee.auctions.dal.DAOFactory;
 
 public class CategorieManager {
