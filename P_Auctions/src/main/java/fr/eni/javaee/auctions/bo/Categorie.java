@@ -1,5 +1,5 @@
 package fr.eni.javaee.auctions.bo;
-
+//test
 public class Categorie {
 
 	private int noCategorie;
