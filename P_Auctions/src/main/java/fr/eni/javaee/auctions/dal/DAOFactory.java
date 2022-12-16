@@ -9,4 +9,9 @@ public abstract class DAOFactory {
 	public static DAOCategorie getCategorieDAOImplSQLServer() {
 		return new CategorieDAOImplSQLServer();
 	}
+
+	public static DAOEnchere getEnchereDAOImplSQLServer() {
+		// TODO Auto-generated method stub
+		return new EnchereDAOImplSQLServer();
+	}
 }

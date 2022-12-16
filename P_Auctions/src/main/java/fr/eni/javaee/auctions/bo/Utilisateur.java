@@ -20,8 +20,11 @@ public class Utilisateur {
 	private List <ArticleVendu> articles;
 	
 	
-	public Utilisateur() {
-		
+	public Utilisateur() {	
+	}
+	
+	public Utilisateur(String pseudo) {
+		this.pseudo = pseudo;
 	}
 
 

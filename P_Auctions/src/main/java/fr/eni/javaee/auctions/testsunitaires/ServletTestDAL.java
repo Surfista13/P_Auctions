@@ -72,11 +72,12 @@ public class ServletTestDAL extends HttpServlet {
         out3.print("\n");
 		
         //Test4: select enchere par nom article
-        String name ="Brouette";
         PrintWriter out4 = response.getWriter();
         DAOArticleVendu articleDAO4 = DAOFactory.getArticleVenduDAOImplSQLServer();
         List<ArticleVendu> articles2 = new ArrayList<>();
-        articles2 = articleDAO4.selectByNameArticle(name);
+        ArticleVendu a1 = new ArticleVendu();
+        a1.setNomArticle("Brouette");
+        articles2 = articleDAO4.selectByNameArticle(a1);
         for (ArticleVendu article2 : articles2){
         	out4.print("Test select by name: " + article2 +"\n");
         } 
