@@ -10,6 +10,15 @@ public class Retrait {
 	public Retrait() {
 
 	}
+	
+	//Ajout nicolas 15 decembre
+	public Retrait(String rue, String codePostal, String ville) {
+		this();
+		this.rue = rue;
+		this.codePostal = codePostal;
+		this.ville = ville;
+		
+	}
 
 	public String getRue() {
 		return rue;

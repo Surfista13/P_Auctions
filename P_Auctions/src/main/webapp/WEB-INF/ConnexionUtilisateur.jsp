@@ -9,30 +9,34 @@
 <body>
 <p>LOGO</p>
 
-<form action="<%=request.getContextPath()%>/ServletConnexionUtilisateur" method="post">
+	<form action="<%=request.getContextPath()%>/ServletConnexionUtilisateur" method="post">
 
-	<label for="idIdentifiant">Identifiant :</label>
-	<input type="name" id="idIdentifiant" name="identifiant">
+		<label for="idIdentifiant">Identifiant :</label>
+		<input type="name" id="idIdentifiant" name="identifiant">
 
-	<br><br>
+			<br><br>
 
-	<label for="IdMotDePasse">Mot de passe:</label>
-	<input type="text" id="idMotDePasse" name="motDePasse">
+		<label for="IdMotDePasse">Mot de passe:</label>
+		<input type="password" id="idMotDePasse" name="motDePasse">
 
-	<br><br>
+			<br><br>
 	
-	<input type="checkbox" id="idSeSouvenir" name="check">
-	<label for="idSeSouvenir">Se souvenir de moi</label>
+		<input type="checkbox" id="idSeSouvenir" name="check" class="custom-control-input">
+		<label for="idSeSouvenir">Se souvenir de moi</label>
 	
-	<input type="submit" value="Connexion">
+		<input type="submit" value="Connexion">
 
-</form>
+	</form>
+	
+	<p>${requestScope.err }</p>
 
-<a href="">Mot de passe oublié?</a>
 
-<br>
 
-<a href="">Créer un compte</a>
+	<a href="">Mot de passe oublié?</a>
+
+		<br>
+
+	<a href="">Créer un compte</a>
 
 </body>
 </html>

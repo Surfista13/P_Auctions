@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.eni.javaee.auctions.bo.ArticleVendu;
 import fr.eni.javaee.auctions.bo.Categorie;
+import fr.eni.javaee.auctions.bo.Retrait;
 import fr.eni.javaee.auctions.dal.DAOArticleVendu;
 import fr.eni.javaee.auctions.dal.DAOFactory;
 
@@ -36,6 +37,12 @@ public class ArticleVenduManager {
 	public List<ArticleVendu> selectByCategorieEncheres (Categorie categorie){
 		articlesVendu = daoArticleVendu.selectByCategorie(categorie);
 		return articlesVendu;		
+	}
+	
+	//Ajout Nicolas 15 decembre
+	
+	public void insertNewArticle(ArticleVendu newArticle,Retrait retrait) {
+			
 	}
 	
 	

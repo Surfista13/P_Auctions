@@ -1,6 +1,7 @@
 package fr.eni.javaee.auctions.dal;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import java.util.List;
 import fr.eni.javaee.auctions.bo.ArticleVendu;
 import fr.eni.javaee.auctions.bo.Categorie;
 import fr.eni.javaee.auctions.bo.Enchere;
+import fr.eni.javaee.auctions.bo.Retrait;
 import fr.eni.javaee.auctions.bo.Utilisateur;
 
 public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
@@ -18,6 +20,11 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 	private static final String SELECT_ALL = "SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie;";
 	private static final String SELECT_BY_ARTICLE_NAME = "SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie WHERE ARTICLES_VENDUS.nom_article LIKE ?;";
 	private static final String SELECT_BY_CATEGORIE = "SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie WHERE CATEGORIES.libelle = ?;";
+	
+	//Ajout Nicolas 15 décembre
+	
+	private static final String INSERT_NEW_VENTE ="INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie) VALUES(?,?,?,?,?,?,?);";
+	private static final String INSERT_NEW_RETRAIT="INSERT INTO RETRAITS (no_article,rue,code_postal,ville) VALUES(?,?,?,?);";
 	
 	List<ArticleVendu> articles;
 	
@@ -126,4 +133,48 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 		}
 		return articles;
 	}
+
+//Ajout Nicolas 15 decembre
+	@Override
+	public void insertNewArticle(ArticleVendu newArticle, Retrait retrait) {
+		
+		try(Connection cnx = ConnectionProvider.getConnection()){
+			
+			try {
+				
+			cnx.setAutoCommit(false);
+			
+		PreparedStatement pStmt = cnx.prepareStatement(INSERT_NEW_VENTE, Statement.RETURN_GENERATED_KEYS);
+		pStmt.setString(1,newArticle.getNomArticle());
+		pStmt.setString(2, newArticle.getDescription());
+		pStmt.setDate(3,Date.valueOf(newArticle.getDateDebutEncheres()));
+		pStmt.setDate(4, Date.valueOf(newArticle.getDateFinEncheres()));
+		pStmt.setInt(5,newArticle.getUtilisateur().getNoUtilisateur() );//bll creation utilateur
+		pStmt.setInt(6,newArticle.getCategorie().getNoCategorie());
+		pStmt.executeUpdate();
+		
+		//insertion dans la table retrait
+		
+		ResultSet clesPrimairesGenerees = pStmt.getGeneratedKeys();
+		int noArticle = clesPrimairesGenerees.getInt(1);
+		pStmt= cnx.prepareStatement(INSERT_NEW_RETRAIT);
+		
+		pStmt.setInt(1,noArticle);
+		pStmt.setString(2,retrait.getRue());
+		pStmt.setString(3, retrait.getCodePostal());
+		pStmt.setString(4, retrait.getVille());
+		pStmt.executeUpdate();		
+		cnx.commit();
+			
+			}catch (SQLException e) {
+			e.printStackTrace();
+			cnx.rollback();
+			cnx.setAutoCommit(true);
+		}
+			
+	} catch (SQLException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+}
 }
