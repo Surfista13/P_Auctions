@@ -4,7 +4,6 @@ import java.sql.SQLException;
 
 import fr.eni.javaee.auctions.bo.Utilisateur;
 import fr.eni.javaee.auctions.dal.DAOFactory;
-import fr.eni.javaee.auctions.dal.DAOFactoryNR;
 
 public class UtilisateurManager {
 	
@@ -20,7 +19,7 @@ public class UtilisateurManager {
 	public Utilisateur validerConnexion(String pseudo, String email, String motDePasse) {
 		Utilisateur unUtilisateur=null;
 		try {
-			unUtilisateur = DAOFactoryNR.getUtilisateurDAO().validerConnexion(pseudo, email, motDePasse);
+			unUtilisateur = DAOFactory.getUtilisateurDao().validerConnexion(pseudo, email, motDePasse);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

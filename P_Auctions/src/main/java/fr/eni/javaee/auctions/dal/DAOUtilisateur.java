@@ -1,9 +1,14 @@
 package fr.eni.javaee.auctions.dal;
 
+import java.sql.SQLException;
+
 import fr.eni.javaee.auctions.bo.Utilisateur;
 
 public interface DAOUtilisateur {
 	
-	void insert (Utilisateur utilisateur);
+	public void insert (Utilisateur utilisateur);
+	public Utilisateur  validerConnexion(String pseudo,String email,String motDePasse) throws SQLException;
+	
+	
 
 }

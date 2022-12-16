@@ -10,7 +10,7 @@ import java.util.List;
 
 import fr.eni.javaee.auctions.bo.Utilisateur;
 
-public class UtilisateurDaoJDBCImpl implements UtilisateurDAO {
+public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 
 	private final static String FIND_UTILISATEUR = "SELECT * FROM UTILISATEURS WHERE (LOWER(pseudo) =? or LOWER(email)=?) and LOWER(mot_de_passe) = ? ;";
 

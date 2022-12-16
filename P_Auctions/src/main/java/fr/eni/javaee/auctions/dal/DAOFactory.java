@@ -19,9 +19,8 @@ public abstract class DAOFactory {
 	public static DAOArticleVendu getDAOArticleVendu() {
 		return new ArticleVenduDAOImplSQLServer();
 	}
-
 	
-	public static UtilisateurDAO getUtilisateurDao()  {
+	public static DAOUtilisateur getUtilisateurDao()  {
 			return new UtilisateurDaoJDBCImpl();
 		}
 }

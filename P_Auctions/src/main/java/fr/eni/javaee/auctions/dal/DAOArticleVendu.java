@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.eni.javaee.auctions.bo.ArticleVendu;
 import fr.eni.javaee.auctions.bo.Categorie;
+import fr.eni.javaee.auctions.bo.Retrait;
 import fr.eni.javaee.auctions.bo.Utilisateur;
 
 public interface DAOArticleVendu{
@@ -16,5 +17,5 @@ public interface DAOArticleVendu{
 	public List<ArticleVendu> selectByUserByCategorie(Utilisateur user, Categorie categorie);
 	public List<ArticleVendu> selectByUserByCategorieByArticleName(Utilisateur user, Categorie categorieRecherchee,ArticleVendu articleVendu);
 	//Ajout Nicolas 15 decembre
-		public void  insertNewArticle(ArticleVendu newArticle, Retrait retrait);
+	public void  insertNewArticle(ArticleVendu newArticle, Retrait retrait);
 }
