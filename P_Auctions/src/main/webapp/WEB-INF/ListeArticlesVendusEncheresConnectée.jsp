@@ -11,8 +11,9 @@
 <header>
 	<h1>ENI_Encheres</h1>
 	<ul>
+		<li>Bonjour ${sessionScope.utilisateurConnecte.prenom}!</li>
 		<li><a href="#">Enchères</a></li>
-		<li><a href="#">Vendre un article</a></li>
+		<li><a href="/P_Auctions/ServletNouvelleVente">Vendre un article</a></li>
 		<li><a href="#">Mon profil</a></li>
 		<li><a href="#">Déconnexion</a></li>
 	</ul>
