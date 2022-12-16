@@ -9,4 +9,8 @@ public abstract class DAOFactory {
 	public static DAOCategorie getCategorieDAOImplSQLServer() {
 		return new CategorieDAOImplSQLServer();
 	}
+	
+	public static DAOUtilisateur getUtilisateurDao()  {
+			return new UtilisateurDaoJDBCImpl();
+		}
 }
