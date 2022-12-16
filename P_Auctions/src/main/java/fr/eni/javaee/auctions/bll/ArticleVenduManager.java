@@ -6,7 +6,11 @@ import java.util.List;
 
 import fr.eni.javaee.auctions.bo.ArticleVendu;
 import fr.eni.javaee.auctions.bo.Categorie;
+<<<<<<< HEAD
 import fr.eni.javaee.auctions.bo.Utilisateur;
+=======
+import fr.eni.javaee.auctions.bo.Retrait;
+>>>>>>> branch 'main' of https://github.com/Surfista13/P_Auctions.git
 import fr.eni.javaee.auctions.dal.DAOArticleVendu;
 import fr.eni.javaee.auctions.dal.DAOFactory;
 
@@ -93,6 +97,12 @@ public class ArticleVenduManager {
 		return articlesVendu;	
 	}
 	
+	
+	//Ajout Nicolas 15 decembre
+	
+	public void insertNewArticle(ArticleVendu newArticle,Retrait retrait) {
+			
+	}
 	
 	
 }

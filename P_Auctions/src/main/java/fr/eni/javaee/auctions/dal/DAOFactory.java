@@ -14,4 +14,14 @@ public abstract class DAOFactory {
 		// TODO Auto-generated method stub
 		return new EnchereDAOImplSQLServer();
 	}
+	//Ajout Nicolas du 15 Decembre
+	
+	public static DAOArticleVendu getDAOArticleVendu() {
+		return new ArticleVenduDAOImplSQLServer();
+	}
+
+	
+	public static UtilisateurDAO getUtilisateurDao()  {
+			return new UtilisateurDaoJDBCImpl();
+		}
 }
