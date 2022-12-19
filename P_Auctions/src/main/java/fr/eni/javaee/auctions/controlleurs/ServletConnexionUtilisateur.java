@@ -56,7 +56,7 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 		request.setAttribute("err", erreur);	
 		doGet(request, response);
 		}
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArticlesVendusEncheresConnectée.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees");
 		rd.forward(request, response);
 		
 		

@@ -18,7 +18,7 @@
 	      <h5 class="my-0 mr-md-auto font-weight-normal">ENCHERES COMPANY</h5>
 	      <nav class="my-2 my-md-0 mr-md-3">
 	        <a class="btn btn-sm btn-outline-secondary" href="/P_Auctions/ServletProfilUtilisateur">S'inscrire</a>
-	        <a class="btn btn-sm btn-outline-secondary" href="/P_Auctions/ServletEncheresConnectees">Se connecter</a>
+	        <a class="btn btn-sm btn-outline-secondary" href="/P_Auctions/ServletConnexionUtilisateur">Se connecter</a>
 	      </nav>
 	    </div>
 	</header>
