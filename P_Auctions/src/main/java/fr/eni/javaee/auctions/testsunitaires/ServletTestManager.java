@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import fr.eni.javaee.auctions.bll.ArticleVenduManager;
 import fr.eni.javaee.auctions.bll.CategorieManager;
 import fr.eni.javaee.auctions.bll.EncheresManager;
+import fr.eni.javaee.auctions.bll.UtilisateurManager;
 import fr.eni.javaee.auctions.bo.ArticleVendu;
 import fr.eni.javaee.auctions.bo.Categorie;
 import fr.eni.javaee.auctions.bo.Enchere;
@@ -62,31 +63,31 @@ public class ServletTestManager extends HttpServlet {
 		    out3.print("Article: " + b + "\n");
 		    out3.print("\n");
 		}
-		
+		*/
 	    //Test4 affichage des ventes d'un utilisateur
         PrintWriter out4 = response.getWriter();
         ArticleVenduManager cm4 = ArticleVenduManager.getArticleVenduManager();
         List<ArticleVendu> articles2 = new ArrayList<>();
         Utilisateur user1 =  new Utilisateur();
         user1.setNoUtilisateur(3);
-		articles2 = cm4.articleVenduUtilisateur(user1);
+		articles2 = cm4.selectByUser(user1);
 		for (ArticleVendu b : articles2){
 		    out4.print("Article utilisateurs: " + b + "\n");
 		    out4.print("\n");
 		}
-
-	    //Test5 affichage enchères utilisateurs
+/*    //Test5 affichage enchères utilisateurs
 		PrintWriter out6 = response.getWriter();
         EncheresManager em = EncheresManager.getEnchereManager();
         List<Enchere> encheres = new ArrayList<>();
         Utilisateur user2 =  new Utilisateur();
-        user2.setNoUtilisateur(3);
+        user2.setNoUtilisateur(4);
 		encheres = em.selectAllEnchereByUser(user2);
 		for (Enchere e : encheres){
 		    out6.print("Encheres utilisateurs: " + e + "\n");
 		    out6.print("\n");
 		}
-		
+		*/
+/*		
 	    //Test6 affichage enchères utilisateurs par article name
 		PrintWriter out7 = response.getWriter();
         EncheresManager em2 = EncheresManager.getEnchereManager();
@@ -161,7 +162,7 @@ public class ServletTestManager extends HttpServlet {
 		    out3.print("Article: " + b + "\n");
 		    out3.print("\n");
 		}
-		*/
+		
 		//Test11 affichage des ventes par utilisateur par categorie par article name
         PrintWriter out3 = response.getWriter();
         ArticleVenduManager cm3 = ArticleVenduManager.getArticleVenduManager();
@@ -177,8 +178,18 @@ public class ServletTestManager extends HttpServlet {
 		    out3.print("Article: " + b + "\n");
 		    out3.print("\n");
 		}
+		*//*
+		//Test12 selection d'un utilisateur
+		PrintWriter out3 = response.getWriter();
+		UtilisateurManager utilisateurManager = UtilisateurManager.getInstance();
+		int idUser = 24;
+		Utilisateur utilisateur = new Utilisateur();
+		utilisateur = utilisateurManager.selectByUserId(idUser);
+		out3.print(utilisateur);
+		*/
 		
-		out3.close();
+		
+		out4.close();
 		
 		
 		

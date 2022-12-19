@@ -1,0 +1,40 @@
+
+#imgTN{
+	width:150px;
+	height:200px;
+	object-fit: fill;
+}
+
+.row mb-3{
+	display: flex;
+}
+.main{
+	padding:30px;
+}
+.filtres{
+	display:flex;
+}
+.radioCheck{
+	display:flex;
+	margin-top:30px;
+}
+.btnRecherche{
+	margin-bottom:80px;
+	margin-top:50px;
+}
+.ventes{
+	margin-left:30px;
+}
+.blockArticle{
+	display:flex;
+}
+#imgProfil{
+	width:20px;
+	height:20px;
+}
+#btnCredits{
+	margin-right:30px;
+}
+#btnModifier{
+	margin-top: 80px;
+}

@@ -32,6 +32,7 @@ public class ServletEncheresConnectees extends HttpServlet {
 	EncheresManager encheresManager = EncheresManager.getEnchereManager();
 	ArticleVenduManager articleVenduManager = ArticleVenduManager.getArticleVenduManager();
 	Utilisateur user = new Utilisateur();
+	Utilisateur userConnecte = new Utilisateur();
 	Categorie categorie = new Categorie();
 	ArticleVendu articleVendu = new ArticleVendu();
 	String param1, param2, param3, param4, param5, param6, radio;
@@ -45,17 +46,25 @@ public class ServletEncheresConnectees extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Création de l'utilisateur connecté
-		Utilisateur utilisateur = new Utilisateur();
-		utilisateur.setNoUtilisateur(2);
+		HttpSession session =request.getSession();
+		userConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		request.setAttribute("pseudo", userConnecte.getPseudo());
+		request.setAttribute("credit", userConnecte.getCredit());
+		request.setAttribute("idConnect", userConnecte.getNoUtilisateur());
+		session.setAttribute("utilisateurConnecte", userConnecte);
+		
 		// Select de la liste des enchères de l'acheteur
 		EncheresManager enchereManager = EncheresManager.getEnchereManager();
 		List<Enchere> listeEnchere = new ArrayList<>();
-		listeEnchere = encheresManager.selectAllEnchereByUser(utilisateur);
+		listeEnchere = encheresManager.selectAllEnchereByUser(userConnecte);
 		request.setAttribute("liste", listeEnchere);
 		String mesAchats = "mesAchats";
 		String radio = "mesAchats";
 		request.setAttribute("achat",mesAchats );
 		request.setAttribute("type", radio);
+		request.setAttribute("param1", "1");
+		request.setAttribute("param2", "2");
+		request.setAttribute("param3", "3");
 
 		// Liste des catégories
 		request.setAttribute("listeCategories", categories);
@@ -71,13 +80,17 @@ public class ServletEncheresConnectees extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		// Création de l'utilisateur connecté
+		HttpSession session =request.getSession();
+		userConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		request.setAttribute("pseudo", userConnecte.getPseudo());
+		request.setAttribute("credit", userConnecte.getCredit());
+		request.setAttribute("idConnect", userConnecte.getNoUtilisateur());
+		session.setAttribute("utilisateurConnecte", userConnecte);
+		
 		// Liste des catégories
 		request.setAttribute("listeCategories", categories);
-
-		// Création de l'utilisateur connecté
-		int x = 2;// user 2 en attente retour de la session
-		Utilisateur user = new Utilisateur();
-		user.setNoUtilisateur(x);
 
 		// Passage de la catégorie précedemment séléctionnée
 		Categorie categorie = new Categorie();
@@ -91,8 +104,7 @@ public class ServletEncheresConnectees extends HttpServlet {
 		ArticleVendu articleVendu = new ArticleVendu();
 		articleVendu.setNomArticle(request.getParameter("recherche"));
 
-		// Récupération de l'état des checkbox
-		
+		// Récupération de l'état des checkbox		
 		String param1 = request.getParameter("encheresOuvertes");
 		String param2 = request.getParameter("encheresEnCours");
 		String param3 = request.getParameter("encheresRemportees");
@@ -102,26 +114,25 @@ public class ServletEncheresConnectees extends HttpServlet {
 
 		// Récupération de l'état du bouton radio
 		String radio = request.getParameter("connect");
-		request.setAttribute("type", radio);
-
+		
 		// Transfert de l'état des bouton radio vers la jsp
+		request.setAttribute("type", radio);
 		String mesAchats = "mesAchats";
 		String mesVentes = "mesVentes";
 		request.setAttribute("achat", mesAchats);
 		request.setAttribute("vente", mesVentes);
-		//if(radio.equals(mesVentes)) {request.setAttribute("etatBoutonVente", "checked");request.setAttribute("etatBoutonAchat", null);}
-		//if(radio.equals(mesAchats)) {request.setAttribute("etatBoutonVente", null);request.setAttribute("etatBoutonAchat", "checked");}
 		
 		// Transfert de l'état des check box vers la jsp
-		//if(param1 != null) {request.setAttribute("param1", "checked");}else{request.setAttribute("param1","");};
-		//if(param2 == null) {request.setAttribute("param2", "");}else{request.setAttribute("param2", "checked");};
-		//if(param3 == null) {request.setAttribute("param3", "");}else{request.setAttribute("param3", "checked");};
-		//if(param4 == null) {request.setAttribute("param4", "");}else{request.setAttribute("param4", "checked");};
-		//if(param5 == null) {request.setAttribute("param5", "");}else{request.setAttribute("param5", "checked");};
-		//if(param6 == null) {request.setAttribute("param6", "");}else{request.setAttribute("param6", "checked");};
-
+		request.setAttribute("param1", param1);
+		request.setAttribute("param2", param2);
+		request.setAttribute("param3", param3);
+		request.setAttribute("param4", param4);
+		request.setAttribute("param5", param5);
+		request.setAttribute("param6", param6);
+		
+		
 		// Filtre de la recherche utilisateur
-		listeFiltree(user, articleVendu, categorie, radio, param1, param2, param3, param4, param5, param6, request);
+		listeFiltree(userConnecte, articleVendu, categorie, radio, param1, param2, param3, param4, param5, param6, request);
 
 		// Dispatch vers jsp
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArticlesVendusEncheresConnectée.jsp");
@@ -171,7 +182,6 @@ public class ServletEncheresConnectees extends HttpServlet {
 		List<ArticleVendu> listeArticleVenduFiltree = new ArrayList<>();
 		if (radio.equals("mesAchats")) {
 			listeEnchere = rechercheEtCategorieEnchere(user, article, categorie);
-
 			if (param1 != null && param2 != null && param3 != null) {
 				listeEnchereFiltree = listeEnchere.stream()
 						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("enCours")
@@ -181,7 +191,7 @@ public class ServletEncheresConnectees extends HttpServlet {
 			}
 			if (param1 != null && param2 == null && param3 == null) {
 				listeEnchereFiltree = listeEnchere.stream()
-						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("enCours"))
+						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("nonDebutee"))
 						.collect(Collectors.toList());
 			}
 			if (param1 != null && param2 != null && param3 == null) {
@@ -192,14 +202,24 @@ public class ServletEncheresConnectees extends HttpServlet {
 			}
 			if (param1 == null && param2 != null && param3 != null) {
 				listeEnchereFiltree = listeEnchere.stream()
-						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("nonDebutee")
+						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("enCours")
 								|| entry.getArticleVendus().getEtatVente().equals("terminee"))
 						.collect(Collectors.toList());
 			}
 			if (param1 != null && param2 == null && param3 != null) {
 				listeEnchereFiltree = listeEnchere.stream()
-						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("enCours")
+						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("nonDebutee")
 								|| entry.getArticleVendus().getEtatVente().equals("terminee"))
+						.collect(Collectors.toList());
+			}
+			if (param1 == null && param2 == null && param3 != null) {
+				listeEnchereFiltree = listeEnchere.stream()
+						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("terminee"))
+						.collect(Collectors.toList());
+			}
+			if (param1 == null && param2 != null && param3 == null) {
+				listeEnchereFiltree = listeEnchere.stream()
+						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("enCours"))
 						.collect(Collectors.toList());
 			}
 			if (param1 == null && param2 == null && param3 == null) {
@@ -208,30 +228,38 @@ public class ServletEncheresConnectees extends HttpServlet {
 			request.setAttribute("liste", listeEnchereFiltree);
 		} else {
 			listeArticleVendu = rechercheEtCategorieArticleVendu(user, article, categorie);
-			if (param4 != null && param5 != null && param5 != null) {
+			if (param4 != null && param5 != null && param6 != null) {
 				listeArticleVenduFiltree = listeArticleVendu.stream()
 						.filter(entry -> entry.getEtatVente().equals("enCours")
 								|| entry.getEtatVente().equals("nonDebutee") || entry.getEtatVente().equals("terminee"))
 						.collect(Collectors.toList());
 			}
-			if (param4 != null && param5 == null && param5 == null) {
+			if (param4 != null && param5 == null && param6 == null) {
 				listeArticleVenduFiltree = listeArticleVendu.stream()
 						.filter(entry -> entry.getEtatVente().equals("enCours")).collect(Collectors.toList());
 			}
-			if (param4 != null && param5 != null && param5 == null) {
+			if (param4 != null && param5 != null && param6 == null) {
 				listeArticleVenduFiltree = listeArticleVendu.stream().filter(
 						entry -> entry.getEtatVente().equals("enCours") || entry.getEtatVente().equals("nonDebutee"))
 						.collect(Collectors.toList());
 			}
-			if (param4 == null && param5 != null && param5 != null) {
+			if (param4 == null && param5 != null && param6 != null) {
 				listeArticleVenduFiltree = listeArticleVendu.stream().filter(
 						entry -> entry.getEtatVente().equals("nonDebutee") || entry.getEtatVente().equals("terminee"))
 						.collect(Collectors.toList());
 			}
-			if (param4 != null && param5 == null && param5 != null) {
+			if (param4 != null && param5 == null && param6 != null) {
 				listeArticleVenduFiltree = listeArticleVendu.stream().filter(
 						entry -> entry.getEtatVente().equals("enCours") || entry.getEtatVente().equals("terminee"))
 						.collect(Collectors.toList());
+			}
+			if (param4 == null && param5 != null && param6 == null) {
+				listeArticleVenduFiltree = listeArticleVendu.stream()
+						.filter(entry -> entry.getEtatVente().equals("nonDebutee")).collect(Collectors.toList());
+			}
+			if (param4 == null && param5 == null && param6 != null) {
+				listeArticleVenduFiltree = listeArticleVendu.stream()
+						.filter(entry -> entry.getEtatVente().equals("terminee")).collect(Collectors.toList());
 			}
 			if (param4 == null && param5 == null && param6 == null) {
 				listeArticleVenduFiltree = new ArrayList<>();

@@ -79,6 +79,15 @@ public class UtilisateurManager {
 			be.ajouterErreur(CodesErreurBLL.CHAMPS_MOTDEPASSE_NON_SAISI_OU_TROP_LONG_ERREUR);
 		}
 		}
+	
+	public Utilisateur selectByUserId (int id) { 		
+		Utilisateur utilisateur = new Utilisateur();
+		utilisateur = DAOFactory.getUtilisateurDao().selectUserById(id);		
+		return utilisateur;
+	}
+	
+	
+	
 	}
 
 

@@ -30,49 +30,49 @@ public class ArticleVenduManager {
 	//select tous les articles vendus dont l'enchères n'est pas terminées
 	public List<ArticleVendu> selectAllArticleVendu (){
 		articlesVendu = daoArticleVendu.selectAll();
-		setEtatVente(articlesVendu);
+		articlesVendu = setEtatVente(articlesVendu);
 		return articlesVendu;		
 	}
 	//select tous les articles vendus par nom d'article (pas de restriction sur l'état de la vente) (like)
 	public List<ArticleVendu> selectByNameArticleEncheres (ArticleVendu articleVendu){
 		articlesVendu = daoArticleVendu.selectByNameArticle(articleVendu);
-		setEtatVente(articlesVendu);
+		articlesVendu = setEtatVente(articlesVendu);
 		return articlesVendu;		
 	}
 	//select tous les articles vendus pour une catégorie
 	public List<ArticleVendu> selectByCategorieEncheres (Categorie categorie){
 		articlesVendu = daoArticleVendu.selectByCategorie(categorie);
-		setEtatVente(articlesVendu);
+		articlesVendu = setEtatVente(articlesVendu);
 		return articlesVendu;		
 	}
 	//select tous les articles vendus pour une catégorie et un nom d'article
 	public List<ArticleVendu> selectByCategorieByArticle (Categorie categorie, ArticleVendu articleVendu){
 		articlesVendu = daoArticleVendu.selectByCategorieByArticle(categorie, articleVendu);
-		setEtatVente(articlesVendu);
+		articlesVendu = setEtatVente(articlesVendu);
 		return articlesVendu;		
 	}
 	//select tous les articles vendus pour un utilisateur pour un nom d'article
 	public List<ArticleVendu> selectByUserByArticle (Utilisateur user, ArticleVendu articleVendu){
 		articlesVendu = daoArticleVendu.selectByUserByNameArticle(user, articleVendu);
-		setEtatVente(articlesVendu);
+		articlesVendu = setEtatVente(articlesVendu);
 		return articlesVendu;		
 	}
 	//select tous les articles vendus pour un utilisateur pour une catégorie
 	public List<ArticleVendu> selectByUserByCategorie (Utilisateur user, Categorie categorie){
 		articlesVendu = daoArticleVendu.selectByUserByCategorie(user, categorie);
-		setEtatVente(articlesVendu);
+		articlesVendu = setEtatVente(articlesVendu);
 		return articlesVendu;		
 	}
 	//select tous les articles vendus pour un utilisateur pour une catégorie pour un article name
 	public List<ArticleVendu> selectByUserByCategorieByArticleName (Utilisateur user, Categorie categorie, ArticleVendu article){
 		articlesVendu = daoArticleVendu.selectByUserByCategorieByArticleName(user, categorie, article);
-		setEtatVente(articlesVendu);
+		articlesVendu = setEtatVente(articlesVendu);
 		return articlesVendu;		
 	}
 	//select tous les articles vendus pour un utilisateur
 		public List<ArticleVendu> selectByUser (Utilisateur user){
 			articlesVendu = daoArticleVendu.selectByUser(user);
-			setEtatVente(articlesVendu);
+			articlesVendu = setEtatVente(articlesVendu);
 			return articlesVendu;		
 		}
 	
@@ -81,16 +81,19 @@ public class ArticleVenduManager {
 	//Méthode qui définit l'état d'une vente
 	public List<ArticleVendu> setEtatVente (List<ArticleVendu> articles){
 		for(ArticleVendu article : articlesVendu) {
-			if(article.getDateDebutEncheres().isAfter(LocalDate.now())) {
+			LocalDate dateDebutEnchere = article.getDateDebutEncheres();
+			LocalDate dateFinEnchere = article.getDateFinEncheres();
+			
+			if(dateDebutEnchere.isAfter(LocalDate.now())) {
 				article.setEtatVente("nonDebutee");
 			};
-			if(article.getDateDebutEncheres().isBefore(LocalDate.now())&& article.getDateFinEncheres().isAfter(LocalDate.now()) ) {
+			if((dateDebutEnchere.isBefore(LocalDate.now()) || dateDebutEnchere.equals(LocalDate.now()))&& (dateFinEnchere.isAfter(LocalDate.now()) || dateFinEnchere.equals(LocalDate.now()) )) {
 				article.setEtatVente("enCours");
 			};
-			if(article.getDateFinEncheres().isBefore(LocalDate.now()) ) {
+			if(dateFinEnchere.isBefore(LocalDate.now()) ) {
 				article.setEtatVente("terminee");
 			};						
-		}		
+		}
 		return articlesVendu;	
 	}
 	

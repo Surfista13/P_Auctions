@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.tomcat.jni.Local;
+
 import fr.eni.javaee.auctions.bo.ArticleVendu;
 import fr.eni.javaee.auctions.bo.Categorie;
 import fr.eni.javaee.auctions.bo.Enchere;
@@ -29,25 +31,25 @@ public class EncheresManager {
 	
 	public List<Enchere> selectAllEnchereByUser (Utilisateur user){
 		encheres = daoEncheres.selectAllEnchereByUser(user);
-		setEtatEnchere(encheres);
+		encheres = setEtatEnchere(encheres);
 		return encheres;		
 	}
 	
 	public List<Enchere> selectAllEnchereByUserByArticleName (Utilisateur user, ArticleVendu article){
 		encheres = daoEncheres.selectAllEnchereByUserByArticleName(user, article);
-		setEtatEnchere(encheres);
+		encheres = setEtatEnchere(encheres);
 		return encheres;		
 	}
 	
 	public List<Enchere> selectAllEnchereByUserByCategorie (Utilisateur user, Categorie categorie){
 		encheres = daoEncheres.selectAllEnchereByUserByCategorie(user, categorie);
-		setEtatEnchere(encheres);
+		encheres = setEtatEnchere(encheres);
 		return encheres;		
 	}
 	
 	public List<Enchere> selectAllEnchereByUserByCategorieByArticleName (Utilisateur user, Categorie categorie,ArticleVendu article){
 		encheres = daoEncheres.selectAllEnchereByUserByCategorieByArticleName(user, categorie, article);
-		setEtatEnchere(encheres);
+		encheres = setEtatEnchere(encheres);
 		return encheres;		
 	}
 	
@@ -55,16 +57,19 @@ public class EncheresManager {
 	//Méthode qui définit l'état d'une enchère
 	public List<Enchere> setEtatEnchere (List<Enchere> encheres){
 		for(Enchere enchere : encheres) {
-			if(enchere.getArticleVendus().getDateDebutEncheres().isAfter(LocalDate.now())) {
+			LocalDate dateDebutEnchere = enchere.getArticleVendus().getDateDebutEncheres();
+			LocalDate dateFinEnchere = enchere.getArticleVendus().getDateFinEncheres();
+			
+			if(dateDebutEnchere.isAfter(LocalDate.now())) {
 				enchere.getArticleVendus().setEtatVente("nonDebutee");
 			};
-			if(enchere.getArticleVendus().getDateDebutEncheres().isBefore(LocalDate.now())&& enchere.getArticleVendus().getDateFinEncheres().isAfter(LocalDate.now()) ) {
+			if((dateDebutEnchere.isBefore(LocalDate.now()) || dateDebutEnchere.equals(LocalDate.now()))&& (dateFinEnchere.isAfter(LocalDate.now()) || dateDebutEnchere.equals(LocalDate.now()) )) {
 				enchere.getArticleVendus().setEtatVente("enCours");
 			};
-			if(enchere.getArticleVendus().getDateFinEncheres().isBefore(LocalDate.now()) ) {
+			if(dateFinEnchere.isBefore(LocalDate.now()) ) {
 				enchere.getArticleVendus().setEtatVente("terminee");
 			};						
-		}		
+		}
 		return encheres;
 	}	
 }

@@ -17,6 +17,9 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 
 	private final static String INSERT = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur)VALUES(?,?,?,?,?,?,?,?,?,?,?);";
 
+	private final static String SELECT_USER_BY_ID = "SELECT * FROM UTILISATEURS WHERE no_utilisateur = ?;";
+	
+	
 	@Override
 	public void insert(Utilisateur utilisateur) throws BusinessException {
 
@@ -88,5 +91,36 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 		return unUtilisateur;
 
 	}
+	
+	@Override
+	public Utilisateur selectUserById (int idUser)  {
+		Utilisateur unUtilisateur = null;
 
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_USER_BY_ID);
+			pStmt.setInt(1, idUser);
+			ResultSet rs = pStmt.executeQuery();
+			if (rs.next()) {
+				unUtilisateur = new Utilisateur();
+				unUtilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
+				unUtilisateur.setPseudo(rs.getString("pseudo"));
+				unUtilisateur.setNom(rs.getString("nom"));
+				unUtilisateur.setPrenom(rs.getString("prenom"));
+				unUtilisateur.setEmail(rs.getString("email"));
+				unUtilisateur.setTelephone(rs.getString("telephone"));
+				unUtilisateur.setRue(rs.getString("rue"));
+				unUtilisateur.setCodePostal(rs.getString("code_postal"));
+				unUtilisateur.setVille(rs.getString("ville"));
+				unUtilisateur.setMotDePasse(rs.getString("mot_de_passe"));
+				unUtilisateur.setCredit(rs.getInt("credit"));
+				unUtilisateur.setAdministrateur(rs.getByte("administrateur"));
+				
+			}	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();	
+		}
+		return unUtilisateur;
+	}
+	
 }
