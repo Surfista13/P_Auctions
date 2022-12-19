@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import fr.eni.javaee.auctions.bll.BusinessException;
 import fr.eni.javaee.auctions.bll.UtilisateurManager;
 import fr.eni.javaee.auctions.bo.Utilisateur;
 
@@ -46,20 +47,17 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 		
 		
 		Utilisateur utilisateurExistant = UtilisateurManager.getInstance().validerConnexion(pseudo, pseudo, motDePasse);
-		
 		if(utilisateurExistant != null) {
-			HttpSession session =request.getSession();	
-			session.setAttribute("utilisateurConnecte", utilisateurExistant);
-			
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/PageUtilisateurConnecte.jsp");
-			rd.forward(request, response);
+		HttpSession session =request.getSession();	
+		session.setAttribute("utilisateurConnecte", utilisateurExistant);
 		}else {
-			
-			String erreur = "Utilisateur inconnu";
-			request.setAttribute("err", erreur);	
-			doGet(request, response);
-			
+		
+		String erreur = "Utilisateur inconnu";
+		request.setAttribute("err", erreur);	
+		doGet(request, response);
 		}
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArticlesVendusEncheresConnectée.jsp");
+		rd.forward(request, response);
 		
 		
 	

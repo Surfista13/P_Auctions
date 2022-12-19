@@ -12,12 +12,12 @@
 	<form action="<%=request.getContextPath()%>/ServletConnexionUtilisateur" method="post">
 
 		<label for="idIdentifiant">Identifiant :</label>
-		<input type="name" id="idIdentifiant" name="identifiant">
+		<input type="name" id="idIdentifiant" name="identifiant" placeholder="pseudo ou email" required>
 
 			<br><br>
 
 		<label for="IdMotDePasse">Mot de passe:</label>
-		<input type="password" id="idMotDePasse" name="motDePasse">
+		<input type="password" id="idMotDePasse" name="motDePasse" required>
 
 			<br><br>
 	
@@ -36,7 +36,7 @@
 
 		<br>
 
-	<a href="">Créer un compte</a>
+	<a href="<%=request.getContextPath()%>/ServletInscription">Créer un compte</a>
 
 </body>
 </html>

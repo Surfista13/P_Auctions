@@ -54,8 +54,13 @@ public class ServletInscription extends HttpServlet {
 		} catch (BusinessException e) {
 
 			e.printStackTrace();
+			
+			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Inscription.jsp");
+            rd.forward(request, response);
+			
 		}
-		// créer message d'erreur
+		
 
 	}
 

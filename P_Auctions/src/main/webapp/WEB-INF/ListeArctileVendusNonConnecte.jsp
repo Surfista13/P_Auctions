@@ -14,8 +14,8 @@
 <header>
 	<h1>ENI_Encheres</h1>
 	<ul>
-		<li><a href="#">S'inscrire</a></li>
-		<li><a href="#">Se connecter</a></li>
+		<li><a href="<%=request.getContextPath()%>/ServletInscription">S'inscrire</a></li>
+		<li><a href="<%=request.getContextPath()%>/ServletConnexionUtilisateur">Se connecter</a></li>
 	</ul>
 </header>
 <main>

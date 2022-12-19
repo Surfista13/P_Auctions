@@ -56,9 +56,9 @@
 		
 		 <input type="submit" value="Créer"> <br>
 		 
-		<input type="submit" value="Annuler">
-
 	</form>
-
+	
+	
+	<a href="<%=request.getContextPath()%>/ServletListeEncheresNonConnecte">Annulez</a>
 </body>
 </html>

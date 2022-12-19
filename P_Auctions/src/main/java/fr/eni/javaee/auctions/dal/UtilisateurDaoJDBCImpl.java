@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.eni.javaee.auctions.bll.BusinessException;
 import fr.eni.javaee.auctions.bo.Utilisateur;
 
 public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
@@ -17,7 +18,7 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 	private final static String INSERT = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur)VALUES(?,?,?,?,?,?,?,?,?,?,?);";
 
 	@Override
-	public void insert(Utilisateur utilisateur) {
+	public void insert(Utilisateur utilisateur) throws BusinessException {
 
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
@@ -38,6 +39,12 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(20000);
+			throw be;
+
+
 
 		}
 	}

@@ -328,7 +328,7 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 	
 	//Ajout Nicolas 15 decembre
 		@Override
-		public void insertNewArticle(ArticleVendu newArticle, Retrait retrait) {
+		public ArticleVendu insertNewArticle(ArticleVendu newArticle, Retrait retrait) {
 			
 			try(Connection cnx = ConnectionProvider.getConnection()){
 				
@@ -341,14 +341,17 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 			pStmt.setString(2, newArticle.getDescription());
 			pStmt.setDate(3,Date.valueOf(newArticle.getDateDebutEncheres()));
 			pStmt.setDate(4, Date.valueOf(newArticle.getDateFinEncheres()));
-			pStmt.setInt(5,newArticle.getUtilisateur().getNoUtilisateur() );//bll creation utilateur
-			pStmt.setInt(6,newArticle.getCategorie().getNoCategorie());
+			pStmt.setInt(5,newArticle.getMiseAPrix());
+			pStmt.setInt(6,newArticle.getUtilisateur().getNoUtilisateur() );//bll creation utilateur
+			pStmt.setInt(7,newArticle.getCategorie().getNoCategorie());
 			pStmt.executeUpdate();
 			
 			//insertion dans la table retrait
 			
 			ResultSet clesPrimairesGenerees = pStmt.getGeneratedKeys();
+			if(clesPrimairesGenerees.next()) {
 			int noArticle = clesPrimairesGenerees.getInt(1);
+			newArticle.setNoArticle(noArticle);
 			pStmt= cnx.prepareStatement(INSERT_NEW_RETRAIT);
 			
 			pStmt.setInt(1,noArticle);
@@ -357,16 +360,18 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 			pStmt.setString(4, retrait.getVille());
 			pStmt.executeUpdate();		
 			cnx.commit();
+			}
 				
 				}catch (SQLException e) {
 				e.printStackTrace();
 				cnx.rollback();
-				cnx.setAutoCommit(true);
+				
 			}
 				
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+			return newArticle;
 	}
 }

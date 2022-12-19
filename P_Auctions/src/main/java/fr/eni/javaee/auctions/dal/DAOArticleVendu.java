@@ -17,5 +17,5 @@ public interface DAOArticleVendu{
 	public List<ArticleVendu> selectByUserByCategorie(Utilisateur user, Categorie categorie);
 	public List<ArticleVendu> selectByUserByCategorieByArticleName(Utilisateur user, Categorie categorieRecherchee,ArticleVendu articleVendu);
 	//Ajout Nicolas 15 decembre
-	public void  insertNewArticle(ArticleVendu newArticle, Retrait retrait);
+	public ArticleVendu insertNewArticle(ArticleVendu newArticle, Retrait retrait);
 }

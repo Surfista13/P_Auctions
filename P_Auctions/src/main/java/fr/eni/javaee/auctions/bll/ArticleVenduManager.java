@@ -97,7 +97,10 @@ public class ArticleVenduManager {
 	
 	//Ajout Nicolas 15 decembre
 	
-	public void insertNewArticle(ArticleVendu newArticle,Retrait retrait) {
+	public ArticleVendu insertNewArticle(ArticleVendu newArticle,Retrait retrait) {
+		
+		
+		return DAOFactory.getDAOArticleVendu().insertNewArticle(newArticle, retrait);
 			
 	}
 	

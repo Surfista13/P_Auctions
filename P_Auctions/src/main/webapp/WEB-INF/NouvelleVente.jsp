@@ -39,10 +39,10 @@
 			<c:forEach items="${listeCategories}" var="listeCate">
 				<c:choose>
 					<c:when test="${selected == listeCate.getLibelle()}">
-						<option value="${listeCate.getLibelle() }" selected>${listeCate.getLibelle()}</option>
+						<option value="${listeCate.getNoCategorie() }" selected>${listeCate.getLibelle()}</option>
 					</c:when>
 					<c:otherwise>
-						<option value="${listeCate.getLibelle() }">${listeCate.getLibelle()}</option>
+						<option value="${listeCate.getNoCategorie() }">${listeCate.getLibelle()}</option>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
