@@ -15,6 +15,7 @@ public class ArticleVenduManager {
 	
 	private static ArticleVenduManager articleManager;	
 	private List<ArticleVendu> articlesVendu = new ArrayList<>();
+	private ArticleVendu article =  new ArticleVendu();
 	private DAOArticleVendu daoArticleVendu = DAOFactory.getArticleVenduDAOImplSQLServer();
 	
 	private ArticleVenduManager() {
@@ -75,6 +76,11 @@ public class ArticleVenduManager {
 			articlesVendu = setEtatVente(articlesVendu);
 			return articlesVendu;		
 		}
+	//select un article par son id
+		public ArticleVendu selectByIDArticle (ArticleVendu articleVendu) {
+			article = daoArticleVendu.selectByIDArticle(articleVendu);
+			return article;		
+		}
 	
 
 	
@@ -96,15 +102,10 @@ public class ArticleVenduManager {
 		}
 		return articlesVendu;	
 	}
-	
-	
-	//Ajout Nicolas 15 decembre
+
 	
 	public ArticleVendu insertNewArticle(ArticleVendu newArticle,Retrait retrait) {
-		
-		
-		return DAOFactory.getDAOArticleVendu().insertNewArticle(newArticle, retrait);
-			
+		return DAOFactory.getDAOArticleVendu().insertNewArticle(newArticle, retrait);			
 	}
 	
 	

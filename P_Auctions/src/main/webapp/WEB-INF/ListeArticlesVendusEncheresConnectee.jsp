@@ -278,7 +278,7 @@
            						 <div class="card-body d-flex flex-column align-items-start">
               							<strong class="d-inline-block mb-2 text-success">${listeResult.getArticleVendus().getCategorie().getLibelle()}</strong>
               							<h3 class="mb-0">
-                						<a class="text-dark" href="#">${listeResult.getArticleVendus().getNomArticle()}</a>
+                						<a class="text-dark" href="/P_Auctions/ServletDetailsArticle?idArticle=${listeResult.getArticleVendus().getNoArticle()}">${listeResult.getArticleVendus().getNomArticle()}</a>
               							</h3>
               							<div class="mb-1 text-muted">Fin enchère: ${listeResult.getArticleVendus().getDateFinEncheres() }</div>
               							<p class="card-text mb-auto">Prix: ${listeResult.getArticleVendus().getMiseAPrix() }</p>
@@ -302,7 +302,7 @@
            						 <div class="card-body d-flex flex-column align-items-start">
               							<strong class="d-inline-block mb-2 text-success">${listeResult.getCategorie().getLibelle()}</strong>
               							<h3 class="mb-0">
-                						<a class="text-dark" href="#">${listeResult.getNomArticle()}</a>
+                						<a class="text-dark" href="/P_Auctions/ServletDetailsArticle?idArticle=${listeResult.getNoArticle()}">${listeResult.getNomArticle()}</a>
               							</h3>
               							<div class="mb-1 text-muted">Fin enchère: ${listeResult.getDateFinEncheres() }</div>
               							<p class="card-text mb-auto">Prix: ${listeResult.getMiseAPrix() }</p>

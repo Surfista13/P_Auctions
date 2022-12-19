@@ -19,6 +19,8 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 	private static final String SELECT_ALL_ENCHERES_USER_BY_CATEGORIE_NAME = "SELECT no_enchere, ENCHERES.no_utilisateur AS no_user_enchere, UTILISATEURS.pseudo AS user_enchere_pseudo, ENCHERES.no_article,date_enchere,montant_enchere,ARTICLES_VENDUS.no_categorie,CATEGORIES.libelle,ARTICLES_VENDUS.date_debut_encheres,ARTICLES_VENDUS.date_fin_encheres,ARTICLES_VENDUS.description,ARTICLES_VENDUS.nom_article,ARTICLES_VENDUS.no_utilisateur AS no_user_vente,ARTICLES_VENDUS.prix_initial,ARTICLES_VENDUS.prix_vente,userVente.pseudo AS user_vente_pseudo FROM ENCHERES INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN (ARTICLES_VENDUS INNER JOIN UTILISATEURS AS userVente ON ARTICLES_VENDUS.no_utilisateur = userVente.no_utilisateur) ON ARTICLES_VENDUS.no_article = ENCHERES.no_article INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie WHERE ENCHERES.no_utilisateur = ? AND CATEGORIES.libelle = ?;";
 	private static final String SELECT_ALL_ENCHERES_USER_BY_CATEGORIE_NAME_BY_ARTICLE_NAME = "SELECT no_enchere, ENCHERES.no_utilisateur AS no_user_enchere, UTILISATEURS.pseudo AS user_enchere_pseudo, ENCHERES.no_article,date_enchere,montant_enchere,ARTICLES_VENDUS.no_categorie,CATEGORIES.libelle,ARTICLES_VENDUS.date_debut_encheres,ARTICLES_VENDUS.date_fin_encheres,ARTICLES_VENDUS.description,ARTICLES_VENDUS.nom_article,ARTICLES_VENDUS.no_utilisateur AS no_user_vente,ARTICLES_VENDUS.prix_initial,ARTICLES_VENDUS.prix_vente,userVente.pseudo AS user_vente_pseudo FROM ENCHERES INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN (ARTICLES_VENDUS INNER JOIN UTILISATEURS AS userVente ON ARTICLES_VENDUS.no_utilisateur = userVente.no_utilisateur) ON ARTICLES_VENDUS.no_article = ENCHERES.no_article INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie WHERE ENCHERES.no_utilisateur = ? AND ARTICLES_VENDUS.nom_article LIKE ? AND CATEGORIES.libelle = ?;";
 	
+	private static final String SELECT_ENCHERES_BY_ID_ARTICLE = "SELECT * FROM ENCHERES INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN ARTICLES_VENDUS ON ENCHERES.no_article = ARTICLES_VENDUS.no_article WHERE ENCHERES.no_article = ?;";
+	
 	List<Enchere> encheres;
 	
 	@Override
@@ -217,5 +219,43 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 		return encheres;
 	}
 	
+	@Override
+	public List<Enchere> selectEnchereByByArticleID(ArticleVendu articleVendu) {		
+		PreparedStatement pstmt;
+		ResultSet rs;
+		try(Connection cnx = ConnectionProvider.getConnection()){
+			encheres = new ArrayList<>();
+			pstmt = cnx.prepareStatement(SELECT_ENCHERES_BY_ID_ARTICLE);
+			pstmt.setInt(1,articleVendu.getNoArticle());
+			rs = pstmt.executeQuery();
+			while(rs.next()) {				
+				//Création utilisateur de l'enchère
+				Utilisateur utilisateur = new Utilisateur();
+				utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
+				utilisateur.setPseudo(rs.getString("pseudo"));
+				//Création de l'article associée à l'enchère
+				ArticleVendu article = new ArticleVendu();
+				article.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());
+				article.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
+				article.setDescription(rs.getString("description"));
+				article.setMiseAPrix(rs.getInt("prix_initial"));
+				article.setNoArticle(rs.getInt("no_article"));
+				article.setNomArticle(rs.getString("nom_article"));
+				article.setPrixVente(rs.getInt("prix_vente"));
+				//Création de l'enchère
+				Enchere enchere = new Enchere();
+				enchere.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
+				enchere.setMontant_enchere(rs.getInt("montant_enchere"));
+				enchere.setUtilisateur(utilisateur);
+				enchere.setArticleVendus(article);;
+				//Ajout de l'enchère à la liste
+				encheres.add(enchere);
+			}			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return encheres;
+	}
 	
 }
