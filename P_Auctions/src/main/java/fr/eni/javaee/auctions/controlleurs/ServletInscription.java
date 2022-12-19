@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.javaee.auctions.bll.BusinessException;
 import fr.eni.javaee.auctions.bll.UtilisateurManager;
@@ -51,6 +52,10 @@ public class ServletInscription extends HttpServlet {
 
 		try {
 			nouvelUtilisateur = UtilisateurManager.getInstance().insert(nouvelUtilisateur, confirmation);// Data Transfer Object
+			HttpSession session = request.getSession();
+			session.setAttribute("utilisateurConnecte", nouvelUtilisateur);
+			 RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
+	         rd.forward(request, response);
 		} catch (BusinessException e) {
 
 			e.printStackTrace();

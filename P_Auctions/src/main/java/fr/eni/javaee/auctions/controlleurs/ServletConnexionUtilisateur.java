@@ -51,14 +51,16 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 		if (utilisateurExistant != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("utilisateurConnecte", utilisateurExistant);
-			System.out.println("Test utilisateur" + utilisateurExistant);
+			RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
+		rd.forward(request, response);
+			
 		} else {
 			String erreur = "Utilisateur inconnu";
 			request.setAttribute("err", erreur);
+			doGet(request, response);
 			
 		}
-		RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
-		rd.forward(request, response);
+		
 	}
 
 }

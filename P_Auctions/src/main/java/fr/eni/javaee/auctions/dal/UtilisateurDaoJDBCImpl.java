@@ -26,7 +26,7 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
 			// Insertion du contact
-			PreparedStatement pSmt = cnx.prepareStatement(INSERT);
+			PreparedStatement pSmt = cnx.prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS);
 			pSmt.setString(1, utilisateur.getPseudo());
 			pSmt.setString(2, utilisateur.getNom());
 			pSmt.setString(3, utilisateur.getPrenom());
@@ -39,6 +39,12 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 			pSmt.setInt(10, utilisateur.getCredit());
 			pSmt.setByte(11, utilisateur.getAdministrateur());
 			pSmt.executeUpdate();
+			
+			ResultSet clePrimairesGenerees = pSmt.getGeneratedKeys();
+			if(clePrimairesGenerees.next()) {
+				int idUtilisateur = clePrimairesGenerees.getInt(1);
+				utilisateur.setNoUtilisateur(idUtilisateur);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

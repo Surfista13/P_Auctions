@@ -1,27 +1,17 @@
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page import="fr.eni.javaee.auctions.bo.Categorie"%>
-<%@page import="java.util.List"%>
-<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	
-
-
-
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Nouvelle vente</title>
+<title>Modification d'une vente</title>
 </head>
 <body>
 
+	<h1>Modification de votre vente</h1>
 
 
-	<h1>Nouvelle vente</h1>
-
-
-	<form action="/P_Auctions/ServletNouvelleVente" method="post">
+	<form action="" method="post">
 
 		<label for="idArticle">Article :</label> <input type="text"
 			id="idArticle" name="article"> <br>
@@ -76,8 +66,9 @@
 
 		</fieldset>
 		<br>
-		<br> <input type="submit" value="Enregistrer">
-		
+		<br> <input type="submit" value="Enregistrer" name="Update">
+		<br>
+			<input type ="submit" value="Annuler la vente" name="Delete">
 
 	</form>
 

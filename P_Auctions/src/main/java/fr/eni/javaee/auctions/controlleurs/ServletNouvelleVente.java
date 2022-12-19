@@ -56,17 +56,11 @@ public class ServletNouvelleVente extends HttpServlet {
 		
 		//1.Données arrivant de la requête
 		
-		/*HttpSession session =request.getSession();	
-		session.setAttribute("utilisateur", utilisateur);*/
-		
-		
 		Categorie categorie = new Categorie();
 		HttpSession session = request.getSession();
-		Utilisateur utilisateurConnecte = (Utilisateur)session.getAttribute("utilisateurConnecte");
-		 
-		
-		
+		Utilisateur utilisateurConnecte = (Utilisateur)session.getAttribute("utilisateurConnecte"); 
 		ArticleVendu newArticle = new ArticleVendu();
+		
 		newArticle.setNomArticle(request.getParameter("article"));
 		newArticle.setDescription(request.getParameter("description"));
 		newArticle.setDateDebutEncheres(LocalDate.parse (request.getParameter("dateDebut")));
@@ -80,49 +74,10 @@ public class ServletNouvelleVente extends HttpServlet {
 		retrait.setCodePostal(request.getParameter("codePostal"));
 		retrait.setVille(request.getParameter("ville"));
 		
+		ArticleVendu newVente = ArticleVenduManager.getArticleVenduManager().insertNewArticle(newArticle, retrait);
 		
-		   ArticleVendu newVente = ArticleVenduManager.getArticleVenduManager().insertNewArticle(newArticle, retrait);
-		
-		
-		
-	/*	String article = request.getParameter("article");
-		String description = request.getParameter("description");
-		String categorie = request.getParameter("categories");
-		String photo = request.getParameter("photo");
-		String prixVente = request.getParameter("prix");
-		String dateDebutEnchere = request.getParameter("deteDebut");
-		String dateFinEnchere = request.getParameter("dateFin");
-		String rue = request.getParameter("rue");
-		String codePostal = request.getParameter("codePostal");
-		String ville = request.getParameter("ville");
-		
-		
-		//2.Conversion des données de la requête vers le bon type
-		
-		LocalDate dateDebut = null;
-		
-		dateDebut = LocalDate.parse(dateDebutEnchere);
-		
-		LocalDate dateFin = null;
-		
-		dateFin = LocalDate.parse(dateFinEnchere);
-		
-		int miseAPrix;
-		
-		miseAPrix = Integer.parseInt(prixVente);
-		
-		System.out.println("dateDebut" + dateDebut);
-		System.out.println("dateFin" + dateFin);
-		System.out.println("miseAPRIX"+ miseAPrix);
-		
-		//3.Transmission vers la BLL
-		
-		ArticleVendu newArticle = new ArticleVendu(article,description,dateDebut,dateFin,miseAPrix);
-		Retrait retrait = new Retrait(rue,codePostal,ville);
-		*/
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArticlesVendusEncheresConnectée.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArticlesVendusEncheresConnectee.jsp");
 		rd.forward(request, response);
-		
 	}
 
 }
