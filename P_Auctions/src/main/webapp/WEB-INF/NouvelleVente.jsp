@@ -64,9 +64,13 @@
 
 			<label for="idRue">Rue :</label> <input type="text" id="idRue"
 				name="rue"> <br>
-			<br> <label for="idCodePostal">Code postal :</label> <input
-				type="text" id="idCodePostal" name="codePostal"> <br>
-			<br> <label for="idVille">Ville:</label> <input type="text"
+			<br> 
+			
+			<label for="idCodePostal">Code postal :</label> <input
+				type="text" id="idCodePostal" name="codePostal" value="${sessionScope.utilisateurConnecte.codePostal }"> <br>
+			<br> 
+			
+			<label for="idVille">Ville:</label> <input type="text"
 				id="idVille" name="ville">
 
 		</fieldset>
