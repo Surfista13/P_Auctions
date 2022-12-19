@@ -70,7 +70,7 @@ public class ServletEncheresConnectees extends HttpServlet {
 		request.setAttribute("listeCategories", categories);
 
 		// Dispatch vers jsp
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArticlesVendusEncheresConnectée.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArticlesVendusEncheresConnectee.jsp");
 		rd.forward(request, response);
 	}
 
