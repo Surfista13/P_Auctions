@@ -31,13 +31,14 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 	private static final String SELECT_BY_ARTICLE_NAME = "SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie WHERE ARTICLES_VENDUS.nom_article LIKE ?;";
 	private static final String SELECT_BY_CATEGORIE = "SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie WHERE CATEGORIES.libelle = ?;";
 	
+	private static final String SELECT_BY_ID_ARTICLE ="SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article WHERE ARTICLES_VENDUS.no_article = ?;";
 	
-	//Ajout Nicolas 15 d�cembre
 	
 	private static final String INSERT_NEW_VENTE ="INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie) VALUES(?,?,?,?,?,?,?);";
 	private static final String INSERT_NEW_RETRAIT="INSERT INTO RETRAITS (no_article,rue,code_postal,ville) VALUES(?,?,?,?);";
 	
 	List<ArticleVendu> articles;
+	ArticleVendu article = new ArticleVendu();
 	
 	@Override
 	public List<ArticleVendu> selectAll() {
@@ -374,4 +375,51 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 		}
 			return newArticle;
 	}
+	
+		@Override
+		public ArticleVendu selectByIDArticle(ArticleVendu articleVendu) {
+			PreparedStatement pstmt;
+			ResultSet rs;
+			
+			try(Connection cnx = ConnectionProvider.getConnection()){
+				pstmt = cnx.prepareStatement(SELECT_BY_ID_ARTICLE);
+				pstmt.setInt(1, articleVendu.getNoArticle());;
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					Categorie categorie =  new Categorie();
+					Utilisateur utilisateur = new Utilisateur();
+					Retrait retrait = new Retrait();
+					article.setNoArticle(rs.getInt("no_article"));
+					article.setNomArticle(rs.getString("nom_article"));
+					article.setDescription(rs.getString("description"));
+					article.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());
+					article.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
+					article.setMiseAPrix(rs.getInt("prix_initial"));
+					article.setPrixVente(rs.getInt("prix_vente"));
+					categorie.setNoCategorie(rs.getInt("no_categorie"));
+					categorie.setLibelle(rs.getString("libelle"));
+					utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
+					utilisateur.setPseudo(rs.getString("pseudo"));
+					utilisateur.setCodePostal(rs.getString("code_postal"));
+					utilisateur.setCredit(rs.getInt("credit"));
+					utilisateur.setEmail(rs.getString("email"));
+					utilisateur.setNom(rs.getString("nom"));
+					utilisateur.setPrenom(rs.getString("prenom"));
+					utilisateur.setRue(rs.getString("rue"));
+					utilisateur.setTelephone(rs.getString("telephone"));
+					utilisateur.setVille(rs.getString("ville"));
+					retrait.setCodePostal(rs.getString("code_postal"));
+					retrait.setRue(rs.getString("rue"));
+					retrait.setVille(rs.getString("ville"));
+					article.setCategorie(categorie);
+					article.setUtilisateur(utilisateur);
+					article.setRetrait(retrait);
+				}			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(article);
+			return article;
+		}
 }

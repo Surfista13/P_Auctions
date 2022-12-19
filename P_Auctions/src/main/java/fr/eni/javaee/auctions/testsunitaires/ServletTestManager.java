@@ -63,7 +63,7 @@ public class ServletTestManager extends HttpServlet {
 		    out3.print("Article: " + b + "\n");
 		    out3.print("\n");
 		}
-		*/
+		
 	    //Test4 affichage des ventes d'un utilisateur
         PrintWriter out4 = response.getWriter();
         ArticleVenduManager cm4 = ArticleVenduManager.getArticleVenduManager();
@@ -75,19 +75,19 @@ public class ServletTestManager extends HttpServlet {
 		    out4.print("Article utilisateurs: " + b + "\n");
 		    out4.print("\n");
 		}
-/*    //Test5 affichage enchères utilisateurs
+
+		//Test5 affichage enchères utilisateurs
 		PrintWriter out6 = response.getWriter();
         EncheresManager em = EncheresManager.getEnchereManager();
         List<Enchere> encheres = new ArrayList<>();
         Utilisateur user2 =  new Utilisateur();
-        user2.setNoUtilisateur(4);
+        user2.setNoUtilisateur(2);
 		encheres = em.selectAllEnchereByUser(user2);
 		for (Enchere e : encheres){
 		    out6.print("Encheres utilisateurs: " + e + "\n");
 		    out6.print("\n");
 		}
-		*/
-/*		
+
 	    //Test6 affichage enchères utilisateurs par article name
 		PrintWriter out7 = response.getWriter();
         EncheresManager em2 = EncheresManager.getEnchereManager();
@@ -178,7 +178,7 @@ public class ServletTestManager extends HttpServlet {
 		    out3.print("Article: " + b + "\n");
 		    out3.print("\n");
 		}
-		*//*
+	
 		//Test12 selection d'un utilisateur
 		PrintWriter out3 = response.getWriter();
 		UtilisateurManager utilisateurManager = UtilisateurManager.getInstance();
@@ -186,15 +186,30 @@ public class ServletTestManager extends HttpServlet {
 		Utilisateur utilisateur = new Utilisateur();
 		utilisateur = utilisateurManager.selectByUserId(idUser);
 		out3.print(utilisateur);
-		*/
+
+		//Test13 selection d'un article par son id
+		PrintWriter out4 = response.getWriter();
+		ArticleVenduManager cm3 = ArticleVenduManager.getArticleVenduManager();
+		ArticleVendu a1 = new ArticleVendu();
+		a1.setNoArticle(7);
+		ArticleVendu result = new ArticleVendu();
+		result = cm3.selectByIDArticle(a1);
+		out4.print(result);
+*/			
+		//Test14 selection d'une enchere par l'id article
+		PrintWriter out4 = response.getWriter();
+		EncheresManager cm3 = EncheresManager.getEnchereManager();
+		ArticleVendu a1 = new ArticleVendu();
 		
+		a1.setNoArticle(4);
+		List<Enchere> en = new ArrayList<>();
+		en = cm3.selectEnchereByArticleID(a1);
+		out4.print(en);
+		
+	
 		
 		out4.close();
-		
-		
-		
-		
-		
+	
 	}
 }
 

@@ -53,12 +53,21 @@ public class EncheresManager {
 		return encheres;		
 	}
 	
+	public List<Enchere> selectEnchereByArticleID(ArticleVendu article){
+		encheres = daoEncheres.selectEnchereByByArticleID(article);
+		encheres = setEtatEnchere(encheres);
+		return encheres;		
+	}
+	
+	
 	
 	//Méthode qui définit l'état d'une enchère
 	public List<Enchere> setEtatEnchere (List<Enchere> encheres){
 		for(Enchere enchere : encheres) {
 			LocalDate dateDebutEnchere = enchere.getArticleVendus().getDateDebutEncheres();
 			LocalDate dateFinEnchere = enchere.getArticleVendus().getDateFinEncheres();
+			int prixDeVente = enchere.getArticleVendus().getPrixVente();
+			int montantEnchere = enchere.getMontant_enchere();
 			
 			if(dateDebutEnchere.isAfter(LocalDate.now())) {
 				enchere.getArticleVendus().setEtatVente("nonDebutee");
@@ -66,8 +75,11 @@ public class EncheresManager {
 			if((dateDebutEnchere.isBefore(LocalDate.now()) || dateDebutEnchere.equals(LocalDate.now()))&& (dateFinEnchere.isAfter(LocalDate.now()) || dateDebutEnchere.equals(LocalDate.now()) )) {
 				enchere.getArticleVendus().setEtatVente("enCours");
 			};
-			if(dateFinEnchere.isBefore(LocalDate.now()) ) {
+			if(dateFinEnchere.isBefore(LocalDate.now())) {
 				enchere.getArticleVendus().setEtatVente("terminee");
+			};
+			if(dateFinEnchere.isBefore(LocalDate.now()) && montantEnchere >= prixDeVente) {
+				enchere.getArticleVendus().setEtatVente("remportee");
 			};						
 		}
 		return encheres;
