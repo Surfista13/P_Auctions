@@ -24,44 +24,41 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ConnexionUtilisateur.jsp");
 		rd.forward(request, response);
-		
-		
-		
+
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String pseudo = request.getParameter("identifiant");
-		String motDePasse= request.getParameter("motDePasse");
-		
-		
-		
-		
-		Utilisateur utilisateurExistant = UtilisateurManager.getInstance().validerConnexion(pseudo, pseudo, motDePasse);
-		if(utilisateurExistant != null) {
-		HttpSession session =request.getSession();	
-		session.setAttribute("utilisateurConnecte", utilisateurExistant);
-		}else {
-		
-		String erreur = "Utilisateur inconnu";
-		request.setAttribute("err", erreur);	
-		doGet(request, response);
-		}
-		RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees");
-		rd.forward(request, response);
-		
-		
-	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
+		String pseudo = request.getParameter("identifiant");
+		String motDePasse = request.getParameter("motDePasse");
+
+		// initialisation de page connectée sur les achats
+
+		Utilisateur utilisateurExistant = UtilisateurManager.getInstance().validerConnexion(pseudo, pseudo, motDePasse);
+		if (utilisateurExistant != null) {
+			HttpSession session = request.getSession();
+			session.setAttribute("utilisateurConnecte", utilisateurExistant);
+			System.out.println("Test utilisateur" + utilisateurExistant);
+		} else {
+			String erreur = "Utilisateur inconnu";
+			request.setAttribute("err", erreur);
+			
+		}
+		RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
+		rd.forward(request, response);
 	}
 
 }

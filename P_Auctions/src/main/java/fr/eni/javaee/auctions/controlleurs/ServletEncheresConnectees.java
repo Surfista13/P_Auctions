@@ -65,6 +65,7 @@ public class ServletEncheresConnectees extends HttpServlet {
 		request.setAttribute("param1", "1");
 		request.setAttribute("param2", "2");
 		request.setAttribute("param3", "3");
+		
 
 		// Liste des catégories
 		request.setAttribute("listeCategories", categories);
@@ -103,6 +104,7 @@ public class ServletEncheresConnectees extends HttpServlet {
 		// Initialisation d'un article pour stocker la recherche par nom
 		ArticleVendu articleVendu = new ArticleVendu();
 		articleVendu.setNomArticle(request.getParameter("recherche"));
+		
 
 		// Récupération de l'état des checkbox		
 		String param1 = request.getParameter("encheresOuvertes");
@@ -112,8 +114,9 @@ public class ServletEncheresConnectees extends HttpServlet {
 		String param5 = request.getParameter("ventesNonDebutees");
 		String param6 = request.getParameter("ventesTerminees");
 
-		// Récupération de l'état du bouton radio
+		// Récupération de l'état du bouton radio soit via la page authentification soit par une recherche
 		String radio = request.getParameter("connect");
+		
 		
 		// Transfert de l'état des bouton radio vers la jsp
 		request.setAttribute("type", radio);
@@ -135,7 +138,7 @@ public class ServletEncheresConnectees extends HttpServlet {
 		listeFiltree(userConnecte, articleVendu, categorie, radio, param1, param2, param3, param4, param5, param6, request);
 
 		// Dispatch vers jsp
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArticlesVendusEncheresConnectée.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArticlesVendusEncheresConnectee.jsp");
 		rd.forward(request, response);
 	}
 
