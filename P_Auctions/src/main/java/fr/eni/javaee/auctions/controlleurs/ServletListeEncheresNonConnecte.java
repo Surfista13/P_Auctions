@@ -58,12 +58,12 @@ public class ServletListeEncheresNonConnecte extends HttpServlet {
 	
 		//Generer une session et envoi vers jsp
 		//TODO modifier les info en dures par lien avec page authentification
-		HttpSession session =request.getSession();	
+		/*HttpSession session =request.getSession();	
 		Utilisateur user = new Utilisateur();
 		user.setPseudo("dd");
 		user.setNoUtilisateur(1);
 		user.setCredit(40);
-		session.setAttribute("utilisateurConnecte", user);
+		session.setAttribute("utilisateurConnecte", user);*/
 		
 		//TODO gérer la déconnexion qui renvoi vers cette page en supprimant la session
 		
