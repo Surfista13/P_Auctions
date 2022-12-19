@@ -17,7 +17,7 @@
 	      <nav class="my-2 my-md-0 mr-md-3">
 	        <a class="p-2 text-dark" href="#">Enchères</a>
 	        <a class="p-2 text-dark" href="/P_Auctions/ServletNouvelleVente">Vendre un article</a>
-	        <a class="p-2 text-dark" href="/P_Auctions/ServletListeEncheresNonConnecte">Déconnexion</a>
+	        <a class="p-2 text-dark" href="/P_Auctions/ServletDeconnexionUtilisateur">Déconnexion</a>
 	        <button id="btnCredits" type="button" class="btn btn-primary position-relative">
   				Credits
   				<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
