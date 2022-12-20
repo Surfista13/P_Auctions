@@ -37,6 +37,10 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 	private static final String INSERT_NEW_VENTE ="INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie) VALUES(?,?,?,?,?,?,?);";
 	private static final String INSERT_NEW_RETRAIT="INSERT INTO RETRAITS (no_article,rue,code_postal,ville) VALUES(?,?,?,?);";
 	
+	private static final String UPDATE_VENTE ="UPDATE ARTICLES_VENDUS set nom_article=? , description=?, date_debut_encheres=?, date_fin_encheres=?, prix_initial=?,no_categorie=? where no_article=?;";
+	private static final String DELETE_VENTE = "DELETE FROM ARTICLES_VENDUS WHERE no_article=?;";
+	
+	
 	List<ArticleVendu> articles;
 	ArticleVendu article = new ArticleVendu();
 	
@@ -422,4 +426,48 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 			System.out.println(article);
 			return article;
 		}
+		
+		public ArticleVendu updateVente (ArticleVendu articleVendu) {
+			try(Connection cnx = ConnectionProvider.getConnection()){
+				
+				PreparedStatement pStmt= cnx.prepareStatement(UPDATE_VENTE);
+				pStmt.setString(1, articleVendu.getNomArticle());
+				pStmt.setString(2, articleVendu.getDescription());
+				pStmt.setDate(3, Date.valueOf(articleVendu.getDateDebutEncheres()));
+				pStmt.setDate(4, Date.valueOf (articleVendu.getDateFinEncheres()));
+				pStmt.setInt(5, articleVendu.getMiseAPrix());
+				pStmt.setInt(6, articleVendu.getCategorie().getNoCategorie());
+				pStmt.setInt(7, articleVendu.getNoArticle());
+				pStmt.executeUpdate();
+				System.out.println("execute ok");
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return articleVendu;
+		}
+		
+		@Override
+		public void deleteVente(ArticleVendu articleVendu) {
+			
+			try(Connection cnx = ConnectionProvider.getConnection()){
+				PreparedStatement pStmt = cnx.prepareStatement(DELETE_VENTE);
+				pStmt.setInt(1, articleVendu.getNoArticle());
+				pStmt.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }

@@ -18,4 +18,6 @@ public interface DAOArticleVendu{
 	public List<ArticleVendu> selectByUserByCategorieByArticleName(Utilisateur user, Categorie categorieRecherchee,ArticleVendu articleVendu);
 	public ArticleVendu insertNewArticle(ArticleVendu newArticle, Retrait retrait);
 	public ArticleVendu selectByIDArticle(ArticleVendu articleVendu);
+	public abstract ArticleVendu updateVente (ArticleVendu articleVendu);
+	public abstract void deleteVente (ArticleVendu articleVendu);
 }

@@ -108,5 +108,21 @@ public class ArticleVenduManager {
 		return DAOFactory.getDAOArticleVendu().insertNewArticle(newArticle, retrait);			
 	}
 	
+	public ArticleVendu updateVente( ArticleVendu articleVendu) {
+		return DAOFactory.getDAOArticleVendu().updateVente(articleVendu);
+		
+		
+	}
+	
+	public ArticleVendu deleteVente(ArticleVendu articleVendu) {
+		
+		DAOFactory.getDAOArticleVendu().deleteVente(articleVendu);
+		
+		return articleVendu;
+	}
+	
+	
+	
+	
 	
 }
