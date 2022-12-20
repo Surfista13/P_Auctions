@@ -5,28 +5,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.eni.javaee.auctions.bll.BusinessException;
 import fr.eni.javaee.auctions.bo.Utilisateur;
 
 public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 
-	private final static String FIND_UTILISATEUR = "SELECT * FROM UTILISATEURS WHERE (LOWER(pseudo) =? or LOWER(email)=?) and LOWER(mot_de_passe) = ? ;";
-
-	private final static String INSERT = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur)VALUES(?,?,?,?,?,?,?,?,?,?,?);";
-
+	private final static String SELECT_USER = "SELECT * FROM UTILISATEURS WHERE (LOWER(pseudo) =? or LOWER(email)=?) and LOWER(mot_de_passe) = ? ;";
+	private final static String INSERT_USER = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur)VALUES(?,?,?,?,?,?,?,?,?,?,?);";
 	private final static String SELECT_USER_BY_ID = "SELECT * FROM UTILISATEURS WHERE no_utilisateur = ?;";
-	
-	
+
+	/**
+	 * param utilisateur = utilisateur à insérer dans la base de donnée suite à la
+	 * saisie d'un formulaire
+	 */
 	@Override
 	public void insert(Utilisateur utilisateur) throws BusinessException {
-
 		try (Connection cnx = ConnectionProvider.getConnection()) {
-
-			// Insertion du contact
-			PreparedStatement pSmt = cnx.prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement pSmt = cnx.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
 			pSmt.setString(1, utilisateur.getPseudo());
 			pSmt.setString(2, utilisateur.getNom());
 			pSmt.setString(3, utilisateur.getPrenom());
@@ -39,21 +34,17 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 			pSmt.setInt(10, utilisateur.getCredit());
 			pSmt.setByte(11, utilisateur.getAdministrateur());
 			pSmt.executeUpdate();
-			
 			ResultSet clePrimairesGenerees = pSmt.getGeneratedKeys();
-			if(clePrimairesGenerees.next()) {
+			if (clePrimairesGenerees.next()) {
 				int idUtilisateur = clePrimairesGenerees.getInt(1);
 				utilisateur.setNoUtilisateur(idUtilisateur);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 			BusinessException be = new BusinessException();
 			be.ajouterErreur(20000);
 			throw be;
-
-
 
 		}
 	}
@@ -62,11 +53,11 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 	 * @return un Utilisateur s'il existe, null sinon
 	 */
 	@Override
-	public Utilisateur validerConnexion(String pseudo, String email, String motDePasse)  {
+	public Utilisateur validerConnexion(String pseudo, String email, String motDePasse) {
 		Utilisateur unUtilisateur = null;
 
 		try (Connection cnx = ConnectionProvider.getConnection()) {
-			PreparedStatement pStmt = cnx.prepareStatement(FIND_UTILISATEUR);
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_USER);
 			pStmt.setString(1, pseudo);
 			pStmt.setString(2, email);
 			pStmt.setString(3, motDePasse);
@@ -85,23 +76,17 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 				unUtilisateur.setMotDePasse(rs.getString("mot_de_passe"));
 				unUtilisateur.setCredit(rs.getInt("credit"));
 				unUtilisateur.setAdministrateur(rs.getByte("administrateur"));
-				
 			}
-
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
 		}
 		return unUtilisateur;
-
 	}
 	
 	@Override
-	public Utilisateur selectUserById (int idUser)  {
+	public Utilisateur selectUserById(int idUser) {
 		Utilisateur unUtilisateur = null;
-
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_USER_BY_ID);
 			pStmt.setInt(1, idUser);
@@ -120,13 +105,12 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 				unUtilisateur.setMotDePasse(rs.getString("mot_de_passe"));
 				unUtilisateur.setCredit(rs.getInt("credit"));
 				unUtilisateur.setAdministrateur(rs.getByte("administrateur"));
-				
-			}	
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();	
+			e.printStackTrace();
 		}
 		return unUtilisateur;
 	}
-	
+
 }
