@@ -2,8 +2,10 @@ package fr.eni.javaee.auctions.testsunitaires;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.rmi.registry.LocateRegistry;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +77,8 @@ public class ServletTestManager extends HttpServlet {
 		    out4.print("Article utilisateurs: " + b + "\n");
 		    out4.print("\n");
 		}
+
+	
 
 		//Test5 affichage enchères utilisateurs
 		PrintWriter out6 = response.getWriter();
@@ -195,7 +199,7 @@ public class ServletTestManager extends HttpServlet {
 		ArticleVendu result = new ArticleVendu();
 		result = cm3.selectByIDArticle(a1);
 		out4.print(result);
-*/			
+			
 		//Test14 selection d'une enchere par l'id article
 		PrintWriter out4 = response.getWriter();
 		EncheresManager cm3 = EncheresManager.getEnchereManager();
@@ -206,7 +210,52 @@ public class ServletTestManager extends HttpServlet {
 		en = cm3.selectEnchereByArticleID(a1);
 		out4.print(en);
 		
-	
+		//Test15 insert d'une enchere
+		PrintWriter out4 = response.getWriter();
+		EncheresManager cm3 = EncheresManager.getEnchereManager();
+		Enchere enchere = new Enchere();
+		Utilisateur utilisateur = new Utilisateur();
+		utilisateur.setNoUtilisateur(1);
+		ArticleVendu article = new ArticleVendu();
+		article.setNoArticle(7);
+		enchere.setMontant_enchere(150);
+		enchere.setDateEnchere(LocalDate.of(2022,12,12) );
+		enchere.setUtilisateur(utilisateur);
+		enchere.setArticleVendus(article);
+
+		int nbRow = cm3.insertEnchere(enchere);
+		out4.print(nbRow);
+
+		
+		//Test16 update prix de vente
+		PrintWriter out4 = response.getWriter();
+		ArticleVenduManager cm3 = ArticleVenduManager.getArticleVenduManager();
+		
+		int noArticle = 8;
+		int prixVente = 200;
+		
+		int nbRow = cm3.MiseAJourPrixDeVente(prixVente, noArticle);
+		out4.print(nbRow);
+*/			
+		//Test17 test d'encherir
+		PrintWriter out4 = response.getWriter();
+		EncheresManager cm3 = EncheresManager.getEnchereManager();
+		ArticleVendu article = new ArticleVendu();
+		article.setNoArticle(5);
+		article.setDateDebutEncheres(LocalDate.of(2022,12,12));
+		article.setDateFinEncheres(LocalDate.of(2022,12,15));
+		article.setPrixVente(100);
+		Utilisateur utilisateur = new Utilisateur();
+		utilisateur.setNoUtilisateur(1);
+		
+		Enchere enchere = new Enchere();
+		enchere.setMontant_enchere(800);
+		enchere.setDateEnchere(LocalDate.now());
+		enchere.setUtilisateur(utilisateur);
+		enchere.setArticleVendus(article);
+		
+		String x = cm3.encherir(enchere, article);
+		out4.print("test" + x);
 		
 		out4.close();
 	

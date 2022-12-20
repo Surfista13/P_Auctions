@@ -18,4 +18,6 @@ public interface DAOEnchere {
 	public List<Enchere> selectAllEnchereByUserByCategorieByArticleName(Utilisateur user, Categorie categorieRecherchee,ArticleVendu articleVendu);
 
 	public List<Enchere> selectEnchereByByArticleID(ArticleVendu articleVendu);
+
+	public int insert(Enchere enchere);
 }

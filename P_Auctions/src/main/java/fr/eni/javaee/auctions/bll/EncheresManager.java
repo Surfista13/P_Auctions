@@ -59,6 +59,32 @@ public class EncheresManager {
 		return encheres;		
 	}
 	
+	public int insertEnchere(Enchere enchere){
+		int nbRow = daoEncheres.insert(enchere);
+		return nbRow;		
+	}
+	
+	
+	//Méthode pour enchérir
+	public String encherir (Enchere enchere, ArticleVendu article) {
+		String result = "";
+		if(enchere.getMontant_enchere() > article.getPrixVente() && enchere.getMontant_enchere() > article.getMiseAPrix()) {
+			if(article.getDateDebutEncheres().isBefore(LocalDate.now()) || article.getDateFinEncheres().isAfter(LocalDate.now())) {
+			EncheresManager em = EncheresManager.getEnchereManager();
+			ArticleVenduManager av = ArticleVenduManager.getArticleVenduManager();
+			article.setPrixVente(enchere.getMontant_enchere());
+			em.insertEnchere(enchere);
+			av.MiseAJourPrixDeVente(article.getPrixVente(), article.getNoArticle());				
+			result ="Votre en chère a été prise  en compte";
+			}else {
+				result = "l'enchere n'a pas commencée ou est terminée";
+			}	
+		} else {
+			result = "Enchere trop basse";
+		}
+		return result;
+	}
+	
 	
 	
 	//Méthode qui définit l'état d'une enchère

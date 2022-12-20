@@ -38,3 +38,10 @@
 #btnModifier{
 	margin-top: 80px;
 }
+.corps{
+	display: flex;
+}
+.imgD{
+	width: 100px;
+	height: 200px;
+}

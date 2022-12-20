@@ -1,6 +1,7 @@
 package fr.eni.javaee.auctions.controlleurs;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,52 +19,65 @@ import fr.eni.javaee.auctions.bo.ArticleVendu;
 import fr.eni.javaee.auctions.bo.Enchere;
 import fr.eni.javaee.auctions.bo.Utilisateur;
 
-/**
- * Servlet implementation class ServletDetailsArticle
- */
-@WebServlet("/ServletDetailsArticle")
-public class ServletDetailsArticle extends HttpServlet {
+
+@WebServlet("/Encherir")
+public class ServletEncherir extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-   
-	ArticleVendu article = new ArticleVendu();
-	List<Enchere> encheres = new ArrayList<>();
-	Utilisateur userConnecte = new Utilisateur();
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// Création de l'utilisateur connecté
+	
+		
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("TEST");
+		//Récupération de la jsp l'id article sur lequel a encherit l'utilisateur connecté et son offre
+		int idArticleEnchere = Integer.parseInt(request.getParameter("idArticle"));
+		System.out.println(idArticleEnchere);
+		int offre = Integer.parseInt(request.getParameter("enchere"));
+		System.out.println(offre);
+		
+		//Récupération de la session
 		HttpSession session =request.getSession();
+		Utilisateur userConnecte = new Utilisateur();
 		userConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 		request.setAttribute("pseudo", userConnecte.getPseudo());
 		request.setAttribute("credit", userConnecte.getCredit());
 		request.setAttribute("idConnect", userConnecte.getNoUtilisateur());
-		session.setAttribute("utilisateurConnecte", userConnecte);
 		
-		int idArticle = Integer.parseInt(request.getParameter("idArticle"));
+		//Instancation de l'objet enchere
+		Enchere enchere = new Enchere();
+		ArticleVendu articleResult = new ArticleVendu();
 		ArticleVendu articleRecherche = new ArticleVendu();
-		articleRecherche.setNoArticle(idArticle);
-		ArticleVenduManager articleManager = ArticleVenduManager.getArticleVenduManager();
-		article = articleManager.selectByIDArticle(articleRecherche);
 		
-		EncheresManager encheresManager = EncheresManager.getEnchereManager();
-		encheres = encheresManager.selectEnchereByArticleID(articleRecherche);
+		ArticleVenduManager av = ArticleVenduManager.getArticleVenduManager();
+		articleRecherche.setNoArticle(idArticleEnchere);
+		articleResult = av.selectByIDArticle(articleRecherche);
+		System.out.println(articleResult);
 		
-		request.setAttribute("article", article);
-		request.setAttribute("listeEncheres", encheres);
+		enchere.setDateEnchere(LocalDate.now());
+		enchere.setMontant_enchere(offre);
+		enchere.setUtilisateur(userConnecte);
+		enchere.setArticleVendus(articleResult);
+		//Encherir
+		EncheresManager em = EncheresManager.getEnchereManager();
+		
+		String result = em.encherir(enchere, articleResult);
+	
+		request.setAttribute("retourEnchere", result);
+		request.setAttribute("article", articleResult);
+		
 		
 		Enchere meilleurEnchere = new Enchere();
+		List<Enchere> encheres = new ArrayList<>();
+		EncheresManager emr = EncheresManager.getEnchereManager();
+		encheres = emr.selectEnchereByArticleID(articleRecherche);
 		meilleurEnchere = calculMeilleurOffre(encheres);
 		request.setAttribute("meilleurEnchere", meilleurEnchere);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/DetailsVentesEncheres.jsp");
 		rd.forward(request, response);
-		
-	}
-
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
 	}
 	
 	public Enchere calculMeilleurOffre (List<Enchere> liste) {
