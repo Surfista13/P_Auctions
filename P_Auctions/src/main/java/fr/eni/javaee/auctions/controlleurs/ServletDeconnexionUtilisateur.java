@@ -22,9 +22,10 @@ public class ServletDeconnexionUtilisateur extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(true);
-		session.invalidate();
-		
+		HttpSession session = request.getSession(false);
+		if(session!=null) {
+		    session.invalidate();}
+		   
 		
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");

@@ -57,7 +57,7 @@
       			</form>
       			<p>${retourEnchere }</p>
       			<button type="button" class="btn btn-secondary">Retrait effectué</button>
-      			<button type="button" class="btn btn-secondary">Modifier vente</button>     			
+      			<input type="button" onclick="href=/P_Auctions/ServletModificationVente"class="btn btn-secondary">Modifier vente>     			
       		</div>
       	</div>	
   	</main> 

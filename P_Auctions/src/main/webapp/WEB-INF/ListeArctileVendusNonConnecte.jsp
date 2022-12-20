@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="fr.eni.javaee.auctions.bo.ArticleVendu"%>
 <%@ page import="java.util.List"%>
-
+<%@ page session="false" %>
 <!DOCTYPE html>
 <html>
 <head>
