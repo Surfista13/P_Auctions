@@ -20,4 +20,5 @@ public interface DAOArticleVendu{
 	public ArticleVendu selectByIDArticle(ArticleVendu articleVendu);
 	public abstract ArticleVendu updateVente (ArticleVendu articleVendu);
 	public abstract void deleteVente (ArticleVendu articleVendu);
+	public int updatePrixVente(int prixVente, int noArticle);
 }

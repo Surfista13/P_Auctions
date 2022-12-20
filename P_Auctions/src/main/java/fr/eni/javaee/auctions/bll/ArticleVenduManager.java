@@ -81,6 +81,11 @@ public class ArticleVenduManager {
 			article = daoArticleVendu.selectByIDArticle(articleVendu);
 			return article;		
 		}
+	//update prix de vente
+		public int MiseAJourPrixDeVente (int prixVente, int noArticle) {
+			int nbRow = daoArticleVendu.updatePrixVente(prixVente,noArticle);
+			return nbRow;		
+		}
 	
 
 	
