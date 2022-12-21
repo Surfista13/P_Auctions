@@ -18,10 +18,10 @@
 	<form action="/P_Auctions/ServletModificationVente" method="post">
 
 		<label for="idArticle">Article :</label> <input type="text"
-			id="idArticle" name="article"> <br>
+			id="idArticle" name="article" value=" ${article.getNomArticle()}"> <br>
 		<br> 
 		<label for="idDescription">Description :</label>
-		<textarea id="idDescription" name="description" rows="5" cols="33"></textarea>
+		<textarea id="idDescription" name="description"  rows="5" cols="33">${article.getDescription()}</textarea>
 
 		<br>
 		<br> 
@@ -47,12 +47,12 @@
 		<br> <input type="file" id="produit" name="photo"
 			accept="image/png, image/jpeg"> <br>
 		<br> <label for="idPrix">Mise à prix : </label> <input
-			type="number" id="idPrix" name="prix" placeholder="100" step="5"
+			type="number" id="idPrix" name="prix" value="${article.getMiseAPrix() }" placeholder="100" step="5"
 			min="5"> <br>
 		<br> <label for="idDebutEnchere">Début de l'enchère</label> <input
-			type="date" id="idDebutEnchere" name="dateDebut"> <br>
+			type="date" id="idDebutEnchere" name="dateDebut" value="${article.getDateDebutEncheres() }"> <br>
 		<br> <label for="idFinEnchere">Fin de l'enchère</label> <input
-			type="date" id="idFinEnchere" name="dateFin"> <br>
+			type="date" id="idFinEnchere" value="${article.getDateFinEncheres() }" name="dateFin"> <br>
 		<br>
 		<fieldset>
 			<legend>Retrait</legend>
@@ -70,9 +70,9 @@
 
 		</fieldset>
 		<br>
-		<br> <input type="submit" value="Enregistrer" name="Update">
+		<br> <input type="submit" value="Enregistrer" name="Update" value="${article.getNoArticle }">
 		<br>
-			<input type ="submit" value="Annuler la vente" name="Delete">
+			<input type ="submit" value="Annuler la vente" name="Delete" value="${article.getNoArticle }">
 
 	</form>
 

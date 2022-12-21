@@ -27,7 +27,8 @@ public class ServletModificationVente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 List<Categorie> categories= new ArrayList<>();
-	
+ArticleVendu article = new ArticleVendu();
+Utilisateur userConnecte = new Utilisateur();
 	public void init(){
         //Liste des catégories
         CategorieManager categorieManager = CategorieManager.getCategorieManager();        
@@ -39,6 +40,20 @@ List<Categorie> categories= new ArrayList<>();
 	 *
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session =request.getSession();
+		userConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		request.setAttribute("pseudo", userConnecte.getPseudo());
+		
+		request.setAttribute("idConnect", userConnecte.getNoUtilisateur());
+		session.setAttribute("utilisateurConnecte", userConnecte);
+		
+		int idArticle = Integer.parseInt(request.getParameter("idArticle"));
+		ArticleVendu articleRecherche = new ArticleVendu();
+		articleRecherche.setNoArticle(idArticle);
+		ArticleVenduManager articleManager = ArticleVenduManager.getArticleVenduManager();
+		article = articleManager.selectByIDArticle(articleRecherche);
+		request.setAttribute("article", article);
+	
 		request.setAttribute("listeCategories",categories);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ModificationVente.jsp");
 		rd.forward(request, response);
@@ -54,13 +69,23 @@ List<Categorie> categories= new ArrayList<>();
 		HttpSession session = request.getSession();
 		Utilisateur utilisateurConnecte = (Utilisateur)session.getAttribute("utilisateurConnecte");
 		Categorie categorie = new Categorie();
+		
+		int idArticle = Integer.parseInt(request.getParameter("idArticle"));
+		System.out.println(idArticle);
+		ArticleVendu articleRecherche = new ArticleVendu();
+		articleRecherche.setNoArticle(idArticle);
+		ArticleVenduManager articleManager = ArticleVenduManager.getArticleVenduManager();
+		article = articleManager.selectByIDArticle(articleRecherche);
+		
+		request.setAttribute("article", article);
+		
 		if(update!=null) {
 			
 			System.out.println("Vous pouvez mettre la vente a jour");
 		ArticleVendu updateArticle = new ArticleVendu();
 		int num = 4;
 		//TODO RELIER A BRUNO
-		updateArticle.setNoArticle(num);
+		updateArticle.setNoArticle(Integer.parseInt(request.getParameter("Update")));
 		updateArticle.setNomArticle(request.getParameter("article"));
 		updateArticle.setDescription(request.getParameter("description"));
 		updateArticle.setDateDebutEncheres(LocalDate.parse (request.getParameter("dateDebut")));
@@ -73,8 +98,8 @@ List<Categorie> categories= new ArrayList<>();
 			
 			ArticleVendu deleteArticle = new ArticleVendu();
 			//TODO RECUPERER NUM ARTICLE
-			int num = 15;
-			deleteArticle.setNoArticle(num);
+			int num =Integer.parseInt(request.getParameter("Update"));
+			deleteArticle.setNoArticle(idArticle);
 			
 			ArticleVendu supp = ArticleVenduManager.getArticleVenduManager().deleteVente(deleteArticle);
 			System.out.println("Votre vente est supprimé");
