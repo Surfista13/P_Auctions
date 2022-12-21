@@ -57,6 +57,7 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 		}
 		if (utilisateurExistant != null) {
 			HttpSession session = request.getSession();
+			session.setMaxInactiveInterval(20);
 			session.setAttribute("utilisateurConnecte", utilisateurExistant);
 			RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
 		rd.forward(request, response);
