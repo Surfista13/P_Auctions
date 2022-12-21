@@ -70,9 +70,11 @@
 
 		</fieldset>
 		<br>
-		<br> <input type="submit" value="Enregistrer" name="Update" value="${article.getNoArticle }">
+		<br> <input type="submit"  name="Update" value="Enregistrer">
 		<br>
-			<input type ="submit" value="Annuler la vente" name="Delete" value="${article.getNoArticle }">
+			<input type ="submit"  name="Delete" value="supprimer" >
+			
+			<input type="text" value="${article.getNoArticle()}" name="majArticle" hidden>
 
 	</form>
 

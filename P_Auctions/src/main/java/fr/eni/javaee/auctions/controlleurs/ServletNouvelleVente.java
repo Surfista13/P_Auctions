@@ -41,7 +41,11 @@ public class ServletNouvelleVente extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		   //Liste des cat�gories
+	HttpSession	session= request.getSession(false);
+	if(session==null) {
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ConnexionUtilisateur.jsp");
+		rd.forward(request, response);
+	}
     
 		request.setAttribute("listeCategories",categories);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/NouvelleVente.jsp");
@@ -82,7 +86,7 @@ public class ServletNouvelleVente extends HttpServlet {
 		
 		ArticleVendu newVente = ArticleVenduManager.getArticleVenduManager().insertNewArticle(newArticle, retrait);
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArticlesVendusEncheresConnectee.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
 		rd.forward(request, response);
 	}
 

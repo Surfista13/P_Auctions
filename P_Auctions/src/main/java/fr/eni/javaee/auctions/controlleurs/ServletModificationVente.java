@@ -64,28 +64,28 @@ Utilisateur userConnecte = new Utilisateur();
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String update = request.getParameter("Update");
+		String update = (request.getParameter("Update")) ;
 		String delete = request.getParameter("Delete");
 		HttpSession session = request.getSession();
 		Utilisateur utilisateurConnecte = (Utilisateur)session.getAttribute("utilisateurConnecte");
 		Categorie categorie = new Categorie();
 		
-		int idArticle = Integer.parseInt(request.getParameter("idArticle"));
-		System.out.println(idArticle);
+		//int idArticle = Integer.parseInt(request.getParameter("idArticle"));
+		System.out.println("ici");
 		ArticleVendu articleRecherche = new ArticleVendu();
-		articleRecherche.setNoArticle(idArticle);
-		ArticleVenduManager articleManager = ArticleVenduManager.getArticleVenduManager();
-		article = articleManager.selectByIDArticle(articleRecherche);
+		//articleRecherche.setNoArticle(idArticle);
+		//ArticleVenduManager articleManager = ArticleVenduManager.getArticleVenduManager();
+		//article = articleManager.selectByIDArticle(articleRecherche);
 		
-		request.setAttribute("article", article);
+		//request.setAttribute("article", article);
 		
 		if(update!=null) {
 			
 			System.out.println("Vous pouvez mettre la vente a jour");
 		ArticleVendu updateArticle = new ArticleVendu();
-		int num = 4;
+		
 		//TODO RELIER A BRUNO
-		updateArticle.setNoArticle(Integer.parseInt(request.getParameter("Update")));
+		updateArticle.setNoArticle(Integer.parseInt(request.getParameter("majArticle")));
 		updateArticle.setNomArticle(request.getParameter("article"));
 		updateArticle.setDescription(request.getParameter("description"));
 		updateArticle.setDateDebutEncheres(LocalDate.parse (request.getParameter("dateDebut")));
@@ -98,13 +98,16 @@ Utilisateur userConnecte = new Utilisateur();
 			
 			ArticleVendu deleteArticle = new ArticleVendu();
 			//TODO RECUPERER NUM ARTICLE
-			int num =Integer.parseInt(request.getParameter("Update"));
-			deleteArticle.setNoArticle(idArticle);
+			int num =Integer.parseInt(request.getParameter("majArticle"));
+			deleteArticle.setNoArticle(num);
 			
 			ArticleVendu supp = ArticleVenduManager.getArticleVenduManager().deleteVente(deleteArticle);
 			System.out.println("Votre vente est supprimé");
 			
 		}
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
+		rd.forward(request, response);
 	}
 
 }

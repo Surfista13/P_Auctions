@@ -51,14 +51,17 @@
       			<p>Vendeur:  ${article.getUtilisateur().getPseudo()}</p>
       			<p>Téléphone: ${article.getUtilisateur().getTelephone()}</p>
       			<form action="/P_Auctions/Encherir?idArticle=${article.getNoArticle() }" method="post" name="encherir" id="encherir">
-      				<label for="enchere">Ma proposition:</label>
-					<input type="number" id="enchere" name="enchere" min="1" max="10000000">
-					<input type="submit" value="Encherir" class="btn btn-secondary btn-lg">
+      				<c:if test="${article.getUtilisateur().getNoUtilisateur()!= sessionScope.utilisateurConnecte.noUtilisateur}">
+      					<label for="enchere">Ma proposition:</label>
+						<input type="number" id="enchere" name="enchere" min="1" max="10000000">
+						<input type="submit" value="Encherir" class="btn btn-secondary btn-lg">
+      				</c:if>
       			</form>
       			<p>${retourEnchere }</p>
       			<button type="button" class="btn btn-secondary">Retrait effectué</button>
+      		<c:if test="${article.getUtilisateur().getNoUtilisateur()== sessionScope.utilisateurConnecte.noUtilisateur}">	
       			<button type="button" class="btn btn-secondary" name="Modifier"><a href="/P_Auctions/ServletModificationVente?idArticle=${article.getNoArticle() }">Modifier la vente</a></button>
-      			  			
+      		</c:if>	  			
       		</div>
       	</div>	
   	</main> 
