@@ -16,7 +16,7 @@ public class UtilisateurManager {
 		return instance;
 	}
 	
-	public Utilisateur validerConnexion(String pseudo, String email, String motDePasse) {
+	public Utilisateur validerConnexion(String pseudo, String email, String motDePasse) throws BusinessException {
 		Utilisateur unUtilisateur=null;
 		try {
 			unUtilisateur = DAOFactory.getUtilisateurDao().validerConnexion(pseudo, email, motDePasse);
@@ -28,7 +28,7 @@ public class UtilisateurManager {
 	}
 	
 	
-	public Utilisateur insert (Utilisateur utilisateur, String mdpConfirmation)throws BusinessException { 
+	public Utilisateur insert (Utilisateur utilisateur, String mdpConfirmation)throws SQLException, BusinessException { 
 		BusinessException be = new BusinessException();
 		
 		if(!(utilisateur.getMotDePasse().equals(mdpConfirmation))) {
@@ -80,7 +80,7 @@ public class UtilisateurManager {
 		}
 		}
 	
-	public Utilisateur selectByUserId (int id) { 		
+	public Utilisateur selectByUserId (int id) throws BusinessException { 		
 		Utilisateur utilisateur = new Utilisateur();
 		utilisateur = DAOFactory.getUtilisateurDao().selectUserById(id);		
 		return utilisateur;

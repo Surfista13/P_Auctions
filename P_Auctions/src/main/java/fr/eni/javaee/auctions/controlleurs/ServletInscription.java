@@ -1,9 +1,8 @@
 package fr.eni.javaee.auctions.controlleurs;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,33 +10,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import fr.eni.javaee.auctions.bll.BusinessException;
 import fr.eni.javaee.auctions.bll.UtilisateurManager;
 import fr.eni.javaee.auctions.bo.Utilisateur;
 
-/**
- * Servlet implementation class ServletInscription
- */
+
 @WebServlet("/ServletInscription")
 public class ServletInscription extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	RequestDispatcher rd;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Inscription.jsp");
 		rd.forward(request, response);
-
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		// 1. Données arrivant de la requête
+	protected void doPost(HttpServletRequest request, HttpServletResponse response){
 		Utilisateur nouvelUtilisateur = new Utilisateur();
 		nouvelUtilisateur.setPseudo(request.getParameter("pseudo"));
 		nouvelUtilisateur.setNom(request.getParameter("nom"));
@@ -51,22 +40,23 @@ public class ServletInscription extends HttpServlet {
 		String confirmation = request.getParameter("confirmation");
 
 		try {
-			nouvelUtilisateur = UtilisateurManager.getInstance().insert(nouvelUtilisateur, confirmation);// Data Transfer Object
+			nouvelUtilisateur = UtilisateurManager.getInstance().insert(nouvelUtilisateur, confirmation);																								// Object
 			HttpSession session = request.getSession();
 			session.setAttribute("utilisateurConnecte", nouvelUtilisateur);
-			 RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
-	         rd.forward(request, response);
+			RequestDispatcher rd = request.getRequestDispatcher(
+					"/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
 		} catch (BusinessException e) {
-
-			e.printStackTrace();
-			
 			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
-            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Inscription.jsp");
-            rd.forward(request, response);
-			
+			rd = request.getRequestDispatcher("/WEB-INF/Inscription.jsp");		
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
 		}
-		
-
+		try {
+			rd.forward(request, response);
+		} catch (ServletException | IOException e) {
+			
+			e.printStackTrace();
+		}
 	}
-
 }

@@ -32,7 +32,7 @@ public class ServletNouvelleVente extends HttpServlet {
 	List<Categorie> categories= new ArrayList<>();
 	
 	public void init(){
-        //Liste des catégories
+        //Liste des catï¿½gories
         CategorieManager categorieManager = CategorieManager.getCategorieManager();        
         categories = categorieManager.selectAllCategories();
         }
@@ -41,7 +41,7 @@ public class ServletNouvelleVente extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		   //Liste des catégories
+		   //Liste des catï¿½gories
     
 		request.setAttribute("listeCategories",categories);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/NouvelleVente.jsp");
@@ -53,11 +53,17 @@ public class ServletNouvelleVente extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		//Redirige vers la page d'accueil non connectÃ© si la session est nulle
+		HttpSession session = request.getSession(false);
+		if(session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
+			rd.forward(request, response);
+		}
 		
-		//1.Données arrivant de la requête
+		//1.Donnï¿½es arrivant de la requï¿½te
 		
 		Categorie categorie = new Categorie();
-		HttpSession session = request.getSession();
+		session = request.getSession();
 		Utilisateur utilisateurConnecte = (Utilisateur)session.getAttribute("utilisateurConnecte"); 
 		ArticleVendu newArticle = new ArticleVendu();
 		

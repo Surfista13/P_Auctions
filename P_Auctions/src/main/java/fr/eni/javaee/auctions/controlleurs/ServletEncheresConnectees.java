@@ -47,6 +47,10 @@ public class ServletEncheresConnectees extends HttpServlet {
 			throws ServletException, IOException {
 		// Création de l'utilisateur connecté
 		HttpSession session =request.getSession();
+		if(session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
+			rd.forward(request, response);
+		}
 		userConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 		request.setAttribute("pseudo", userConnecte.getPseudo());
 		request.setAttribute("credit", userConnecte.getCredit());
@@ -81,9 +85,16 @@ public class ServletEncheresConnectees extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		// Récupère la connexion
+		HttpSession session =request.getSession(false);
 		
-		// Création de l'utilisateur connecté
-		HttpSession session =request.getSession();
+		//Redirige vers la page d'accueil non connecté si la session est nulle
+		if(session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
+			rd.forward(request, response);
+		}
+		
 		userConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 		request.setAttribute("pseudo", userConnecte.getPseudo());
 		request.setAttribute("credit", userConnecte.getCredit());

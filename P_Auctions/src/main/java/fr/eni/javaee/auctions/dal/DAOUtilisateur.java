@@ -7,8 +7,8 @@ import fr.eni.javaee.auctions.bo.Utilisateur;
 
 public interface DAOUtilisateur {
 	
-	public void insert (Utilisateur utilisateur) throws BusinessException;
-	public Utilisateur  validerConnexion(String pseudo,String email,String motDePasse) throws SQLException;
-	public Utilisateur selectUserById(int idUser);
+	public void insert (Utilisateur utilisateur) throws SQLException;
+	public Utilisateur  validerConnexion(String pseudo,String email,String motDePasse) throws SQLException, BusinessException;
+	public Utilisateur selectUserById(int idUser) throws BusinessException;
 
 }

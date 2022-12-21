@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import fr.eni.javaee.auctions.bll.BusinessException;
 import fr.eni.javaee.auctions.bll.UtilisateurManager;
 import fr.eni.javaee.auctions.bo.Utilisateur;
 
@@ -24,6 +25,13 @@ public class ServletProfilUtilisateur extends HttpServlet {
 		
 		//Récupération de l'utilisateur connecté dans la session
 		HttpSession session =request.getSession();	
+		
+		//Redirige vers la page d'accueil non connecté si la session est nulle
+		if(session == null) {
+			System.out.println(session);
+			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
+			rd.forward(request, response);
+		}
 		Utilisateur userConnecte = new Utilisateur();
 		userConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 		request.setAttribute("pseudo", userConnecte.getPseudo());
@@ -38,7 +46,12 @@ public class ServletProfilUtilisateur extends HttpServlet {
 		//int idUser= 4;
 		UtilisateurManager utilisateurManager = UtilisateurManager.getInstance();
 		Utilisateur utilisateurRecherche = new Utilisateur();
-		utilisateurRecherche = utilisateurManager.selectByUserId(idUser);
+		try {
+			utilisateurRecherche = utilisateurManager.selectByUserId(idUser);
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		request.setAttribute("utilisateur", utilisateurRecherche);		
 		
 		

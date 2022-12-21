@@ -42,12 +42,19 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		
+		
 		String pseudo = request.getParameter("identifiant");
 		String motDePasse = request.getParameter("motDePasse");
 
 		// initialisation de page connectée sur les achats
 
-		Utilisateur utilisateurExistant = UtilisateurManager.getInstance().validerConnexion(pseudo, pseudo, motDePasse);
+		Utilisateur utilisateurExistant = null;
+		try {
+			utilisateurExistant = UtilisateurManager.getInstance().validerConnexion(pseudo, pseudo, motDePasse);
+		} catch (BusinessException e) {
+			
+		}
 		if (utilisateurExistant != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("utilisateurConnecte", utilisateurExistant);

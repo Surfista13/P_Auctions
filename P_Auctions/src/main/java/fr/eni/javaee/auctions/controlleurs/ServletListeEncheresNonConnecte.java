@@ -53,18 +53,6 @@ public class ServletListeEncheresNonConnecte extends HttpServlet {
 		// Liste des catégories
 		request.setAttribute("listeCategories", categories);
 		
-		//Génération slogan par IA chatGPT
-		//sloganIA(request);
-	
-		//Generer une session et envoi vers jsp
-		//TODO modifier les info en dures par lien avec page authentification
-		/*HttpSession session =request.getSession();	
-		Utilisateur user = new Utilisateur();
-		user.setPseudo("dd");
-		user.setNoUtilisateur(1);
-		user.setCredit(40);
-		session.setAttribute("utilisateurConnecte", user);*/
-		
 		//TODO gérer la déconnexion qui renvoi vers cette page en supprimant la session
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArctileVendusNonConnecte.jsp");

@@ -25,9 +25,6 @@ public class ServletDeconnexionUtilisateur extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		if(session!=null) {
 		    session.invalidate();}
-		   
-		
-		
 		RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
 		rd.forward(request, response);
 		

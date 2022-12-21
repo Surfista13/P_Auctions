@@ -17,9 +17,10 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 	/**
 	 * param utilisateur = utilisateur à insérer dans la base de donnée suite à la
 	 * saisie d'un formulaire
+	 * @throws SQLException 
 	 */
 	@Override
-	public void insert(Utilisateur utilisateur) throws BusinessException {
+	public void insert(Utilisateur utilisateur) throws SQLException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pSmt = cnx.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
 			pSmt.setString(1, utilisateur.getPseudo());
@@ -39,23 +40,15 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 				int idUtilisateur = clePrimairesGenerees.getInt(1);
 				utilisateur.setNoUtilisateur(idUtilisateur);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-			BusinessException be = new BusinessException();
-			be.ajouterErreur(20000);
-			throw be;
-
-		}
 	}
-
+	}
 	/**
 	 * @return un Utilisateur s'il existe, null sinon
+	 * @throws BusinessException 
 	 */
 	@Override
-	public Utilisateur validerConnexion(String pseudo, String email, String motDePasse) {
+	public Utilisateur validerConnexion(String pseudo, String email, String motDePasse) throws BusinessException {
 		Utilisateur unUtilisateur = null;
-
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_USER);
 			pStmt.setString(1, pseudo);
@@ -78,14 +71,17 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 				unUtilisateur.setAdministrateur(rs.getByte("administrateur"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(30000);
+			throw be;
 		}
 		return unUtilisateur;
 	}
-	
+	/**
+	 * Param1 = identifiant de l'utilisateur vendeur
+	 */
 	@Override
-	public Utilisateur selectUserById(int idUser) {
+	public Utilisateur selectUserById(int idUser) throws BusinessException {
 		Utilisateur unUtilisateur = null;
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_USER_BY_ID);
@@ -107,8 +103,9 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 				unUtilisateur.setAdministrateur(rs.getByte("administrateur"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(30000);
+			throw be;
 		}
 		return unUtilisateur;
 	}
