@@ -40,7 +40,6 @@ public class ServletListeEncheresNonConnecte extends HttpServlet {
 		// Liste des catégories
 		CategorieManager categorieManager = CategorieManager.getCategorieManager();
 		categories = categorieManager.selectAllCategories();
-
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
