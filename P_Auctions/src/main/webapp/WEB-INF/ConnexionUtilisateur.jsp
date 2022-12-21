@@ -25,7 +25,7 @@
 							<div class="mb-md-5 mt-md-4 pb-5">
 								<h2 class="fw-bold mb-2 text-uppercase">Connexion</h2>
 								<p class="text-white-50 mb-5">Merci d'entrer votre identifiant et mot de passe</p>
-								<p>${requestScope.err }</p>
+								<p class="erreur">${requestScope.err }</p>
 									<form action="<%=request.getContextPath()%>/ServletConnexionUtilisateur" method="post">
 										<div class="form-outline form-white mb-4">
 											<label class="form-label" for="typeEmailX">Identifiant</label>
