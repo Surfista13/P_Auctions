@@ -1,13 +1,10 @@
 package fr.eni.javaee.auctions.controlleurs;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
+
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import fr.eni.javaee.auctions.bll.BusinessException;
 import fr.eni.javaee.auctions.bll.UtilisateurManager;
 import fr.eni.javaee.auctions.bo.Utilisateur;
+import fr.eni.javaee.auctions.dal.DALException;
 
 /**
  * Servlet implementation class ServletConnexionUtilisateur
@@ -36,10 +32,8 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ConnexionUtilisateur.jsp");
 		rd.forward(request, response);
-
 	}
 
 	/**
@@ -48,7 +42,6 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		String pseudo = request.getParameter("identifiant");
 		String motDePasse = request.getParameter("motDePasse");
 
@@ -57,12 +50,14 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 		Utilisateur utilisateurExistant = null;
 		try {
 			utilisateurExistant = UtilisateurManager.getInstance().validerConnexion(pseudo, pseudo, motDePasse);
-		} catch (BusinessException e) {
+		}catch (DALException e) {
+			response.sendRedirect("erreurDAL.html");
 		}
 
 		if (utilisateurExistant != null && nbTentativesSaisieMdp < 2) {
-			HttpSession session = request.getSession();
-			session.setMaxInactiveInterval(20);
+			HttpSession session =request.getSession();
+			session = request.getSession();
+			session.setMaxInactiveInterval(120);
 			session.setAttribute("utilisateurConnecte", utilisateurExistant);
 			nbTentativesSaisieMdp = 0;
 			RequestDispatcher rd = request.getRequestDispatcher(

@@ -30,6 +30,7 @@ public class ServletNouvelleVente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	List<Categorie> categories= new ArrayList<>();
+	Utilisateur userConnecte = new Utilisateur();
 	
 	public void init(){
         //Liste des cat�gories
@@ -41,11 +42,16 @@ public class ServletNouvelleVente extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	HttpSession	session= request.getSession(false);
-	if(session==null) {
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ConnexionUtilisateur.jsp");
-		rd.forward(request, response);
-	}
+		HttpSession session =request.getSession(false);
+		if(session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
+			rd.forward(request, response);
+		}
+		userConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		request.setAttribute("pseudo", userConnecte.getPseudo());
+		request.setAttribute("credit", userConnecte.getCredit());
+		request.setAttribute("idConnect", userConnecte.getNoUtilisateur());
+		session.setAttribute("utilisateurConnecte", userConnecte);
     
 		request.setAttribute("listeCategories",categories);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/NouvelleVente.jsp");
@@ -58,11 +64,17 @@ public class ServletNouvelleVente extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		//Redirige vers la page d'accueil non connecté si la session est nulle
-		HttpSession session = request.getSession(false);
-		if(session == null) {
-			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
-			rd.forward(request, response);
-		}
+				HttpSession session =request.getSession(false);	
+				//Redirige vers la page d'accueil non connecté si la session est nulle
+				if(session == null) {
+					RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
+					rd.forward(request, response);
+				}
+				Utilisateur userConnecte = new Utilisateur();
+				userConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
+				request.setAttribute("pseudo", userConnecte.getPseudo());
+				request.setAttribute("credit", userConnecte.getCredit());
+				request.setAttribute("id", userConnecte.getNoUtilisateur());
 		
 		//1.Donn�es arrivant de la requ�te
 		
@@ -76,6 +88,7 @@ public class ServletNouvelleVente extends HttpServlet {
 		newArticle.setDateDebutEncheres(LocalDate.parse (request.getParameter("dateDebut")));
 		newArticle.setDateFinEncheres(LocalDate.parse (request.getParameter("dateFin")));
 		newArticle.setMiseAPrix(Integer.parseInt(request.getParameter("prix")));
+		newArticle.setPrixVente(Integer.parseInt(request.getParameter("prix")));
 		newArticle.getUtilisateur().setNoUtilisateur(utilisateurConnecte.getNoUtilisateur());
 		newArticle.getCategorie().setNoCategorie(Integer.parseInt (request.getParameter("listeCategories")));
 

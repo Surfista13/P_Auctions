@@ -9,10 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import fr.eni.javaee.auctions.bll.BusinessException;
 import fr.eni.javaee.auctions.bll.UtilisateurManager;
 import fr.eni.javaee.auctions.bo.Utilisateur;
+import fr.eni.javaee.auctions.dal.DALException;
 
 /**
  * Servlet implementation class ServletProfilUtilisateur
@@ -24,11 +23,9 @@ public class ServletProfilUtilisateur extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		//Récupération de l'utilisateur connecté dans la session
-		HttpSession session =request.getSession();	
-		
+		HttpSession session =request.getSession(false);	
 		//Redirige vers la page d'accueil non connecté si la session est nulle
 		if(session == null) {
-			System.out.println(session);
 			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
 			rd.forward(request, response);
 		}
@@ -48,21 +45,25 @@ public class ServletProfilUtilisateur extends HttpServlet {
 		Utilisateur utilisateurRecherche = new Utilisateur();
 		try {
 			utilisateurRecherche = utilisateurManager.selectByUserId(idUser);
-		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (DALException e) {
+			response.sendRedirect("erreurDAL.html");
 		}
 		request.setAttribute("utilisateur", utilisateurRecherche);		
-		
-		
-		
-		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Profil.jsp");
 		rd.forward(request, response);
 		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Récupération de l'utilisateur connecté dans la session
+		HttpSession session =request.getSession(false);	
+		
+		//Redirige vers la page d'accueil non connecté si la session est nulle
+		if(session == null) {
+			System.out.println(session);
+			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
+			rd.forward(request, response);
+		}		
 		doGet(request, response);
 	}
 

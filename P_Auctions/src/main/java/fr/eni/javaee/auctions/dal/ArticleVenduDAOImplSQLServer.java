@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import fr.eni.javaee.auctions.bo.ArticleVendu;
 import fr.eni.javaee.auctions.bo.Categorie;
@@ -41,6 +43,9 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 	private static final String DELETE_VENTE = "DELETE FROM ARTICLES_VENDUS WHERE no_article=?;";
 	
 	private static final String UPDATE_PRIX_VENTE = "UPDATE ARTICLES_VENDUS SET prix_vente = ? WHERE no_article = ?;";
+	
+	private static final Logger LOGGER = Logger.getLogger(UtilisateurDaoJDBCImpl.class.getName());
+	
 	List<ArticleVendu> articles;
 	ArticleVendu article = new ArticleVendu();
 
@@ -211,6 +216,7 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 				article.setCategorie(categorie);
 				article.setUtilisateur(utilisateur);
 				articles.add(article);
+				LOGGER.log(Level.INFO,"Accès à la méthode selectByUser");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
