@@ -48,16 +48,16 @@
         <div class="col-md-4 order-md-2 mb-4">
         </div>
         <div class="col-md-8 order-md-1">
-          <h4 class="mb-3">Détails du profil</h4>
-          <form class="needs-validation" novalidate="">
+          <h4 class="mb-3">Vous allez supprimer votre profil</h4>
+          <form action="/P_Auctions/ServletModificationProfil" method="post" class="needs-validation">
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="firstName">Prénom</label>
-                <input type="text" class="form-control" id="firstName" placeholder="" value="${utilisateur.getPrenom()}" disabled>
+                <input type="text" class="form-control" id="firstName" placeholder="" value="${utilisateur.getPrenom()}"disabled >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="lastName">Nom</label>
-                <input type="text" class="form-control" id="lastName" value="${utilisateur.getNom()}" disabled>
+                <input type="text" class="form-control" id="lastName" value="${utilisateur.getNom()}"disabled >
               </div>
             </div>
 
@@ -82,29 +82,41 @@
 
             <div class="mb-3">
               <label for="address">Adresse</label>
-              <input type="text" class="form-control" id="address" value="${utilisateur.getRue()}" disabled>
+              <input type="text" class="form-control" id="address" value="${utilisateur.getRue()}"disabled >
             </div>
 
 			<div class="row">
               <div class="col-md-6 mb-3">
                 <label for="firstName">Code postale</label>
-                <input type="text" class="form-control" id="codePostale" value="${utilisateur.getCodePostal()}" disabled>
+                <input type="text" class="form-control" id="codePostale" value="${utilisateur.getCodePostal()}"disabled >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="lastName">Ville</label>
-                <input type="text" class="form-control" id="ville" value="${utilisateur.getVille()}" disabled>
+                <input type="text" class="form-control" id="ville" value="${utilisateur.getVille()}"disabled >
+              </div>
+            </div>
+                <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="mdp">MotDePasse</label>
+                <input type="password" name="motDePasse" class="form-control" id="mdp"  >
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="mdpValide">Confirmation</label>
+                <input type="password" name="mdpVal" class="form-control" id="mdpValide"  >
               </div>
             </div>
 
             <div class="row">
             </div>
-          </form>
+            <button type="submit" id="boutModifier" class="btn btn-secondary" >Supprimer</button>
+         </form> 
         </div>
       </div>
-      <c:if test="${utilisateur.getNoUtilisateur() == id}">
-      	<a href="/P_Auctions/ServletModificationProfil?idRech=${utilisateur.getNoUtilisateur()}"><button type="button" id="boutModifier" class="btn btn-secondary" >Modifier</button></a>
-      	<a href="/P_Auctions/ServletSuppressionProfil?idRech=${utilisateur.getNoUtilisateur()}"><button type="button" id="boutSupprimer" class="btn btn-secondary" >Supprimer</button></a>
-      </c:if>     
+     
+      	
+      	
+      
+    
       <footer class="my-5 pt-5 text-muted text-center text-small">
         <p class="mb-1">© 2012-2013 ENI Enchères company</p>
         <ul class="list-inline">
@@ -123,5 +135,6 @@
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
 </body>
 </html>

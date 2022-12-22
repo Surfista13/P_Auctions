@@ -86,4 +86,14 @@ public class UtilisateurManager {
 		utilisateur = DAOFactory.getUtilisateurDao().selectUserById(id);
 		return utilisateur;
 	}
+	
+	public Utilisateur updateUtilisateur(Utilisateur utilisateur) {
+		
+		utilisateur = DAOFactory.getUtilisateurDao().updateProfil(utilisateur);
+		
+		return utilisateur;
+		
+	}
+
+	
 }

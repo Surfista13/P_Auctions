@@ -9,19 +9,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import fr.eni.javaee.auctions.bll.ArticleVenduManager;
 import fr.eni.javaee.auctions.bll.UtilisateurManager;
+import fr.eni.javaee.auctions.bo.ArticleVendu;
 import fr.eni.javaee.auctions.bo.Utilisateur;
 import fr.eni.javaee.auctions.dal.DALException;
 
 /**
- * Servlet implementation class ServletProfilUtilisateur
+ * Servlet implementation class ServletSuppressionProfil
  */
-@WebServlet("/ServletProfilUtilisateur")
-public class ServletProfilUtilisateur extends HttpServlet {
+@WebServlet("/ServletSuppressionProfil")
+public class ServletSuppressionProfil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		//Récupération de l'utilisateur connecté dans la session
 		HttpSession session =request.getSession(false);	
 		//Redirige vers la page d'accueil non connecté si la session est nulle
@@ -39,8 +44,7 @@ public class ServletProfilUtilisateur extends HttpServlet {
 		//TODO lier avec page précédente qui doit renvoyer l'id utilisateur
 		int idUser= Integer.parseInt(request.getParameter("idRech")) ;
 		
-		
-		//int idUser= 4;
+		//int idUser= 33;
 		UtilisateurManager utilisateurManager = UtilisateurManager.getInstance();
 		Utilisateur utilisateurRecherche = new Utilisateur();
 		try {
@@ -49,21 +53,15 @@ public class ServletProfilUtilisateur extends HttpServlet {
 			response.sendRedirect("erreurDAL.html");
 		}
 		request.setAttribute("utilisateur", utilisateurRecherche);		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Profil.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/SuppressionProfil.jsp");
 		rd.forward(request, response);
-		
 	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Récupération de l'utilisateur connecté dans la session
-		HttpSession session =request.getSession(false);	
-		
-		//Redirige vers la page d'accueil non connecté si la session est nulle
-		if(session == null) {
-			System.out.println(session);
-			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
-			rd.forward(request, response);
-		}		
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

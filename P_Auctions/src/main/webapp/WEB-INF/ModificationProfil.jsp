@@ -48,16 +48,16 @@
         <div class="col-md-4 order-md-2 mb-4">
         </div>
         <div class="col-md-8 order-md-1">
-          <h4 class="mb-3">Détails du profil</h4>
-          <form class="needs-validation" novalidate="">
+          <h4 class="mb-3">Modification de votre profil</h4>
+          <form method="post" class="needs-validation" action="/P_Auctions/ServletModificationProfil">
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="firstName">Prénom</label>
-                <input type="text" class="form-control" id="firstName" placeholder="" value="${utilisateur.getPrenom()}" disabled>
+                <input type="text" name="prenom" class="form-control" id="firstName" placeholder="" value="${utilisateur.getPrenom()}" >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="lastName">Nom</label>
-                <input type="text" class="form-control" id="lastName" value="${utilisateur.getNom()}" disabled>
+                <input type="text" name="nom" class="form-control" id="lastName" value="${utilisateur.getNom()}" >
               </div>
             </div>
 
@@ -66,45 +66,59 @@
               <div class="input-group">
                 <div class="input-group-prepend">
                 </div>
-                <input type="text" class="form-control" value="${utilisateur.getPseudo()}" id="username"disabled>
+                <input type="text" name="pseudo" class="form-control" value="${utilisateur.getPseudo()}" id="username">
               </div>
             </div>
 
             <div class="mb-3">
               <label for="email">Email</span></label>
-              <input type="email" class="form-control" id="email" value="${utilisateur.getEmail()}" disabled>
+              <input type="email" name="email" class="form-control" id="email" value="${utilisateur.getEmail()}" >
             </div>
             
             <div class="mb-3">
               <label for="tel">Téléphone</span></label>
-              <input type="text" class="form-control" id="tel" value="${utilisateur.getTelephone()}" disabled>
+              <input type="text" name="telephone" class="form-control" id="tel" value="${utilisateur.getTelephone()}" >
             </div>
 
             <div class="mb-3">
               <label for="address">Adresse</label>
-              <input type="text" class="form-control" id="address" value="${utilisateur.getRue()}" disabled>
+              <input type="text" name="adresse" class="form-control" id="address" value="${utilisateur.getRue()}" >
             </div>
 
 			<div class="row">
               <div class="col-md-6 mb-3">
-                <label for="firstName">Code postale</label>
-                <input type="text" class="form-control" id="codePostale" value="${utilisateur.getCodePostal()}" disabled>
+                <label for="firstName">Code postal</label>
+                <input type="text" name="codePostal" class="form-control" id="codePostale" value="${utilisateur.getCodePostal()}" >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="lastName">Ville</label>
-                <input type="text" class="form-control" id="ville" value="${utilisateur.getVille()}" disabled>
+                <input type="text" name="ville" class="form-control" id="ville" value="${utilisateur.getVille()}" >
               </div>
             </div>
-
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="mdp">MotDePasse</label>
+                <input type="password" name="motDePasse" class="form-control" id="mdp"  >
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="mdpValide">Confirmation</label>
+                <input type="password" name="mdpVal" class="form-control" id="mdpValide"  >
+              </div>
+            </div>
+            
+				
             <div class="row">
             </div>
-          </form>
+            <button type="submit" id="boutModifier" class="btn btn-secondary" >Enregistrer</button>
+            <input type="text" value="${utilisateur.getNoUtilisateur()}" name="majUtilisateur" hidden>
+          </form> 
         </div>
       </div>
-      <c:if test="${utilisateur.getNoUtilisateur() == id}">
-      	<a href="/P_Auctions/ServletModificationProfil?idRech=${utilisateur.getNoUtilisateur()}"><button type="button" id="boutModifier" class="btn btn-secondary" >Modifier</button></a>
-      	<a href="/P_Auctions/ServletSuppressionProfil?idRech=${utilisateur.getNoUtilisateur()}"><button type="button" id="boutSupprimer" class="btn btn-secondary" >Supprimer</button></a>
-      </c:if>     
+      
+      
+      	
+      
+          
       <footer class="my-5 pt-5 text-muted text-center text-small">
         <p class="mb-1">© 2012-2013 ENI Enchères company</p>
         <ul class="list-inline">
