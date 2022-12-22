@@ -68,12 +68,12 @@
            				<div class="card-body d-flex flex-column align-items-start">
            				    <strong class="d-inline-block mb-2 text-success">${listeResult.getCategorie().getLibelle()}</strong>
               				<h3 class="mb-0">
-                				<a class="text-dark" href="#">${listeResult.getNomArticle() }</a>
+                				<p class="text-dark">${listeResult.getNomArticle() }</p>
               				</h3>
               				<div class="mb-1 text-muted">Fin enchère: ${listeResult.getDateFinEncheres() }</div>
               				<p class="card-text mb-auto">Prix: ${listeResult.getMiseAPrix() }</p>
               				<p class="card-text mb-auto">${listeResult.getDescription() }</p>
-              				<a href="#">${listeResult.getUtilisateur().getPseudo()}</a>
+              				<p>${listeResult.getUtilisateur().getPseudo()}</p>
 						</div>
 						<img id="imgTN" class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb" alt="Thumbnail [200x250]" src="./images/cone.jpg" data-holder-rendered="true" style="width: 200px; height: 200px;">
 					</div>

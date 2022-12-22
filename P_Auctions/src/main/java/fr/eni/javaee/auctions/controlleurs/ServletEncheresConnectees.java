@@ -200,7 +200,8 @@ public class ServletEncheresConnectees extends HttpServlet {
 				listeEnchereFiltree = listeEnchere.stream()
 						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("enCours")
 								|| entry.getArticleVendus().getEtatVente().equals("nonDebutee")
-								|| entry.getArticleVendus().getEtatVente().equals("remportee"))
+								|| entry.getArticleVendus().getEtatVente().equals("remportee")
+								&& entry.getUtilisateur().getNoUtilisateur()== user.getNoUtilisateur())
 						.collect(Collectors.toList());
 			}
 			if (param1 != null && param2 == null && param3 == null) {
@@ -217,18 +218,21 @@ public class ServletEncheresConnectees extends HttpServlet {
 			if (param1 == null && param2 != null && param3 != null) {
 				listeEnchereFiltree = listeEnchere.stream()
 						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("enCours")
-								|| entry.getArticleVendus().getEtatVente().equals("remportee"))
+								|| entry.getArticleVendus().getEtatVente().equals("remportee")
+								&& entry.getUtilisateur().getNoUtilisateur()== user.getNoUtilisateur())
 						.collect(Collectors.toList());
 			}
 			if (param1 != null && param2 == null && param3 != null) {
 				listeEnchereFiltree = listeEnchere.stream()
 						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("nonDebutee")
-								|| entry.getArticleVendus().getEtatVente().equals("remportee"))
+								|| entry.getArticleVendus().getEtatVente().equals("remportee")
+								&& entry.getUtilisateur().getNoUtilisateur()== user.getNoUtilisateur())
 						.collect(Collectors.toList());
 			}
 			if (param1 == null && param2 == null && param3 != null) {
 				listeEnchereFiltree = listeEnchere.stream()
-						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("remportee"))
+						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("remportee")
+								&& entry.getUtilisateur().getNoUtilisateur()== user.getNoUtilisateur())
 						.collect(Collectors.toList());
 			}
 			if (param1 == null && param2 != null && param3 == null) {

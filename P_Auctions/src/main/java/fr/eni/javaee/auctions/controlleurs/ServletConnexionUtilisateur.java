@@ -58,7 +58,6 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 
 			HttpSession session = request.getSession();
 			session.setMaxInactiveInterval(300);
-
 			session.setAttribute("utilisateurConnecte", utilisateurExistant);
 			nbTentativesSaisieMdp = 0;
 			RequestDispatcher rd = request.getRequestDispatcher(
