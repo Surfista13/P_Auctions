@@ -109,6 +109,7 @@
             <div class="row">
             </div>
             <button type="submit" id="boutModifier" class="btn btn-secondary" >Supprimer</button>
+            <input type="text" value="${utilisateur.getNoUtilisateur()}" name="majUtilisateur" hidden>
          </form> 
         </div>
       </div>

@@ -61,8 +61,17 @@ public class ServletSuppressionProfil extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		HttpSession session = request.getSession();
+		Utilisateur utilisateurConnecte = (Utilisateur)session.getAttribute("utilisateurConnecte");
+		
+		Utilisateur utilisateurSupp= new Utilisateur();
+		int num =Integer.parseInt(request.getParameter("majUtilisateur"));
+		utilisateurSupp.setNoUtilisateur(num);
+		
+		Utilisateur supp = UtilisateurManager.getInstance().deleteProfil(utilisateurSupp);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
+		rd.forward(request, response);
 	}
 
 }

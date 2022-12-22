@@ -94,6 +94,11 @@ public class UtilisateurManager {
 		return utilisateur;
 		
 	}
+	
+	public  Utilisateur deleteProfil (Utilisateur utilisateur) {
+		DAOFactory.getUtilisateurDao().deleteProfil(utilisateur);
+		return utilisateur;
+	}
 
 	
 }
