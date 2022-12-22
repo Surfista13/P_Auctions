@@ -2,21 +2,22 @@
 <%@page import="fr.eni.javaee.auctions.bo.Categorie"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Modification d'une vente</title>
+<title>Suppression De La Vente</title>
 </head>
 <body>
 
-	<h1>Modification de votre vente</h1>
+<h1>Suppression de votre vente</h1>
 	
 		<p class="erreur">${requestScope.err }</p>
 
-	<form action="/P_Auctions/ServletModificationVente" method="post">
+	<form action="/P_Auctions/ServletSuppressionVente" method="post">
 
 		<label for="idArticle">Article :</label> <input type="text"
 			id="idArticle" name="article" value=" ${article.getNomArticle()}"> <br>
@@ -71,8 +72,9 @@
 
 		</fieldset>
 		<br>
-		<br> <input type="submit"  name="Update" value="Enregistrer">
+		
 		<br>
+			<input type ="submit"  name="Delete" value="supprimer" >
 			
 			<input type="text" value="${article.getNoArticle()}" name="majArticle" hidden>
 

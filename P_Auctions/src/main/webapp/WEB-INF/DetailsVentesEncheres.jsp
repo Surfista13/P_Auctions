@@ -61,6 +61,7 @@
       			<button type="button" class="btn btn-secondary">Retrait effectué</button>
       		<c:if test="${article.getUtilisateur().getNoUtilisateur()== sessionScope.utilisateurConnecte.noUtilisateur}">	
       			<button type="button" class="btn btn-secondary" name="Modifier"><a href="/P_Auctions/ServletModificationVente?idArticle=${article.getNoArticle() }">Modifier la vente</a></button>
+      			<button type="button" class="btn btn-secondary" name="Supprimer"><a href="/P_Auctions/ServletSuppressionVente?idArticle=${article.getNoArticle() }">Supprimer la vente</a></button>
       		</c:if>	  			
       		</div>
       	</div>	

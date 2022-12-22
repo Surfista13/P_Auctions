@@ -1,5 +1,6 @@
 package fr.eni.javaee.auctions.bll;
 
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,16 +115,33 @@ public class ArticleVenduManager {
 	}
 	
 	public ArticleVendu updateVente( ArticleVendu articleVendu) {
-		return DAOFactory.getDAOArticleVendu().updateVente(articleVendu);
+		
+		if(articleVendu.getDateDebutEncheres().isAfter(LocalDate.now())) {
+		
+		articleVendu= DAOFactory.getDAOArticleVendu().updateVente(articleVendu);
+	}else {
+		System.out.println("Impossible de modifier la vente");
 		
 		
 	}
+	return articleVendu;
+	}
+	
 	
 	public ArticleVendu deleteVente(ArticleVendu articleVendu) {
 		
 		DAOFactory.getDAOArticleVendu().deleteVente(articleVendu);
 		
 		return articleVendu;
+	}
+	
+	//Verification Date Vente
+	
+	public void verificationDate(LocalDate dateDebutEnchere) {
+		if(dateDebutEnchere.isBefore(LocalDate.now())) {
+			
+		}
+		
 	}
 	
 	
