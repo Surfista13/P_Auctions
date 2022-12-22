@@ -55,14 +55,10 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 		}
 
 		if (utilisateurExistant != null && nbTentativesSaisieMdp < 2) {
-<<<<<<< HEAD
+
 			HttpSession session = request.getSession();
 			session.setMaxInactiveInterval(300);
-=======
-			HttpSession session =request.getSession();
-			session = request.getSession();
-			session.setMaxInactiveInterval(120);
->>>>>>> branch 'main' of https://github.com/Surfista13/P_Auctions.git
+
 			session.setAttribute("utilisateurConnecte", utilisateurExistant);
 			nbTentativesSaisieMdp = 0;
 			RequestDispatcher rd = request.getRequestDispatcher(
