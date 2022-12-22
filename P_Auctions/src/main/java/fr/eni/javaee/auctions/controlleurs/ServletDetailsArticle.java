@@ -40,20 +40,38 @@ public class ServletDetailsArticle extends HttpServlet {
 		session.setAttribute("utilisateurConnecte", userConnecte);
 		
 		int idArticle = Integer.parseInt(request.getParameter("idArticle"));
+		System.out.println(idArticle);
 		ArticleVendu articleRecherche = new ArticleVendu();
 		articleRecherche.setNoArticle(idArticle);
+		System.out.println(articleRecherche);
 		ArticleVenduManager articleManager = ArticleVenduManager.getArticleVenduManager();
 		article = articleManager.selectByIDArticle(articleRecherche);
-		
+		System.out.println(article);
 		EncheresManager encheresManager = EncheresManager.getEnchereManager();
 		encheres = encheresManager.selectEnchereByArticleID(articleRecherche);
-		
+		System.out.println(encheres);
 		request.setAttribute("article", article);
 		request.setAttribute("listeEncheres", encheres);
 		
 		Enchere meilleurEnchere = new Enchere();
 		meilleurEnchere = calculMeilleurOffre(encheres);
 		request.setAttribute("meilleurEnchere", meilleurEnchere);
+		
+		int typePage = 0;
+		int typePage2 = 0;
+		if(meilleurEnchere.getUtilisateur().getNoUtilisateur() == userConnecte.getNoUtilisateur() && (meilleurEnchere.getArticleVendus().getEtatVente().equals("terminee") || meilleurEnchere.getArticleVendus().getEtatVente().equals("remportee"))) {
+			typePage = 1;
+		}else if(meilleurEnchere.getUtilisateur().getNoUtilisateur() != userConnecte.getNoUtilisateur() && (meilleurEnchere.getArticleVendus().getEtatVente().equals("terminee") || meilleurEnchere.getArticleVendus().getEtatVente().equals("remportee"))) {
+			typePage = 2;
+		} else {
+			typePage = 3;
+		}
+		if(meilleurEnchere.getUtilisateur().getNoUtilisateur() == userConnecte.getNoUtilisateur()) {
+			typePage2 = 1;
+		}
+		
+		request.setAttribute("typePage", typePage);
+		request.setAttribute("typePage2", typePage2);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/DetailsVentesEncheres.jsp");
 		rd.forward(request, response);
@@ -69,18 +87,26 @@ public class ServletDetailsArticle extends HttpServlet {
 	public Enchere calculMeilleurOffre (List<Enchere> liste) {
 		int meilleurOffre = 0;
 		String pseudoMeilleurOffre = null;
+		int idUserMeilleurOffre = 0;
+		String etatEnchere = "";
+		
 		for(Enchere e : liste) {
 			if(e.getMontant_enchere() >= meilleurOffre) {
 				meilleurOffre = e.getMontant_enchere();
 				pseudoMeilleurOffre = e.getUtilisateur().getPseudo();
+				idUserMeilleurOffre = e.getUtilisateur().getNoUtilisateur();
+				etatEnchere = e.getArticleVendus().getEtatVente();
 			}
 		}
 		Enchere enchere = new Enchere();
 		enchere.setMontant_enchere(meilleurOffre);
 		Utilisateur utilisateur = new Utilisateur();
 		utilisateur.setPseudo(pseudoMeilleurOffre);
+		utilisateur.setNoUtilisateur(idUserMeilleurOffre);
 		enchere.setUtilisateur(utilisateur);
-		
+		ArticleVendu article = new ArticleVendu();
+		article.setEtatVente(etatEnchere);
+		enchere.setArticleVendus(article);		
 		return enchere;	
 	}
 

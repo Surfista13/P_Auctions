@@ -41,30 +41,46 @@
       		<div class="photo">
       		</div>
       		<div class="details">
+      			<c:if test="${typePage == 1}">
+      					<h1>Vous avez remporté la vente</h1>
+      			</c:if>
+      			<c:if test="${typePage == 2}">
+      					<h1>${meilleurEnchere.getUtilisateur().getPseudo()} a remporté la vente</h1>
+      			</c:if>
+      			<c:if test="${typePage == 3}">
+      					<h1>Détail vente</h1>
+      			</c:if>
       			<p>${article.getNomArticle() }</p>
       			<p>Description: ${article.getDescription() }</p>
       			<p>Catégorie: ${article.getCategorie().getLibelle() }</p>
-      			<p>Meilleur offre: ${meilleurEnchere.getMontant_enchere()} crédits  par ${meilleurEnchere.getUtilisateur().getPseudo()}</p>
+      			
+      			<p>Meilleur offre: ${meilleurEnchere.getMontant_enchere()} crédits<c:if test="${typePage != 1}"> par ${meilleurEnchere.getUtilisateur().getPseudo()}</c:if></p> 
       			<p>Mise a prix: ${article.getMiseAPrix() } crédits</p>
-      			<p>Fin de l'enchère: ${article.getDateFinEncheres() }</p>
+      			<c:if test="${typePage == 1}"><p>Fin de l'enchère: ${article.getDateFinEncheres() }</p></c:if>
       			<p>Retrait: ${article.getRetrait().getRue()} ${article.getRetrait().getCodePostal()}   ${article.getRetrait().getVille() }</p>
       			<p>Vendeur:  ${article.getUtilisateur().getPseudo()}</p>
-      			<p>Téléphone: ${article.getUtilisateur().getTelephone()}</p>
+      			<c:if test="${typePage == 1}"><p>Téléphone: ${article.getUtilisateur().getTelephone()}</p></c:if>
+      			<p>Liste enchères</p>
+					<ul>
+						<c:forEach items="${listeEncheres}" var="listeResult">
+							<li>${listeResult.getDateEnchere()}  -  ${listeResult.getMontant_enchere()}  -  ${listeResult.getUtilisateur().getPseudo()}</li>
+						</c:forEach>	
+					</ul>
       			<form action="/P_Auctions/Encherir?idArticle=${article.getNoArticle() }" method="post" name="encherir" id="encherir">
-      				<c:if test="${article.getUtilisateur().getNoUtilisateur()!= sessionScope.utilisateurConnecte.noUtilisateur}">
+      				<c:if test="${typePage2 == 1}">		
       					<label for="enchere">Ma proposition:</label>
 						<input type="number" id="enchere" name="enchere" min="1" max="10000000">
-						<input type="submit" value="Encherir" class="btn btn-secondary btn-lg">
-      				</c:if>
+						<input type="submit" value="Encherir" class="btn btn-secondary btn-lg">	
+      			     </c:if>
       			</form>
       			<p>${retourEnchere }</p>
       			<button type="button" class="btn btn-secondary">Retrait effectué</button>
       		<c:if test="${article.getUtilisateur().getNoUtilisateur()== sessionScope.utilisateurConnecte.noUtilisateur}">	
-      			<button type="button" class="btn btn-secondary" name="Modifier"><a href="/P_Auctions/ServletModificationVente?idArticle=${article.getNoArticle() }">Modifier la vente</a></button>
-      			<button type="button" class="btn btn-secondary" name="Supprimer"><a href="/P_Auctions/ServletSuppressionVente?idArticle=${article.getNoArticle() }">Supprimer la vente</a></button>
+      			<a href="/P_Auctions/ServletModificationVente?idArticle=${article.getNoArticle() }"><input type="text" class="btn btn-secondary" name="Modifier" value="Modifier la vente"></input></a>
+      			<a href="/P_Auctions/ServletSuppressionVente?idArticle=${article.getNoArticle() }"><input type="text" class="btn btn-secondary" name="Supprimer" value="Supprimer la vente"></input></a>
       		</c:if>	  			
       		</div>
-      	</div>	
+      	</div>	     	     	     	
   	</main> 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

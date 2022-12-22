@@ -399,7 +399,6 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			pstmt = cnx.prepareStatement(SELECT_BY_ID_ARTICLE);
 			pstmt.setInt(1, articleVendu.getNoArticle());
-			;
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				Categorie categorie = new Categorie();
