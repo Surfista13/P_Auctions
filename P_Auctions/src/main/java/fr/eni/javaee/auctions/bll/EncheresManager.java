@@ -70,12 +70,16 @@ public class EncheresManager {
 		String result = "";
 		if(enchere.getMontant_enchere() > article.getPrixVente() && enchere.getMontant_enchere() > article.getMiseAPrix()) {
 			if(article.getDateDebutEncheres().isBefore(LocalDate.now()) || article.getDateFinEncheres().isAfter(LocalDate.now())) {
-			EncheresManager em = EncheresManager.getEnchereManager();
-			ArticleVenduManager av = ArticleVenduManager.getArticleVenduManager();
-			article.setPrixVente(enchere.getMontant_enchere());
-			em.insertEnchere(enchere);
-			av.MiseAJourPrixDeVente(article.getPrixVente(), article.getNoArticle());				
-			result ="Votre en chère a été prise  en compte";
+				if(enchere.getUtilisateur().getCredit()> enchere.getMontant_enchere()) {
+					EncheresManager em = EncheresManager.getEnchereManager();
+					ArticleVenduManager av = ArticleVenduManager.getArticleVenduManager();
+					article.setPrixVente(enchere.getMontant_enchere());
+					em.insertEnchere(enchere);
+					av.MiseAJourPrixDeVente(article.getPrixVente(), article.getNoArticle());				
+					result ="Votre en chère a été prise  en compte";
+				}else {
+					result ="Crédit insuffisant";
+				}
 			}else {
 				result = "l'enchere n'a pas commencée ou est terminée";
 			}	

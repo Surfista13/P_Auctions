@@ -21,9 +21,7 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 	private static final String SELECT_ALL_ENCHERES_USER_BY_ARTICLE_NAME = "SELECT no_enchere, ENCHERES.no_utilisateur AS no_user_enchere, UTILISATEURS.pseudo AS user_enchere_pseudo, ENCHERES.no_article,date_enchere,montant_enchere,ARTICLES_VENDUS.no_categorie,CATEGORIES.libelle,ARTICLES_VENDUS.date_debut_encheres,ARTICLES_VENDUS.date_fin_encheres,ARTICLES_VENDUS.description,ARTICLES_VENDUS.nom_article,ARTICLES_VENDUS.no_utilisateur AS no_user_vente,ARTICLES_VENDUS.prix_initial,ARTICLES_VENDUS.prix_vente,userVente.pseudo AS user_vente_pseudo FROM ENCHERES INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN (ARTICLES_VENDUS INNER JOIN UTILISATEURS AS userVente ON ARTICLES_VENDUS.no_utilisateur = userVente.no_utilisateur) ON ARTICLES_VENDUS.no_article = ENCHERES.no_article INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie WHERE ARTICLES_VENDUS.nom_article LIKE ? ORDER BY ENCHERES.no_article, montant_enchere DESC ;";
 	private static final String SELECT_ALL_ENCHERES_USER_BY_CATEGORIE_NAME = "SELECT no_enchere, ENCHERES.no_utilisateur AS no_user_enchere, UTILISATEURS.pseudo AS user_enchere_pseudo, ENCHERES.no_article,date_enchere,montant_enchere,ARTICLES_VENDUS.no_categorie,CATEGORIES.libelle,ARTICLES_VENDUS.date_debut_encheres,ARTICLES_VENDUS.date_fin_encheres,ARTICLES_VENDUS.description,ARTICLES_VENDUS.nom_article,ARTICLES_VENDUS.no_utilisateur AS no_user_vente,ARTICLES_VENDUS.prix_initial,ARTICLES_VENDUS.prix_vente,userVente.pseudo AS user_vente_pseudo FROM ENCHERES INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN (ARTICLES_VENDUS INNER JOIN UTILISATEURS AS userVente ON ARTICLES_VENDUS.no_utilisateur = userVente.no_utilisateur) ON ARTICLES_VENDUS.no_article = ENCHERES.no_article INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie WHERE CATEGORIES.libelle = ? ORDER BY ENCHERES.no_article, montant_enchere DESC;";
 	private static final String SELECT_ALL_ENCHERES_USER_BY_CATEGORIE_NAME_BY_ARTICLE_NAME = "SELECT no_enchere, ENCHERES.no_utilisateur AS no_user_enchere, UTILISATEURS.pseudo AS user_enchere_pseudo, ENCHERES.no_article,date_enchere,montant_enchere,ARTICLES_VENDUS.no_categorie,CATEGORIES.libelle,ARTICLES_VENDUS.date_debut_encheres,ARTICLES_VENDUS.date_fin_encheres,ARTICLES_VENDUS.description,ARTICLES_VENDUS.nom_article,ARTICLES_VENDUS.no_utilisateur AS no_user_vente,ARTICLES_VENDUS.prix_initial,ARTICLES_VENDUS.prix_vente,userVente.pseudo AS user_vente_pseudo FROM ENCHERES INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN (ARTICLES_VENDUS INNER JOIN UTILISATEURS AS userVente ON ARTICLES_VENDUS.no_utilisateur = userVente.no_utilisateur) ON ARTICLES_VENDUS.no_article = ENCHERES.no_article INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie WHERE ARTICLES_VENDUS.nom_article LIKE ? AND CATEGORIES.libelle = ? ORDER BY ENCHERES.no_article, montant_enchere DESC;";
-
 	private static final String SELECT_ENCHERES_BY_ID_ARTICLE = "SELECT * FROM ENCHERES INNER JOIN UTILISATEURS ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN ARTICLES_VENDUS ON ENCHERES.no_article = ARTICLES_VENDUS.no_article WHERE ENCHERES.no_article = ? ORDER BY date_enchere DESC;";
-
 	private static final String INSERT_ENCHERES = "INSERT INTO ENCHERES(no_utilisateur,no_article,date_enchere,montant_enchere) VALUES (?,?,?,?); ";
 
 	List<Enchere> encheres;
@@ -89,8 +87,8 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			encheres = new ArrayList<>();
 			pstmt = cnx.prepareStatement(SELECT_ALL_ENCHERES_USER_BY_ARTICLE_NAME);
-			pstmt.setInt(1, user.getNoUtilisateur());
-			pstmt.setString(2, "%" + articleVendu.getNomArticle() + "%");
+			//pstmt.setInt(1, user.getNoUtilisateur());
+			pstmt.setString(1, "%" + articleVendu.getNomArticle() + "%");
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				if(idArticlePrecedent != rs.getInt("no_article")){
@@ -143,8 +141,8 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			encheres = new ArrayList<>();
 			pstmt = cnx.prepareStatement(SELECT_ALL_ENCHERES_USER_BY_CATEGORIE_NAME);
-			pstmt.setInt(1, user.getNoUtilisateur());
-			pstmt.setString(2, categorieRecherchee.getLibelle());
+			//pstmt.setInt(1, user.getNoUtilisateur());
+			pstmt.setString(1, categorieRecherchee.getLibelle());
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				if(idArticlePrecedent != rs.getInt("no_article")){
@@ -198,9 +196,9 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			encheres = new ArrayList<>();
 			pstmt = cnx.prepareStatement(SELECT_ALL_ENCHERES_USER_BY_CATEGORIE_NAME_BY_ARTICLE_NAME);
-			pstmt.setInt(1, user.getNoUtilisateur());
-			pstmt.setString(2, "%" + articleVendu.getNomArticle() + "%");
-			pstmt.setString(3, categorieRecherchee.getLibelle());
+			//pstmt.setInt(1, user.getNoUtilisateur());
+			pstmt.setString(1, "%" + articleVendu.getNomArticle() + "%");
+			pstmt.setString(2, categorieRecherchee.getLibelle());
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				if(idArticlePrecedent != rs.getInt("no_article")){
