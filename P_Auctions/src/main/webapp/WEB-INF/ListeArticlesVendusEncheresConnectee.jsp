@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="UTF-8"%>
 <%@ page session="false" %>
+<%@ page import= "java.time.format.DateTimeFormatter"%>
+<%@ page import= "java.time.format.FormatStyle"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,20 +20,28 @@
 	      <nav class="my-2 my-md-0 mr-md-3">
 	        <a class="p-2 text-dark" href="/P_Auctions/ServletNouvelleVente">Vendre un article</a>
 	        <a class="p-2 text-dark" href="/P_Auctions/ServletDeconnexionUtilisateur">Déconnexion</a>
-	        <button id="btnCredits" type="button" class="btn btn-primary position-relative">
+	        <button id="btnCredits" type="button" class="btn btn-primary position-relative" data-toggle="collapse" data-target="#demo">
   				Credits
   				<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
    				${credit}
   				</span>
 			</button>
+
 			<a class="p-2 text-dark" href="/P_Auctions/ServletProfilUtilisateur?idRech=${idConnect}">Mon profil (${pseudo })</a>
 			<a class="avatar avatar-sm p-0 show" href="/P_Auctions/ServletProfilUtilisateur?idRech=${idConnect}" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="true">
 						<img class="rounded-circle" src="./images/Didier.png" alt="avatar">
 					</a>
 	      </nav>
 	    </div>
+	<div id="demo" class="collapse">
+		<form id="formCredit" action="/P_Auctions/ServletAjoutCredit" method="get">
+			<input class="btn btn-outline-secondary" type="submit" id="button-addon1" value="Ajouter"></input>
+  			<input id="credit" type="number" class="form-control" name="credit" aria-label="Example text with button addon" aria-describedby="button-addon1" min="1" required>
+		</form> 		
+</div>
 	</header>
 	<main class="main">
+
 		<div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
 		        <div class="col-md-7 px-0">
 			          <h1 class="display-4 font-italic">Mes ventes et mes enchères</h1>
@@ -280,7 +290,8 @@
               							<h3 class="mb-0">
                 						<a class="text-dark" href="/P_Auctions/ServletDetailsArticle?idArticle=${listeResult.getArticleVendus().getNoArticle()}">${listeResult.getArticleVendus().getNomArticle()}</a>
               							</h3>
-              							<div class="mb-1 text-muted">Fin enchère: ${listeResult.getArticleVendus().getDateFinEncheres() }</div>
+              							<div class="mb-1 text-muted">Début enchère: ${listeResult.getArticleVendus().getDateDebutEncheres().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) }</div>
+              							<div class="mb-1 text-muted">Fin enchère: ${listeResult.getArticleVendus().getDateFinEncheres().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) }</div>
               							<p class="card-text mb-auto">Prix: ${listeResult.getArticleVendus().getMiseAPrix() }</p>
               							<p class="card-text mb-auto">${listeResult.getArticleVendus().getDescription() }</p>
               							<a href="/P_Auctions/ServletProfilUtilisateur?idRech=${listeResult.getArticleVendus().getUtilisateur().getNoUtilisateur()}">${listeResult.getArticleVendus().getUtilisateur().getPseudo()}</a>
@@ -304,7 +315,8 @@
               							<h3 class="mb-0">
                 						<a class="text-dark" href="/P_Auctions/ServletDetailsArticle?idArticle=${listeResult.getNoArticle()}">${listeResult.getNomArticle()}</a>
               							</h3>
-              							<div class="mb-1 text-muted">Fin enchère: ${listeResult.getDateFinEncheres() }</div>
+              							<div class="mb-1 text-muted">Début enchère: ${listeResult.getDateDebutEncheres().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) }</div>
+              							<div class="mb-1 text-muted">Fin enchère: ${listeResult.getDateFinEncheres().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) }</div>
               							<p class="card-text mb-auto">Prix: ${listeResult.getMiseAPrix() }</p>
               							<p class="card-text mb-auto">${listeResult.getDescription() }</p>
               							<a href="/P_Auctions/ServletProfilUtilisateur?idRech=${listeResult.getUtilisateur().getNoUtilisateur()}">${listeResult.getUtilisateur().getPseudo()}</a>
@@ -316,9 +328,7 @@
 					</c:forEach>
 				</div>
     		</div>
-		</c:if> 
-		
-    		
+		</c:if> 		
 	</main>
 	<footer> </footer>
 

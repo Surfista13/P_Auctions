@@ -32,20 +32,21 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 	private static final String SELECT_ALL = "SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie;";
 	private static final String SELECT_BY_ARTICLE_NAME = "SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie WHERE ARTICLES_VENDUS.nom_article LIKE ?;";
 	private static final String SELECT_BY_CATEGORIE = "SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie WHERE CATEGORIES.libelle = ?;";
-	
-	private static final String SELECT_BY_ID_ARTICLE ="SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article WHERE ARTICLES_VENDUS.no_article = ?;";
-	
-	
-	private static final String INSERT_NEW_VENTE ="INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie) VALUES(?,?,?,?,?,?,?);";
-	private static final String INSERT_NEW_RETRAIT="INSERT INTO RETRAITS (no_article,rue,code_postal,ville) VALUES(?,?,?,?);";
-	
-	private static final String UPDATE_VENTE ="UPDATE ARTICLES_VENDUS set nom_article=? , description=?, date_debut_encheres=?, date_fin_encheres=?, prix_initial=?,no_categorie=? where no_article=?;";
+
+	private static final String SELECT_BY_ID_ARTICLE = "SELECT * FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN CATEGORIES ON ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article WHERE ARTICLES_VENDUS.no_article = ?;";
+
+	private static final String INSERT_NEW_VENTE = "INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie) VALUES(?,?,?,?,?,?,?);";
+	private static final String INSERT_NEW_RETRAIT = "INSERT INTO RETRAITS (no_article,rue,code_postal,ville) VALUES(?,?,?,?);";
+
+	private static final String UPDATE_VENTE = "UPDATE ARTICLES_VENDUS set nom_article=? , description=?, date_debut_encheres=?, date_fin_encheres=?, prix_initial=?,no_categorie=? where no_article=?;";
 	private static final String DELETE_VENTE = "DELETE FROM ARTICLES_VENDUS WHERE no_article=?;";
-	
+
 	private static final String UPDATE_PRIX_VENTE = "UPDATE ARTICLES_VENDUS SET prix_vente = ? WHERE no_article = ?;";
+
 	
+
 	private static final Logger LOGGER = Logger.getLogger(UtilisateurDaoJDBCImpl.class.getName());
-	
+
 	List<ArticleVendu> articles;
 	ArticleVendu article = new ArticleVendu();
 
@@ -216,7 +217,7 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 				article.setCategorie(categorie);
 				article.setUtilisateur(utilisateur);
 				articles.add(article);
-				LOGGER.log(Level.INFO,"Accès à la méthode selectByUser");
+				LOGGER.log(Level.INFO, "Accès à la méthode selectByUser");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -463,48 +464,38 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 
 		return nbRow;
 	}
-		
-		public ArticleVendu updateVente (ArticleVendu articleVendu) {
-			try(Connection cnx = ConnectionProvider.getConnection()){
-				
-				PreparedStatement pStmt= cnx.prepareStatement(UPDATE_VENTE);
-				pStmt.setString(1, articleVendu.getNomArticle());
-				pStmt.setString(2, articleVendu.getDescription());
-				pStmt.setDate(3, Date.valueOf(articleVendu.getDateDebutEncheres()));
-				pStmt.setDate(4, Date.valueOf (articleVendu.getDateFinEncheres()));
-				pStmt.setInt(5, articleVendu.getMiseAPrix());
-				pStmt.setInt(6, articleVendu.getCategorie().getNoCategorie());
-				pStmt.setInt(7, articleVendu.getNoArticle());
-				pStmt.executeUpdate();
-				System.out.println("execute ok");
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return articleVendu;
+
+	public ArticleVendu updateVente(ArticleVendu articleVendu) {
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+
+			PreparedStatement pStmt = cnx.prepareStatement(UPDATE_VENTE);
+			pStmt.setString(1, articleVendu.getNomArticle());
+			pStmt.setString(2, articleVendu.getDescription());
+			pStmt.setDate(3, Date.valueOf(articleVendu.getDateDebutEncheres()));
+			pStmt.setDate(4, Date.valueOf(articleVendu.getDateFinEncheres()));
+			pStmt.setInt(5, articleVendu.getMiseAPrix());
+			pStmt.setInt(6, articleVendu.getCategorie().getNoCategorie());
+			pStmt.setInt(7, articleVendu.getNoArticle());
+			pStmt.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		@Override
-		public void deleteVente(ArticleVendu articleVendu) {
-			
-			try(Connection cnx = ConnectionProvider.getConnection()){
-				PreparedStatement pStmt = cnx.prepareStatement(DELETE_VENTE);
-				pStmt.setInt(1, articleVendu.getNoArticle());
-				pStmt.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		return articleVendu;
+	}
+
+	@Override
+	public void deleteVente(ArticleVendu articleVendu) {
+
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(DELETE_VENTE);
+			pStmt.setInt(1, articleVendu.getNoArticle());
+			pStmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	}
+
 }

@@ -60,14 +60,16 @@
       			<p>Retrait: ${article.getRetrait().getRue()} ${article.getRetrait().getCodePostal()}   ${article.getRetrait().getVille() }</p>
       			<p>Vendeur:  ${article.getUtilisateur().getPseudo()}</p>
       			<c:if test="${typePage == 1}"><p>Téléphone: ${article.getUtilisateur().getTelephone()}</p></c:if>
+      			<c:if test="${typePage2 == 1}">
       			<p>Liste enchères</p>
 					<ul>
 						<c:forEach items="${listeEncheres}" var="listeResult">
 							<li>${listeResult.getDateEnchere()}  -  ${listeResult.getMontant_enchere()}  -  ${listeResult.getUtilisateur().getPseudo()}</li>
 						</c:forEach>	
 					</ul>
+				</c:if>	
       			<form action="/P_Auctions/Encherir?idArticle=${article.getNoArticle() }" method="post" name="encherir" id="encherir">
-      				<c:if test="${typePage2 == 1}">		
+      				<c:if test="${typePage2 != 1}">		
       					<label for="enchere">Ma proposition:</label>
 						<input type="number" id="enchere" name="enchere" min="1" max="10000000">
 						<input type="submit" value="Encherir" class="btn btn-secondary btn-lg">	

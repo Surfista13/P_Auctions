@@ -45,8 +45,9 @@ public class ServletTestManager extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+/*		
 		//Test1 affichage catégories		
-		/*
+
 		PrintWriter out = response.getWriter();
         CategorieManager cm = CategorieManager.getCategorieManager();
 		
@@ -76,8 +77,7 @@ public class ServletTestManager extends HttpServlet {
 		    out3.print("Article: " + b + "\n");
 		    out3.print("\n");
 		}
-		*/
-	    //Test4 affichage des ventes d'un utilisateur
+    //Test4 affichage des ventes d'un utilisateur
         PrintWriter out4 = response.getWriter();
         ArticleVenduManager cm4 = ArticleVenduManager.getArticleVenduManager();
         List<ArticleVendu> articles2 = new ArrayList<>();
@@ -88,19 +88,18 @@ public class ServletTestManager extends HttpServlet {
 		Logger logger =  LoggerFactory.getLogger(this.getClass().getName());
 		logger.log(Level.INFO,"APRES Accès à la méthode selectUserById");
 		//logger
-		/*Logger logger = Logger.getLogger(UtilisateurDaoJDBCImpl.class.getName());
+		Logger logger = Logger.getLogger(UtilisateurDaoJDBCImpl.class.getName());
 		logger.log(Level.INFO,"AVANT Accès à la méthode selectUserById");
 		Handler textFileHandler = new FileHandler("/temp/logAppliEnchere.%g.log",10000,5,false);
 		logger.addHandler(textFileHandler);
 		SimpleFormatter simpleFormatter = new SimpleFormatter();
-		textFileHandler.setFormatter(simpleFormatter);*/
+		textFileHandler.setFormatter(simpleFormatter);
 		
 		for (ArticleVendu b : articles2){
 		    out4.print("Article utilisateurs: " + b + "\n");
 		    out4.print("\n");
 		}
 
-	/*
 
 		//Test5 affichage enchères utilisateurs
 		PrintWriter out6 = response.getWriter();
@@ -278,8 +277,20 @@ public class ServletTestManager extends HttpServlet {
 		
 		String x = cm3.encherir(enchere, article);
 		out4.print("test" + x);
-	*/		
-		out4.close();
+*/
+		
+		//Test18 update credits
+		UtilisateurManager utilisateurManager = UtilisateurManager.getInstance();
+		Utilisateur utilisateurPrec = new Utilisateur();
+		utilisateurPrec.setNoUtilisateur(1);
+		utilisateurPrec.setCredit(50);
+		Utilisateur utilisateurNx = new Utilisateur();
+		utilisateurNx.setNoUtilisateur(2);
+		utilisateurNx.setCredit(100);
+		utilisateurManager.miseAJourCredit(utilisateurPrec, utilisateurNx);
+		
+		
+		//out4.close();
 	
 	}
 }

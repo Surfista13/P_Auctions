@@ -26,7 +26,8 @@ public class ServletInscription extends HttpServlet {
 		rd.forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		Utilisateur nouvelUtilisateur = new Utilisateur();
 		nouvelUtilisateur.setPseudo(request.getParameter("pseudo"));
 		nouvelUtilisateur.setNom(request.getParameter("nom"));
@@ -37,12 +38,13 @@ public class ServletInscription extends HttpServlet {
 		nouvelUtilisateur.setCodePostal(request.getParameter("codePostal"));
 		nouvelUtilisateur.setVille(request.getParameter("ville"));
 		nouvelUtilisateur.setMotDePasse(request.getParameter("motDePasse"));
-		String confirmation = request.getParameter("confirmation");		
+		String confirmation = request.getParameter("confirmation");
 		try {
 			nouvelUtilisateur = UtilisateurManager.getInstance().insert(nouvelUtilisateur, confirmation);
 			HttpSession session = request.getSession();
 			session.setAttribute("utilisateurConnecte", nouvelUtilisateur);
-			RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
+			RequestDispatcher rd = request.getRequestDispatcher(
+					"/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
 			rd.forward(request, response);
 		} catch (DALException e) {
 			response.sendRedirect("erreurDAL.html");
@@ -51,5 +53,5 @@ public class ServletInscription extends HttpServlet {
 			rd = request.getRequestDispatcher("/WEB-INF/Inscription.jsp");
 			rd.forward(request, response);
 		}
-	}	
+	}
 }

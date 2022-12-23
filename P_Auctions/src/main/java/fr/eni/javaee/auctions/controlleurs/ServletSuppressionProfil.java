@@ -24,13 +24,15 @@ public class ServletSuppressionProfil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Récupération de l'utilisateur connecté dans la session
-		HttpSession session =request.getSession(false);	
-		//Redirige vers la page d'accueil non connecté si la session est nulle
-		if(session == null) {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// Récupération de l'utilisateur connecté dans la session
+		HttpSession session = request.getSession(false);
+		// Redirige vers la page d'accueil non connecté si la session est nulle
+		if (session == null) {
 			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
 			rd.forward(request, response);
 		}
@@ -39,12 +41,12 @@ public class ServletSuppressionProfil extends HttpServlet {
 		request.setAttribute("pseudo", userConnecte.getPseudo());
 		request.setAttribute("credit", userConnecte.getCredit());
 		request.setAttribute("id", userConnecte.getNoUtilisateur());
-		
-		//Récupérer l'id utilisateur dont on souhaite afficher le profil
-		//TODO lier avec page précédente qui doit renvoyer l'id utilisateur
-		int idUser= Integer.parseInt(request.getParameter("idRech")) ;
-		
-		//int idUser= 33;
+
+		// Récupérer l'id utilisateur dont on souhaite afficher le profil
+		// TODO lier avec page précédente qui doit renvoyer l'id utilisateur
+		int idUser = Integer.parseInt(request.getParameter("idRech"));
+
+		// int idUser= 33;
 		UtilisateurManager utilisateurManager = UtilisateurManager.getInstance();
 		Utilisateur utilisateurRecherche = new Utilisateur();
 		try {
@@ -52,25 +54,28 @@ public class ServletSuppressionProfil extends HttpServlet {
 		} catch (DALException e) {
 			response.sendRedirect("erreurDAL.html");
 		}
-		request.setAttribute("utilisateur", utilisateurRecherche);		
+		request.setAttribute("utilisateur", utilisateurRecherche);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/SuppressionProfil.jsp");
 		rd.forward(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Utilisateur utilisateurConnecte = (Utilisateur)session.getAttribute("utilisateurConnecte");
-		
-		Utilisateur utilisateurSupp= new Utilisateur();
-		int num =Integer.parseInt(request.getParameter("majUtilisateur"));
+		Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
+
+		Utilisateur utilisateurSupp = new Utilisateur();
+		int num = Integer.parseInt(request.getParameter("majUtilisateur"));
 		utilisateurSupp.setNoUtilisateur(num);
-		
+
 		Utilisateur supp = UtilisateurManager.getInstance().deleteProfil(utilisateurSupp);
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
+
+		RequestDispatcher rd = request.getRequestDispatcher(
+				"/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
 		rd.forward(request, response);
 	}
 

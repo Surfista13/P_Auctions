@@ -16,10 +16,12 @@ import javax.servlet.http.HttpSession;
 import fr.eni.javaee.auctions.bll.ArticleVenduManager;
 import fr.eni.javaee.auctions.bll.CategorieManager;
 import fr.eni.javaee.auctions.bll.EncheresManager;
+import fr.eni.javaee.auctions.bll.UtilisateurManager;
 import fr.eni.javaee.auctions.bo.ArticleVendu;
 import fr.eni.javaee.auctions.bo.Categorie;
 import fr.eni.javaee.auctions.bo.Enchere;
 import fr.eni.javaee.auctions.bo.Utilisateur;
+import fr.eni.javaee.auctions.dal.DALException;
 
 /**
  * Servlet implementation class ServletEncheresConnectees
@@ -46,8 +48,8 @@ public class ServletEncheresConnectees extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Création de l'utilisateur connecté
-		HttpSession session =request.getSession();
-		if(session == null) {
+		HttpSession session = request.getSession();
+		if (session == null) {
 			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
 			rd.forward(request, response);
 		}
@@ -56,7 +58,7 @@ public class ServletEncheresConnectees extends HttpServlet {
 		request.setAttribute("credit", userConnecte.getCredit());
 		request.setAttribute("idConnect", userConnecte.getNoUtilisateur());
 		session.setAttribute("utilisateurConnecte", userConnecte);
-		
+
 		// Select de la liste des enchères de l'acheteur
 		EncheresManager enchereManager = EncheresManager.getEnchereManager();
 		List<Enchere> listeEnchere = new ArrayList<>();
@@ -64,13 +66,22 @@ public class ServletEncheresConnectees extends HttpServlet {
 		request.setAttribute("liste", listeEnchere);
 		String mesAchats = "mesAchats";
 		String radio = "mesAchats";
-		request.setAttribute("achat",mesAchats );
+		request.setAttribute("achat", mesAchats);
 		request.setAttribute("type", radio);
 		request.setAttribute("param1", "1");
 		request.setAttribute("param2", "2");
 		request.setAttribute("param3", "3");
-		
 
+		//Mise à jour crédit
+		UtilisateurManager um = new UtilisateurManager();
+		Utilisateur userMaJ = new Utilisateur();
+		try {
+			userMaJ = um.selectByUserId(userConnecte.getNoUtilisateur());
+		} catch (DALException e) {
+			response.sendRedirect("erreurDAL.html");
+		}
+		request.setAttribute("credit", userMaJ.getCredit());
+		
 		// Liste des catégories
 		request.setAttribute("listeCategories", categories);
 
@@ -87,20 +98,20 @@ public class ServletEncheresConnectees extends HttpServlet {
 			throws ServletException, IOException {
 
 		// Récupère la connexion
-		HttpSession session =request.getSession(false);
-		
-		//Redirige vers la page d'accueil non connecté si la session est nulle
-		if(session == null) {
+		HttpSession session = request.getSession(false);
+
+		// Redirige vers la page d'accueil non connecté si la session est nulle
+		if (session == null) {
 			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
 			rd.forward(request, response);
 		}
-		
+
 		userConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 		request.setAttribute("pseudo", userConnecte.getPseudo());
 		request.setAttribute("credit", userConnecte.getCredit());
 		request.setAttribute("idConnect", userConnecte.getNoUtilisateur());
 		session.setAttribute("utilisateurConnecte", userConnecte);
-		
+
 		// Liste des catégories
 		request.setAttribute("listeCategories", categories);
 
@@ -115,9 +126,8 @@ public class ServletEncheresConnectees extends HttpServlet {
 		// Initialisation d'un article pour stocker la recherche par nom
 		ArticleVendu articleVendu = new ArticleVendu();
 		articleVendu.setNomArticle(request.getParameter("recherche"));
-		
 
-		// Récupération de l'état des checkbox		
+		// Récupération de l'état des checkbox
 		String param1 = request.getParameter("encheresOuvertes");
 		String param2 = request.getParameter("encheresEnCours");
 		String param3 = request.getParameter("encheresRemportees");
@@ -125,17 +135,17 @@ public class ServletEncheresConnectees extends HttpServlet {
 		String param5 = request.getParameter("ventesNonDebutees");
 		String param6 = request.getParameter("ventesTerminees");
 
-		// Récupération de l'état du bouton radio soit via la page authentification soit par une recherche
+		// Récupération de l'état du bouton radio soit via la page authentification soit
+		// par une recherche
 		String radio = request.getParameter("connect");
-		
-		
+
 		// Transfert de l'état des bouton radio vers la jsp
 		request.setAttribute("type", radio);
 		String mesAchats = "mesAchats";
 		String mesVentes = "mesVentes";
 		request.setAttribute("achat", mesAchats);
 		request.setAttribute("vente", mesVentes);
-		
+
 		// Transfert de l'état des check box vers la jsp
 		request.setAttribute("param1", param1);
 		request.setAttribute("param2", param2);
@@ -143,11 +153,21 @@ public class ServletEncheresConnectees extends HttpServlet {
 		request.setAttribute("param4", param4);
 		request.setAttribute("param5", param5);
 		request.setAttribute("param6", param6);
-		
-		
-		// Filtre de la recherche utilisateur
-		listeFiltree(userConnecte, articleVendu, categorie, radio, param1, param2, param3, param4, param5, param6, request);
 
+		// Filtre de la recherche utilisateur
+		listeFiltree(userConnecte, articleVendu, categorie, radio, param1, param2, param3, param4, param5, param6,
+				request);
+		
+		//Mise à jour crédit
+		UtilisateurManager um = new UtilisateurManager();
+		Utilisateur userMaJ = new Utilisateur();
+		try {
+			userMaJ = um.selectByUserId(userConnecte.getNoUtilisateur());
+		} catch (DALException e) {
+			response.sendRedirect("erreurDAL.html");
+		}
+		request.setAttribute("credit", userMaJ.getCredit());
+		
 		// Dispatch vers jsp
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListeArticlesVendusEncheresConnectee.jsp");
 		rd.forward(request, response);
@@ -201,7 +221,7 @@ public class ServletEncheresConnectees extends HttpServlet {
 						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("enCours")
 								|| entry.getArticleVendus().getEtatVente().equals("nonDebutee")
 								|| entry.getArticleVendus().getEtatVente().equals("remportee")
-								&& entry.getUtilisateur().getNoUtilisateur()== user.getNoUtilisateur())
+										&& entry.getUtilisateur().getNoUtilisateur() == user.getNoUtilisateur())
 						.collect(Collectors.toList());
 			}
 			if (param1 != null && param2 == null && param3 == null) {
@@ -219,20 +239,20 @@ public class ServletEncheresConnectees extends HttpServlet {
 				listeEnchereFiltree = listeEnchere.stream()
 						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("enCours")
 								|| entry.getArticleVendus().getEtatVente().equals("remportee")
-								&& entry.getUtilisateur().getNoUtilisateur()== user.getNoUtilisateur())
+										&& entry.getUtilisateur().getNoUtilisateur() == user.getNoUtilisateur())
 						.collect(Collectors.toList());
 			}
 			if (param1 != null && param2 == null && param3 != null) {
 				listeEnchereFiltree = listeEnchere.stream()
 						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("nonDebutee")
 								|| entry.getArticleVendus().getEtatVente().equals("remportee")
-								&& entry.getUtilisateur().getNoUtilisateur()== user.getNoUtilisateur())
+										&& entry.getUtilisateur().getNoUtilisateur() == user.getNoUtilisateur())
 						.collect(Collectors.toList());
 			}
 			if (param1 == null && param2 == null && param3 != null) {
 				listeEnchereFiltree = listeEnchere.stream()
 						.filter(entry -> entry.getArticleVendus().getEtatVente().equals("remportee")
-								&& entry.getUtilisateur().getNoUtilisateur()== user.getNoUtilisateur())
+								&& entry.getUtilisateur().getNoUtilisateur() == user.getNoUtilisateur())
 						.collect(Collectors.toList());
 			}
 			if (param1 == null && param2 != null && param3 == null) {

@@ -50,7 +50,7 @@ public class ServletConnexionUtilisateur extends HttpServlet {
 		Utilisateur utilisateurExistant = null;
 		try {
 			utilisateurExistant = UtilisateurManager.getInstance().validerConnexion(pseudo, pseudo, motDePasse);
-		}catch (DALException e) {
+		} catch (DALException e) {
 			response.sendRedirect("erreurDAL.html");
 		}
 

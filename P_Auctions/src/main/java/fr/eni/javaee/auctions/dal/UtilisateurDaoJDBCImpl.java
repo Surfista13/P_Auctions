@@ -2,6 +2,7 @@ package fr.eni.javaee.auctions.dal;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,20 +20,23 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 	private final static String SELECT_USER = "SELECT * FROM UTILISATEURS WHERE (LOWER(pseudo) =? or LOWER(email)=?) and LOWER(mot_de_passe) = ? ;";
 	private final static String INSERT_USER = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur)VALUES(?,?,?,?,?,?,?,?,?,?,?);";
 	private final static String SELECT_USER_BY_ID = "SELECT * FROM UTILISATEURS WHERE no_utilisateur = ?;";
-	
-	private static final String UPDATE_UTILISATEUR="UPDATE UTILISATEURS set pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=? where no_utilisateur=?;";
-	private static final String DELETE_UTILISATEUR="DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
+
+	private static final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS set pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=? where no_utilisateur=?;";
+	private static final String DELETE_UTILISATEUR = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
+
+	private static final String UPDATE_CREDIT = "UPDATE UTILISATEURS SET credit=? WHERE no_utilisateur = ?;";
 
 	private static Logger logger = null;
 
 	/**
 	 * param utilisateur = utilisateur à insérer dans la base de donnée suite à la
 	 * saisie d'un formulaire
-	 * @throws DALException 
-	 * @throws SQLException 
+	 * 
+	 * @throws DALException
+	 * @throws SQLException
 	 */
 	@Override
-	public void insert(Utilisateur utilisateur) throws DALException{
+	public void insert(Utilisateur utilisateur) throws DALException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pSmt = cnx.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
 			pSmt.setString(1, utilisateur.getPseudo());
@@ -52,27 +56,29 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 				int idUtilisateur = clePrimairesGenerees.getInt(1);
 				utilisateur.setNoUtilisateur(idUtilisateur);
 			}
-		}catch (SQLException e) {
-				try {
-					logger = LoggerFactory.getLogger(this.getClass().getName());
-				} catch (SecurityException | IOException e1) {
-					DALException de = new DALException();
-					de.ajouterErreur(30000);
-					throw de;
-				}
-				logger.log(Level.SEVERE,"Erreur d'accès à la base de donnée dans la méthode: " + e.getClass()+" .Détails: "+e.getCause());
+		} catch (SQLException e) {
+			try {
+				logger = LoggerFactory.getLogger(this.getClass().getName());
+			} catch (SecurityException | IOException e1) {
 				DALException de = new DALException();
 				de.ajouterErreur(30000);
 				throw de;
 			}
+			logger.log(Level.SEVERE, "Erreur d'accès à la base de donnée dans la méthode: " + e.getClass()
+					+ " .Détails: " + e.getCause());
+			DALException de = new DALException();
+			de.ajouterErreur(30000);
+			throw de;
+		}
 	}
+
 	/**
 	 * @return un Utilisateur s'il existe, null sinon
-	 * @throws DALException 
-	 * @throws BusinessException 
+	 * @throws DALException
+	 * @throws BusinessException
 	 */
 	@Override
-	public Utilisateur validerConnexion(String pseudo, String email, String motDePasse) throws DALException{
+	public Utilisateur validerConnexion(String pseudo, String email, String motDePasse) throws DALException {
 		Utilisateur unUtilisateur = null;
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pStmt = cnx.prepareStatement(SELECT_USER);
@@ -103,16 +109,19 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 				de.ajouterErreur(30000);
 				throw de;
 			}
-			logger.log(Level.SEVERE,"Erreur d'accès à la base de donnée dans la méthode: " + e.getClass()+" .Détails: "+e.getCause());
+			logger.log(Level.SEVERE, "Erreur d'accès à la base de donnée dans la méthode: " + e.getClass()
+					+ " .Détails: " + e.getCause());
 			DALException de = new DALException();
 			de.ajouterErreur(30000);
 			throw de;
 		}
 		return unUtilisateur;
 	}
+
 	/**
 	 * Param1 = identifiant de l'utilisateur vendeur
-	 * @throws DALException 
+	 * 
+	 * @throws DALException
 	 */
 	@Override
 	public Utilisateur selectUserById(int idUser) throws DALException {
@@ -136,26 +145,28 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 				unUtilisateur.setCredit(rs.getInt("credit"));
 				unUtilisateur.setAdministrateur(rs.getByte("administrateur"));
 			}
-			
+
 		} catch (SQLException e) {
 			try {
 				logger = LoggerFactory.getLogger(this.getClass().getName());
 			} catch (SecurityException | IOException e1) {
 				e1.printStackTrace();
 			}
-			logger.log(Level.SEVERE,"Erreur d'accès à la base de donnée dans la méthode: " + e.getClass()+" .Détails: "+e.getCause());
+			logger.log(Level.SEVERE, "Erreur d'accès à la base de donnée dans la méthode: " + e.getClass()
+					+ " .Détails: " + e.getCause());
 			DALException de = new DALException();
 			de.ajouterErreur(30000);
-			throw de;	
+			throw de;
 		}
 		return unUtilisateur;
 	}
+
 	@Override
 	public Utilisateur updateProfil(Utilisateur utilisateur) {
-		
-		try(Connection cnx=ConnectionProvider.getConnection()){
-			PreparedStatement pStmt= cnx.prepareStatement(UPDATE_UTILISATEUR);
-			pStmt.setString(1,utilisateur.getPseudo());
+
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(UPDATE_UTILISATEUR);
+			pStmt.setString(1, utilisateur.getPseudo());
 			pStmt.setString(2, utilisateur.getNom());
 			pStmt.setString(3, utilisateur.getPrenom());
 			pStmt.setString(4, utilisateur.getEmail());
@@ -166,25 +177,78 @@ public class UtilisateurDaoJDBCImpl implements DAOUtilisateur {
 			pStmt.setString(9, utilisateur.getMotDePasse());
 			pStmt.setInt(10, utilisateur.getNoUtilisateur());
 			pStmt.executeUpdate();
-			
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return utilisateur;
 	}
+
 	@Override
-	public void deleteProfil(Utilisateur utilisateur){
-		
-		try(Connection cnx = ConnectionProvider.getConnection()){
+	public void deleteProfil(Utilisateur utilisateur) {
+
+		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pStmt = cnx.prepareStatement(DELETE_UTILISATEUR);
 			pStmt.setInt(1, utilisateur.getNoUtilisateur());
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
+	@Override
+	public void updateCredit(Utilisateur utilisateurPrecedent, Utilisateur utilisateurNx) {
+
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+
+			try {
+
+				cnx.setAutoCommit(false);
+
+				// update du crédit de l'utilisateur avec la nouvelle meilleur offre
+				PreparedStatement pStmt = cnx.prepareStatement(UPDATE_CREDIT);	
+				pStmt.setInt(1, utilisateurPrecedent.getCredit());
+				pStmt.setInt(2, utilisateurPrecedent.getNoUtilisateur());
+				pStmt.executeUpdate();
+				
+				PreparedStatement pStmt2 = cnx.prepareStatement(UPDATE_CREDIT);
+				pStmt2.setInt(1, utilisateurNx.getCredit());
+				pStmt2.setInt(2, utilisateurNx.getNoUtilisateur());
+				pStmt2.executeUpdate();
+				cnx.commit();
+			} catch (SQLException e) {
+				cnx.rollback();
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		;
+	}
+	
+	@Override
+	public void updateCredit(Utilisateur utilisateur) {
+
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+
+			try {
+
+				cnx.setAutoCommit(false);
+
+				// ajout crédit
+				PreparedStatement pStmt = cnx.prepareStatement(UPDATE_CREDIT);	
+				pStmt.setInt(1, utilisateur.getCredit());
+				pStmt.setInt(2, utilisateur.getNoUtilisateur());
+				pStmt.executeUpdate();
+	
+				cnx.commit();
+			} catch (SQLException e) {
+				cnx.rollback();
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		;
+	}
+	
 }

@@ -3,6 +3,10 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="fr.eni.javaee.auctions.bo.ArticleVendu"%>
 <%@ page import="java.util.List"%>
+<%@ page import= "java.time.format.DateTimeFormatter"%>
+<%@ page import= "java.time.format.FormatStyle"%>
+
+
 <%@ page session="false" %>
 <!DOCTYPE html>
 <html>
@@ -70,8 +74,9 @@
               				<h3 class="mb-0">
                 				<p class="text-dark">${listeResult.getNomArticle() }</p>
               				</h3>
-              				<div class="mb-1 text-muted">Fin enchère: ${listeResult.getDateFinEncheres() }</div>
-              				<p class="card-text mb-auto">Prix: ${listeResult.getMiseAPrix() }</p>
+              				<div class="mb-1 text-muted">Début enchère: ${listeResult.getDateDebutEncheres().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) }</div>
+              				<div class="mb-1 text-muted">Fin enchère: ${listeResult.getDateFinEncheres().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)) }</div>
+              				<p class="card-text mb-auto">Prix: ${listeResult.getMiseAPrix()} crédits</p>
               				<p class="card-text mb-auto">${listeResult.getDescription() }</p>
               				<p>${listeResult.getUtilisateur().getPseudo()}</p>
 						</div>

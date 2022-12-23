@@ -24,7 +24,7 @@ public class UtilisateurManager {
 		return unUtilisateur;
 	}
 
-	public Utilisateur insert(Utilisateur utilisateur, String mdpConfirmation) throws DALException,BusinessException {
+	public Utilisateur insert(Utilisateur utilisateur, String mdpConfirmation) throws DALException, BusinessException {
 		BusinessException be = new BusinessException();
 
 		if (!(utilisateur.getMotDePasse().equals(mdpConfirmation))) {
@@ -35,7 +35,7 @@ public class UtilisateurManager {
 			throw be;
 		} else {
 			DAOFactory.getUtilisateurDao().insert(utilisateur);
-		}		
+		}
 		return utilisateur;
 	}
 	// validation de tous les attributs
@@ -86,19 +86,25 @@ public class UtilisateurManager {
 		utilisateur = DAOFactory.getUtilisateurDao().selectUserById(id);
 		return utilisateur;
 	}
-	
+
 	public Utilisateur updateUtilisateur(Utilisateur utilisateur) {
-		
-		utilisateur = DAOFactory.getUtilisateurDao().updateProfil(utilisateur);
-		
-		return utilisateur;
-		
+		utilisateur = DAOFactory.getUtilisateurDao().updateProfil(utilisateur);		return utilisateur;
+
 	}
-	
-	public  Utilisateur deleteProfil (Utilisateur utilisateur) {
+
+	public Utilisateur deleteProfil(Utilisateur utilisateur) {
 		DAOFactory.getUtilisateurDao().deleteProfil(utilisateur);
 		return utilisateur;
 	}
-
 	
+	public void miseAJourCredit(Utilisateur utilisateurPrecedent, Utilisateur utilisateurNx) {
+		DAOFactory.getUtilisateurDao().updateCredit(utilisateurPrecedent, utilisateurNx);
+		
+	}
+	
+	public void miseAJourCredit(Utilisateur utilisateur) {
+		DAOFactory.getUtilisateurDao().updateCredit(utilisateur);
+		
+	}
+
 }

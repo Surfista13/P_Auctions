@@ -111,6 +111,7 @@
             </div>
             <button type="submit" id="boutModifier" class="btn btn-secondary" >Enregistrer</button>
             <input type="text" value="${utilisateur.getNoUtilisateur()}" name="majUtilisateur" hidden>
+            <a href="<%=request.getContextPath()%>/ServletEncheresConnectees"><input class="btn btn-secondary" type="button" value="Annuler"></a>	
           </form> 
         </div>
       </div>

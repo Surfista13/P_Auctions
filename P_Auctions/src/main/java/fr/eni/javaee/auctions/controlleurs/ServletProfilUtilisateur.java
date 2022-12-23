@@ -19,13 +19,14 @@ import fr.eni.javaee.auctions.dal.DALException;
 @WebServlet("/ServletProfilUtilisateur")
 public class ServletProfilUtilisateur extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		//Récupération de l'utilisateur connecté dans la session
-		HttpSession session =request.getSession(false);	
-		//Redirige vers la page d'accueil non connecté si la session est nulle
-		if(session == null) {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// Récupération de l'utilisateur connecté dans la session
+		HttpSession session = request.getSession(false);
+		// Redirige vers la page d'accueil non connecté si la session est nulle
+		if (session == null) {
 			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
 			rd.forward(request, response);
 		}
@@ -34,13 +35,12 @@ public class ServletProfilUtilisateur extends HttpServlet {
 		request.setAttribute("pseudo", userConnecte.getPseudo());
 		request.setAttribute("credit", userConnecte.getCredit());
 		request.setAttribute("id", userConnecte.getNoUtilisateur());
-		
-		//Récupérer l'id utilisateur dont on souhaite afficher le profil
-		//TODO lier avec page précédente qui doit renvoyer l'id utilisateur
-		int idUser= Integer.parseInt(request.getParameter("idRech")) ;
-		
-		
-		//int idUser= 4;
+
+		// Récupérer l'id utilisateur dont on souhaite afficher le profil
+		// TODO lier avec page précédente qui doit renvoyer l'id utilisateur
+		int idUser = Integer.parseInt(request.getParameter("idRech"));
+
+		// int idUser= 4;
 		UtilisateurManager utilisateurManager = UtilisateurManager.getInstance();
 		Utilisateur utilisateurRecherche = new Utilisateur();
 		try {
@@ -48,22 +48,35 @@ public class ServletProfilUtilisateur extends HttpServlet {
 		} catch (DALException e) {
 			response.sendRedirect("erreurDAL.html");
 		}
-		request.setAttribute("utilisateur", utilisateurRecherche);		
+		
+		//Mise à jour crédit
+		UtilisateurManager um = new UtilisateurManager();
+		Utilisateur userMaJ = new Utilisateur();
+		try {
+			userMaJ = um.selectByUserId(userConnecte.getNoUtilisateur());
+		} catch (DALException e) {
+			response.sendRedirect("erreurDAL.html");
+		}
+		request.setAttribute("credit", userMaJ.getCredit());
+		
+		
+		request.setAttribute("utilisateur", utilisateurRecherche);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Profil.jsp");
 		rd.forward(request, response);
-		
+
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Récupération de l'utilisateur connecté dans la session
-		HttpSession session =request.getSession(false);	
-		
-		//Redirige vers la page d'accueil non connecté si la session est nulle
-		if(session == null) {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// Récupération de l'utilisateur connecté dans la session
+		HttpSession session = request.getSession(false);
+
+		// Redirige vers la page d'accueil non connecté si la session est nulle
+		if (session == null) {
 			System.out.println(session);
 			RequestDispatcher rd = request.getRequestDispatcher("/ServletListeEncheresNonConnecte");
 			rd.forward(request, response);
-		}		
+		}
 		doGet(request, response);
 	}
 

@@ -24,57 +24,62 @@ import fr.eni.javaee.auctions.bo.Utilisateur;
 @WebServlet("/ServletSuppressionVente")
 public class ServletSuppressionVente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	List<Categorie> categories= new ArrayList<>();
+
+	List<Categorie> categories = new ArrayList<>();
 	ArticleVendu article = new ArticleVendu();
 	Utilisateur userConnecte = new Utilisateur();
-		public void init(){
-	        //Liste des catégories
-	        CategorieManager categorieManager = CategorieManager.getCategorieManager();        
-	        categories = categorieManager.selectAllCategories();
-	        }
+
+	public void init() {
+		// Liste des catï¿½gories
+		CategorieManager categorieManager = CategorieManager.getCategorieManager();
+		categories = categorieManager.selectAllCategories();
+	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session =request.getSession();
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		HttpSession session = request.getSession();
 		userConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 		request.setAttribute("pseudo", userConnecte.getPseudo());
-		
+
 		request.setAttribute("idConnect", userConnecte.getNoUtilisateur());
 		session.setAttribute("utilisateurConnecte", userConnecte);
-		
+
 		int idArticle = Integer.parseInt(request.getParameter("idArticle"));
 		ArticleVendu articleRecherche = new ArticleVendu();
 		articleRecherche.setNoArticle(idArticle);
 		ArticleVenduManager articleManager = ArticleVenduManager.getArticleVenduManager();
 		article = articleManager.selectByIDArticle(articleRecherche);
 		request.setAttribute("article", article);
-	
-		request.setAttribute("listeCategories",categories);
+
+		request.setAttribute("listeCategories", categories);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/SuppressionVente.jsp");
 		rd.forward(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Utilisateur utilisateurConnecte = (Utilisateur)session.getAttribute("utilisateurConnecte");
+		Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 		Categorie categorie = new Categorie();
 		ArticleVendu articleRecherche = new ArticleVendu();
-		
+
 		ArticleVendu deleteArticle = new ArticleVendu();
-		//TODO RECUPERER NUM ARTICLE
-		int num =Integer.parseInt(request.getParameter("majArticle"));
+		int num = Integer.parseInt(request.getParameter("majArticle"));
 		deleteArticle.setNoArticle(num);
-		
+
 		ArticleVendu supp = ArticleVenduManager.getArticleVenduManager().deleteVente(deleteArticle);
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
+
+		RequestDispatcher rd = request.getRequestDispatcher(
+				"/ServletEncheresConnectees?connect=mesAchats&categories=Toutes&recherche=&encheresOuvertes=1&encheresEnCours=2&encheresRemportees=3");
 		rd.forward(request, response);
 	}
 

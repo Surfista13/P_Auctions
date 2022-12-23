@@ -34,10 +34,10 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			encheres = new ArrayList<>();
 			pstmt = cnx.prepareStatement(SELECT_ALL_ENCHERES_USER);
-			//pstmt.setInt(1, 0);
+			// pstmt.setInt(1, 0);
 			rs = pstmt.executeQuery();
-			while (rs.next()) {	
-				if(idArticlePrecedent != rs.getInt("no_article")){
+			while (rs.next()) {
+				if (idArticlePrecedent != rs.getInt("no_article")) {
 					// Création utilisateur qui a créer la vente
 					Utilisateur utilisateurVente = new Utilisateur();
 					utilisateurVente.setNoUtilisateur(rs.getInt("no_user_vente"));
@@ -67,13 +67,12 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 					enchere.setMontant_enchere(rs.getInt("montant_enchere"));
 					enchere.setArticleVendus(article);
 					enchere.setUtilisateur(utilisateurEnchere);
-					// Ajout de l'enchère à la liste				
+					// Ajout de l'enchère à la liste
 					encheres.add(enchere);
-					}
-				idArticlePrecedent = rs.getInt("no_article");								
-				}					
+				}
+				idArticlePrecedent = rs.getInt("no_article");
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return encheres;
@@ -87,47 +86,46 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			encheres = new ArrayList<>();
 			pstmt = cnx.prepareStatement(SELECT_ALL_ENCHERES_USER_BY_ARTICLE_NAME);
-			//pstmt.setInt(1, user.getNoUtilisateur());
+			// pstmt.setInt(1, user.getNoUtilisateur());
 			pstmt.setString(1, "%" + articleVendu.getNomArticle() + "%");
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				if(idArticlePrecedent != rs.getInt("no_article")){
-				// Création utilisateur qui a créer la vente
-				Utilisateur utilisateurVente = new Utilisateur();
-				utilisateurVente.setNoUtilisateur(rs.getInt("no_user_vente"));
-				utilisateurVente.setPseudo(rs.getString("user_vente_pseudo"));
-				// Création utilisateur qui poser une enchère
-				Utilisateur utilisateurEnchere = new Utilisateur();
-				utilisateurEnchere.setNoUtilisateur(rs.getInt("no_user_enchere"));
-				utilisateurEnchere.setPseudo(rs.getString("user_enchere_pseudo"));
-				// Création de la catégorie de l'article vendu
-				Categorie categorie = new Categorie();
-				categorie.setNoCategorie(rs.getInt("no_categorie"));
-				categorie.setLibelle(rs.getString("libelle"));
-				// Création de l'article vendu
-				ArticleVendu article = new ArticleVendu();
-				article.setNoArticle(rs.getInt("no_article"));
-				article.setNomArticle(rs.getString("nom_article"));
-				article.setDescription(rs.getString("description"));
-				article.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());
-				article.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
-				article.setMiseAPrix(rs.getInt("prix_initial"));
-				article.setPrixVente(rs.getInt("prix_vente"));
-				article.setCategorie(categorie);
-				article.setUtilisateur(utilisateurVente);
-				// Création de l'enchère
-				Enchere enchere = new Enchere();
-				enchere.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
-				enchere.setMontant_enchere(rs.getInt("montant_enchere"));
-				enchere.setArticleVendus(article);
-				enchere.setUtilisateur(utilisateurEnchere);
-				// Ajout de l'enchère à la liste
-				encheres.add(enchere);
+				if (idArticlePrecedent != rs.getInt("no_article")) {
+					// Création utilisateur qui a créer la vente
+					Utilisateur utilisateurVente = new Utilisateur();
+					utilisateurVente.setNoUtilisateur(rs.getInt("no_user_vente"));
+					utilisateurVente.setPseudo(rs.getString("user_vente_pseudo"));
+					// Création utilisateur qui poser une enchère
+					Utilisateur utilisateurEnchere = new Utilisateur();
+					utilisateurEnchere.setNoUtilisateur(rs.getInt("no_user_enchere"));
+					utilisateurEnchere.setPseudo(rs.getString("user_enchere_pseudo"));
+					// Création de la catégorie de l'article vendu
+					Categorie categorie = new Categorie();
+					categorie.setNoCategorie(rs.getInt("no_categorie"));
+					categorie.setLibelle(rs.getString("libelle"));
+					// Création de l'article vendu
+					ArticleVendu article = new ArticleVendu();
+					article.setNoArticle(rs.getInt("no_article"));
+					article.setNomArticle(rs.getString("nom_article"));
+					article.setDescription(rs.getString("description"));
+					article.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());
+					article.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
+					article.setMiseAPrix(rs.getInt("prix_initial"));
+					article.setPrixVente(rs.getInt("prix_vente"));
+					article.setCategorie(categorie);
+					article.setUtilisateur(utilisateurVente);
+					// Création de l'enchère
+					Enchere enchere = new Enchere();
+					enchere.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
+					enchere.setMontant_enchere(rs.getInt("montant_enchere"));
+					enchere.setArticleVendus(article);
+					enchere.setUtilisateur(utilisateurEnchere);
+					// Ajout de l'enchère à la liste
+					encheres.add(enchere);
 				}
 				idArticlePrecedent = rs.getInt("no_article");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return encheres;
@@ -141,47 +139,46 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			encheres = new ArrayList<>();
 			pstmt = cnx.prepareStatement(SELECT_ALL_ENCHERES_USER_BY_CATEGORIE_NAME);
-			//pstmt.setInt(1, user.getNoUtilisateur());
+			// pstmt.setInt(1, user.getNoUtilisateur());
 			pstmt.setString(1, categorieRecherchee.getLibelle());
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				if(idArticlePrecedent != rs.getInt("no_article")){
-				// Création utilisateur qui a créer la vente
-				Utilisateur utilisateurVente = new Utilisateur();
-				utilisateurVente.setNoUtilisateur(rs.getInt("no_user_vente"));
-				utilisateurVente.setPseudo(rs.getString("user_vente_pseudo"));
-				// Création utilisateur qui poser une enchère
-				Utilisateur utilisateurEnchere = new Utilisateur();
-				utilisateurEnchere.setNoUtilisateur(rs.getInt("no_user_enchere"));
-				utilisateurEnchere.setPseudo(rs.getString("user_enchere_pseudo"));
-				// Création de la catégorie de l'article vendu
-				Categorie categorie = new Categorie();
-				categorie.setNoCategorie(rs.getInt("no_categorie"));
-				categorie.setLibelle(rs.getString("libelle"));
-				// Création de l'article vendu
-				ArticleVendu article = new ArticleVendu();
-				article.setNoArticle(rs.getInt("no_article"));
-				article.setNomArticle(rs.getString("nom_article"));
-				article.setDescription(rs.getString("description"));
-				article.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());
-				article.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
-				article.setMiseAPrix(rs.getInt("prix_initial"));
-				article.setPrixVente(rs.getInt("prix_vente"));
-				article.setCategorie(categorie);
-				article.setUtilisateur(utilisateurVente);
-				// Création de l'enchère
-				Enchere enchere = new Enchere();
-				enchere.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
-				enchere.setMontant_enchere(rs.getInt("montant_enchere"));
-				enchere.setArticleVendus(article);
-				enchere.setUtilisateur(utilisateurEnchere);
-				// Ajout de l'enchère à la liste
-				encheres.add(enchere);
-			}
+				if (idArticlePrecedent != rs.getInt("no_article")) {
+					// Création utilisateur qui a créer la vente
+					Utilisateur utilisateurVente = new Utilisateur();
+					utilisateurVente.setNoUtilisateur(rs.getInt("no_user_vente"));
+					utilisateurVente.setPseudo(rs.getString("user_vente_pseudo"));
+					// Création utilisateur qui poser une enchère
+					Utilisateur utilisateurEnchere = new Utilisateur();
+					utilisateurEnchere.setNoUtilisateur(rs.getInt("no_user_enchere"));
+					utilisateurEnchere.setPseudo(rs.getString("user_enchere_pseudo"));
+					// Création de la catégorie de l'article vendu
+					Categorie categorie = new Categorie();
+					categorie.setNoCategorie(rs.getInt("no_categorie"));
+					categorie.setLibelle(rs.getString("libelle"));
+					// Création de l'article vendu
+					ArticleVendu article = new ArticleVendu();
+					article.setNoArticle(rs.getInt("no_article"));
+					article.setNomArticle(rs.getString("nom_article"));
+					article.setDescription(rs.getString("description"));
+					article.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());
+					article.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
+					article.setMiseAPrix(rs.getInt("prix_initial"));
+					article.setPrixVente(rs.getInt("prix_vente"));
+					article.setCategorie(categorie);
+					article.setUtilisateur(utilisateurVente);
+					// Création de l'enchère
+					Enchere enchere = new Enchere();
+					enchere.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
+					enchere.setMontant_enchere(rs.getInt("montant_enchere"));
+					enchere.setArticleVendus(article);
+					enchere.setUtilisateur(utilisateurEnchere);
+					// Ajout de l'enchère à la liste
+					encheres.add(enchere);
+				}
 				idArticlePrecedent = rs.getInt("no_article");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return encheres;
@@ -196,48 +193,47 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			encheres = new ArrayList<>();
 			pstmt = cnx.prepareStatement(SELECT_ALL_ENCHERES_USER_BY_CATEGORIE_NAME_BY_ARTICLE_NAME);
-			//pstmt.setInt(1, user.getNoUtilisateur());
+			// pstmt.setInt(1, user.getNoUtilisateur());
 			pstmt.setString(1, "%" + articleVendu.getNomArticle() + "%");
 			pstmt.setString(2, categorieRecherchee.getLibelle());
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				if(idArticlePrecedent != rs.getInt("no_article")){
-				// Création utilisateur qui a créer la vente
-				Utilisateur utilisateurVente = new Utilisateur();
-				utilisateurVente.setNoUtilisateur(rs.getInt("no_user_vente"));
-				utilisateurVente.setPseudo(rs.getString("user_vente_pseudo"));
-				// Création utilisateur qui poser une enchère
-				Utilisateur utilisateurEnchere = new Utilisateur();
-				utilisateurEnchere.setNoUtilisateur(rs.getInt("no_user_enchere"));
-				utilisateurEnchere.setPseudo(rs.getString("user_enchere_pseudo"));
-				// Création de la catégorie de l'article vendu
-				Categorie categorie = new Categorie();
-				categorie.setNoCategorie(rs.getInt("no_categorie"));
-				categorie.setLibelle(rs.getString("libelle"));
-				// Création de l'article vendu
-				ArticleVendu article = new ArticleVendu();
-				article.setNoArticle(rs.getInt("no_article"));
-				article.setNomArticle(rs.getString("nom_article"));
-				article.setDescription(rs.getString("description"));
-				article.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());
-				article.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
-				article.setMiseAPrix(rs.getInt("prix_initial"));
-				article.setPrixVente(rs.getInt("prix_vente"));
-				article.setCategorie(categorie);
-				article.setUtilisateur(utilisateurVente);
-				// Création de l'enchère
-				Enchere enchere = new Enchere();
-				enchere.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
-				enchere.setMontant_enchere(rs.getInt("montant_enchere"));
-				enchere.setArticleVendus(article);
-				enchere.setUtilisateur(utilisateurEnchere);
-				// Ajout de l'enchère à la liste
-				encheres.add(enchere);
-			}
+				if (idArticlePrecedent != rs.getInt("no_article")) {
+					// Création utilisateur qui a créer la vente
+					Utilisateur utilisateurVente = new Utilisateur();
+					utilisateurVente.setNoUtilisateur(rs.getInt("no_user_vente"));
+					utilisateurVente.setPseudo(rs.getString("user_vente_pseudo"));
+					// Création utilisateur qui poser une enchère
+					Utilisateur utilisateurEnchere = new Utilisateur();
+					utilisateurEnchere.setNoUtilisateur(rs.getInt("no_user_enchere"));
+					utilisateurEnchere.setPseudo(rs.getString("user_enchere_pseudo"));
+					// Création de la catégorie de l'article vendu
+					Categorie categorie = new Categorie();
+					categorie.setNoCategorie(rs.getInt("no_categorie"));
+					categorie.setLibelle(rs.getString("libelle"));
+					// Création de l'article vendu
+					ArticleVendu article = new ArticleVendu();
+					article.setNoArticle(rs.getInt("no_article"));
+					article.setNomArticle(rs.getString("nom_article"));
+					article.setDescription(rs.getString("description"));
+					article.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());
+					article.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());
+					article.setMiseAPrix(rs.getInt("prix_initial"));
+					article.setPrixVente(rs.getInt("prix_vente"));
+					article.setCategorie(categorie);
+					article.setUtilisateur(utilisateurVente);
+					// Création de l'enchère
+					Enchere enchere = new Enchere();
+					enchere.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
+					enchere.setMontant_enchere(rs.getInt("montant_enchere"));
+					enchere.setArticleVendus(article);
+					enchere.setUtilisateur(utilisateurEnchere);
+					// Ajout de l'enchère à la liste
+					encheres.add(enchere);
+				}
 				idArticlePrecedent = rs.getInt("no_article");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return encheres;
@@ -257,6 +253,7 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 				Utilisateur utilisateur = new Utilisateur();
 				utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
 				utilisateur.setPseudo(rs.getString("pseudo"));
+				utilisateur.setCredit(rs.getInt("credit"));
 				// Création de l'article associée à l'enchère
 				ArticleVendu article = new ArticleVendu();
 				article.setNoArticle(rs.getInt("no_article"));
@@ -278,7 +275,6 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 				encheres.add(enchere);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return encheres;
@@ -305,7 +301,6 @@ public class EnchereDAOImplSQLServer implements DAOEnchere {
 				e.printStackTrace();
 			}
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		return nbRow;
