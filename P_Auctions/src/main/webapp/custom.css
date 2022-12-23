@@ -48,3 +48,12 @@
 .erreur{
 	color: #800040;
 }
+#credit{
+	width: 80px
+}
+#formCredit{
+	display: flex;
+	justify-content: flex-end;
+	margin-right: 50px;
+	
+}
