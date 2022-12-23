@@ -296,7 +296,7 @@
               							<p class="card-text mb-auto">${listeResult.getArticleVendus().getDescription() }</p>
               							<a href="/P_Auctions/ServletProfilUtilisateur?idRech=${listeResult.getArticleVendus().getUtilisateur().getNoUtilisateur()}">${listeResult.getArticleVendus().getUtilisateur().getPseudo()}</a>
             					</div>
-            					<img id="imgTN" class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb" alt="Thumbnail [200x250]" src="./images/cone.jpg" data-holder-rendered="true" style="width: 200px; height: 250px;">
+            					<img id="imgTN" class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb" alt="Thumbnail [200x250]" src="./images/22760.jpg" data-holder-rendered="true" style="width: 200px; height: 250px;">
           					</div>
         				</div>
 					</c:forEach>
@@ -322,7 +322,7 @@
               							<a href="/P_Auctions/ServletProfilUtilisateur?idRech=${listeResult.getUtilisateur().getNoUtilisateur()}">${listeResult.getUtilisateur().getPseudo()}</a>
             							
             					</div>
-            					<img id="imgTN" class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb" alt="Thumbnail [200x250]" src="./images/cone.jpg" data-holder-rendered="true" style="width: 200px; height: 250px;">
+            					<img id="imgTN" class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb" alt="Thumbnail [200x250]" src="./images/22760.jpg" data-holder-rendered="true" style="width: 200px; height: 250px;">
           					</div>
         				</div>
 					</c:forEach>

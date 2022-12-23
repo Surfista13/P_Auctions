@@ -80,7 +80,7 @@
               				<p class="card-text mb-auto">${listeResult.getDescription() }</p>
               				<p>${listeResult.getUtilisateur().getPseudo()}</p>
 						</div>
-						<img id="imgTN" class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb" alt="Thumbnail [200x250]" src="./images/cone.jpg" data-holder-rendered="true" style="width: 200px; height: 200px;">
+						<img id="imgTN" class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb" alt="Thumbnail [200x250]" src="./images/22760.jpg" data-holder-rendered="true" style="width: 200px; height: 200px;">
 					</div>
 				</div>
 			</c:forEach>

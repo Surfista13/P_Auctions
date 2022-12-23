@@ -43,6 +43,7 @@ public class ServletEncheresConnectees extends HttpServlet {
 		// Liste des catégories à l'initialisation de la servlet
 		CategorieManager categorieManager = CategorieManager.getCategorieManager();
 		categories = categorieManager.selectAllCategories();
+		System.out.println(categories);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

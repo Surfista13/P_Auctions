@@ -27,9 +27,12 @@ import fr.eni.javaee.auctions.dal.DALException;
 public class ServletDetailsArticle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	ArticleVendu article = new ArticleVendu();
+
 	List<Enchere> encheres = new ArrayList<>();
 	Utilisateur userConnecte = new Utilisateur();
+	ArticleVendu article = new ArticleVendu();
+	ArticleVendu articleRecherche = new ArticleVendu();
+	
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -43,7 +46,7 @@ public class ServletDetailsArticle extends HttpServlet {
 		session.setAttribute("utilisateurConnecte", userConnecte);
 
 		int idArticle = Integer.parseInt(request.getParameter("idArticle"));
-		ArticleVendu articleRecherche = new ArticleVendu();
+		
 		articleRecherche.setNoArticle(idArticle);
 		ArticleVenduManager articleManager = ArticleVenduManager.getArticleVenduManager();
 		article = articleManager.selectByIDArticle(articleRecherche);
@@ -56,25 +59,36 @@ public class ServletDetailsArticle extends HttpServlet {
 		meilleurEnchere = calculMeilleurOffre(encheres);
 		request.setAttribute("meilleurEnchere", meilleurEnchere);
 
-		int typePage = 0;
-		int typePage2 = 0;
+		int typePage1 = 0;
+		int typePage2 = 0; // vendeur
+		int typePage3 = 0;//capacité d'enchérir
+		int typePage4 = 0; //modification vente
+		
+		if(article.getUtilisateur().getNoUtilisateur() != (int)userConnecte.getNoUtilisateur() && (meilleurEnchere.getArticleVendus().getEtatVente().equals("enCours"))) {
+			typePage3 = 1;
+		}
+		if (article.getUtilisateur().getNoUtilisateur() == (int)userConnecte.getNoUtilisateur()) {
+			typePage2 = 1;
+		}
+		if (article.getUtilisateur().getNoUtilisateur() == userConnecte.getNoUtilisateur()) {
+			typePage4 = 1;
+		}		
 		if (meilleurEnchere.getUtilisateur().getNoUtilisateur() == userConnecte.getNoUtilisateur()
 				&& (meilleurEnchere.getArticleVendus().getEtatVente().equals("terminee")
 						|| meilleurEnchere.getArticleVendus().getEtatVente().equals("remportee"))) {
-			typePage = 1;
+			typePage1 = 1;
 		} else if (meilleurEnchere.getUtilisateur().getNoUtilisateur() != userConnecte.getNoUtilisateur()
 				&& (meilleurEnchere.getArticleVendus().getEtatVente().equals("terminee")
 						|| meilleurEnchere.getArticleVendus().getEtatVente().equals("remportee"))) {
-			typePage = 2;
+			typePage1 = 2;
 		} else {
-			typePage = 3;
+			typePage1 = 3;
 		}
-		if (meilleurEnchere.getUtilisateur().getNoUtilisateur() == userConnecte.getNoUtilisateur()) {
-			typePage2 = 1;
-		}
-
-		request.setAttribute("typePage", typePage);
+		
+		request.setAttribute("typePage1", typePage1);
 		request.setAttribute("typePage2", typePage2);
+		request.setAttribute("typePage3", typePage3);
+		request.setAttribute("typePage4", typePage4);
 
 		//Mise à jour crédit
 		UtilisateurManager um = new UtilisateurManager();

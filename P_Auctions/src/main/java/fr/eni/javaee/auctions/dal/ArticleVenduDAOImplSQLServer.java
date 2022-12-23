@@ -396,7 +396,7 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 	public ArticleVendu selectByIDArticle(ArticleVendu articleVendu) {
 		PreparedStatement pstmt;
 		ResultSet rs;
-
+		System.out.println("deb DAO" + articleVendu);
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			pstmt = cnx.prepareStatement(SELECT_BY_ID_ARTICLE);
 			pstmt.setInt(1, articleVendu.getNoArticle());
@@ -405,6 +405,7 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 				Categorie categorie = new Categorie();
 				Utilisateur utilisateur = new Utilisateur();
 				Retrait retrait = new Retrait();
+				article = new ArticleVendu();
 				article.setNoArticle(rs.getInt("no_article"));
 				article.setNomArticle(rs.getString("nom_article"));
 				article.setDescription(rs.getString("description"));
@@ -430,6 +431,7 @@ public class ArticleVenduDAOImplSQLServer implements DAOArticleVendu {
 				article.setCategorie(categorie);
 				article.setUtilisateur(utilisateur);
 				article.setRetrait(retrait);
+				System.out.println("fin DAO" + article);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

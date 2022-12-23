@@ -1,11 +1,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="UTF-8"%>
+<%@ page import= "java.time.format.DateTimeFormatter"%>
+<%@ page import= "java.time.format.FormatStyle"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Plateforme d'enchères</title>
+<meta charset="UTF-8">
+<title>Plateforme d'enchÃ¨res</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link href="custom.css" rel="stylesheet">
 </head>
@@ -14,9 +16,9 @@
 		<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
 	      <h5 class="my-0 mr-md-auto font-weight-normal">ENCHERES COMPANY</h5>
 	      <nav class="my-2 my-md-0 mr-md-4">
-	        <a class="p-2 text-dark" href="/P_Auctions/ServletEncheresConnectees">Mes enchères et ventes</a>
+	        <a class="p-2 text-dark" href="/P_Auctions/ServletEncheresConnectees">Mes enchÃ¨res et ventes</a>
 	        <a class="p-2 text-dark" href="/P_Auctions/ServletNouvelleVente">Vendre un article</a>
-	        <a class="p-2 text-dark" href="/P_Auctions/ServletListeEncheresNonConnecte">Déconnexion</a>
+	        <a class="p-2 text-dark" href="/P_Auctions/ServletListeEncheresNonConnecte">DÃ©connexion</a>
 	        <button id="btnCredits" type="button" class="btn btn-primary position-relative">
   				Credits
   				<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -33,51 +35,82 @@
 	<main class="main">
 		<div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
 		  <div class="col-md-7 px-0">
-			<h1 class="display-4 font-italic">Mes ventes et mes enchères</h1>
-			<p class="lead my-3">Première plateforme d'enchères pour les articles de secondes vie. Acheter, vendre donnez une nouvelle vie à vos produits d'occasions.  </p>
+			<h1 class="display-4 font-italic">Mes ventes et mes enchÃ¨res</h1>
+			<p class="lead my-3">PremiÃ¨re plateforme d'enchÃ¨res pour les articles de secondes vie. Acheter, vendre donnez une nouvelle vie Ã  vos produits d'occasions.  </p>
 		  </div>
       	</div>
       	<div class="corps">
       		<div class="photo">
       		</div>
       		<div class="details">
-      			<c:if test="${typePage == 1}">
-      					<h1>Vous avez remporté la vente</h1>
+      			<c:if test="${typePage1 == 1}">
+      				<div class="alert alert-warning" role="alert">
+  					<h2>Vous avez remporte la vente</h2>
+					</div>
       			</c:if>
-      			<c:if test="${typePage == 2}">
-      					<h1>${meilleurEnchere.getUtilisateur().getPseudo()} a remporté la vente</h1>
+      			<c:if test="${typePage1 == 2}">
+      			    <div class="alert alert-warning" role="alert">
+  						<h2>${meilleurEnchere.getUtilisateur().getPseudo()} a remportÃ© la vente</h2>
+					</div>  
       			</c:if>
-      			<c:if test="${typePage == 3}">
-      					<h1>Détail vente</h1>
+      			<c:if test="${typePage1 == 3}">
+      			    <div class="alert alert-warning" role="alert">
+  						<h2>DÃ©tails vente</h2>
+					</div>  
       			</c:if>
-      			<p>${article.getNomArticle() }</p>
-      			<p>Description: ${article.getDescription() }</p>
-      			<p>Catégorie: ${article.getCategorie().getLibelle() }</p>
-      			
-      			<p>Meilleur offre: ${meilleurEnchere.getMontant_enchere()} crédits<c:if test="${typePage != 1}"> par ${meilleurEnchere.getUtilisateur().getPseudo()}</c:if></p> 
-      			<p>Mise a prix: ${article.getMiseAPrix() } crédits</p>
-      			<c:if test="${typePage == 1}"><p>Fin de l'enchère: ${article.getDateFinEncheres() }</p></c:if>
-      			<p>Retrait: ${article.getRetrait().getRue()} ${article.getRetrait().getCodePostal()}   ${article.getRetrait().getVille() }</p>
-      			<p>Vendeur:  ${article.getUtilisateur().getPseudo()}</p>
-      			<c:if test="${typePage == 1}"><p>Téléphone: ${article.getUtilisateur().getTelephone()}</p></c:if>
+      			</br>
+      			<div class="alert alert-info" role="alert">
+  					<h4>${article.getNomArticle() }</h4>
+				</div>
+				 <div class="alert alert-dark" role="alert">
+  					<strong>Description: </strong>${article.getDescription() }
+				</div>
+				<div class="alert alert-dark" role="alert">
+  					<strong>CatÃ©gorie: </strong>${article.getCategorie().getLibelle() }
+				</div>
+				<div class="alert alert-dark" role="alert">
+  					<strong>Meilleur offre: </strong>${meilleurEnchere.getMontant_enchere()} crÃ©dits<c:if test="${typePage1 != 1}"> par ${meilleurEnchere.getUtilisateur().getPseudo()}</c:if>
+				</div>
+				<div class="alert alert-dark" role="alert">
+  					<strong>Mise a prix: </strong>${article.getMiseAPrix() } crÃ©dits
+				</div>
+				<c:if test="${typePage1 == 1}">
+				<div class="alert alert-dark" role="alert">
+  					<p><strong>Fin de l'enchÃ¨re: </strong>${article.getDateFinEncheres() }</p>
+				</div>
+				</c:if>
+				<div class="alert alert-dark" role="alert">
+  					<strong>Retrait: </strong>${article.getRetrait().getRue()} ${article.getRetrait().getCodePostal()}   ${article.getRetrait().getVille() }
+				</div>
+				<div class="alert alert-dark" role="alert">
+  					<strong>Vendeur: </strong>${article.getUtilisateur().getPseudo()}
+				</div>
+					
+      			<c:if test="${typePage1 == 1}">
+      				<div class="alert alert-dark" role="alert">
+  						<strong>TÃ©lÃ©phone: </strong>${article.getUtilisateur().getTelephone()}
+					</div>
+      			</c:if>
       			<c:if test="${typePage2 == 1}">
-      			<p>Liste enchères</p>
-					<ul>
+      			    <div class="alert alert-dark" role="alert">
+  					<p><strong>Liste enchÃ¨res</strong></p>
+  					<ul>
 						<c:forEach items="${listeEncheres}" var="listeResult">
-							<li>${listeResult.getDateEnchere()}  -  ${listeResult.getMontant_enchere()}  -  ${listeResult.getUtilisateur().getPseudo()}</li>
+							<li>${listeResult.getDateEnchere().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))}  -  ${listeResult.getMontant_enchere()} crÃ©dits  -  ${listeResult.getUtilisateur().getPseudo()}</li>
 						</c:forEach>	
 					</ul>
+					</div>     			
 				</c:if>	
       			<form action="/P_Auctions/Encherir?idArticle=${article.getNoArticle() }" method="post" name="encherir" id="encherir">
-      				<c:if test="${typePage2 != 1}">		
-      					<label for="enchere">Ma proposition:</label>
+      				<c:if test="${typePage3 == 1}">		
+      					<label for="enchere"><strong>Ma proposition:</strong></label>
 						<input type="number" id="enchere" name="enchere" min="1" max="10000000">
 						<input type="submit" value="Encherir" class="btn btn-secondary btn-lg">	
       			     </c:if>
       			</form>
       			<p>${retourEnchere }</p>
-      			<button type="button" class="btn btn-secondary">Retrait effectué</button>
-      		<c:if test="${article.getUtilisateur().getNoUtilisateur()== sessionScope.utilisateurConnecte.noUtilisateur}">	
+      			<button type="button" class="btn btn-secondary">Retrait effectuÃ©</button>
+      		<c:if test="${typePage4 == 1}">	
       			<a href="/P_Auctions/ServletModificationVente?idArticle=${article.getNoArticle() }"><input type="text" class="btn btn-secondary" name="Modifier" value="Modifier la vente"></input></a>
       			<a href="/P_Auctions/ServletSuppressionVente?idArticle=${article.getNoArticle() }"><input type="text" class="btn btn-secondary" name="Supprimer" value="Supprimer la vente"></input></a>
       		</c:if>	  			
